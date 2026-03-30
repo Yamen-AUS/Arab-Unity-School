@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Key Documents &amp; Policies — Arab Unity School Dubai</title>
+  <meta name="description" content="Read Arab Unity School's official policies including Behaviour, Anti-Bullying, Safeguarding, SEND, Health & Safety, and more.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=29">
+  <link rel="stylesheet" href="css/inner.css?v=31">
+  <style>
+    /* ── Policies page specific ── */
+    .policies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+    }
+    .policy-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 28px 26px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+      border-top: 4px solid var(--navy, #1e1a4e);
+      transition: transform 0.25s, box-shadow 0.25s;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .policy-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.13);
+    }
+    .policy-card.gold-top  { border-top-color: #c9a84c; }
+    .policy-card.green-top { border-top-color: #3a7d44; }
+    .policy-card.red-top   { border-top-color: #c0392b; }
+    .policy-card.teal-top  { border-top-color: #2a9d8f; }
+    .policy-card.purple-top{ border-top-color: #7b5ea7; }
+
+    .policy-icon {
+      font-size: 2rem;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .policy-card h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--navy, #1e1a4e);
+      margin: 0;
+    }
+    .policy-card p {
+      font-size: 0.88rem;
+      color: #6b7280;
+      line-height: 1.6;
+      margin: 0;
+      flex: 1;
+    }
+    .policy-card a.policy-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--navy, #1e1a4e);
+      text-decoration: none;
+      border-bottom: 2px solid #c9a84c;
+      padding-bottom: 2px;
+      width: fit-content;
+      transition: color 0.2s;
+    }
+    .policy-card a.policy-link:hover { color: #c9a84c; }
+
+    .notice-box {
+      background: linear-gradient(135deg, #001f3d 0%, #1a5c2e 100%);
+      border-radius: 12px;
+      padding: 32px 36px;
+      color: #fff;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 48px;
+    }
+    .notice-box .nb-icon {
+      font-size: 2.4rem;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+    .notice-box h4 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: #f0c040;
+    }
+    .notice-box p {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.8);
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .policy-section-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #1e1a4e;
+      margin: 48px 0 6px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid #c9a84c;
+      display: inline-block;
+    }
+
+    @media (max-width: 600px) {
+      .notice-box { flex-direction: column; gap: 12px; padding: 22px 18px; }
+      .policies-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- nav.js injects navbar here -->
+
+<!-- ── HERO ─────────────────────────────────────────────────── -->
+<section class="page-hero">
+  <div class="page-hero-content fade-in">
+    <nav class="breadcrumb">
+      <a href="index.html" data-i18n="bc.home">Home</a>
+      <span>›</span>
+      <span data-i18n="bc.policies">Key Documents &amp; Policies</span>
+    </nav>
+    <h1 class="page-hero-title" data-i18n="policies.h1">Key Documents &amp; <em>Policies</em></h1>
+    <p class="page-hero-lead" data-i18n="policies.sub">Transparent governance, clear expectations, and a safe environment for every member of the AUS community.</p>
+  </div>
+</section>
+
+<!-- ── INTRO NOTICE ──────────────────────────────────────────── -->
+<section class="section bg-offwhite">
+  <div class="container">
+    <div class="notice-box fade-in">
+      <div class="nb-icon">📋</div>
+      <div>
+        <h4 data-i18n="pol.notice.h">Our Commitment to Transparency</h4>
+        <p data-i18n="pol.notice.p">Arab Unity School is committed to maintaining clear, fair, and regularly reviewed policies that protect students, support staff, and engage parents. All policies are KHDA-compliant and aligned with British educational standards. For full policy documents or queries, please contact <a href="mailto:info@arabunityschool.ae" style="color:#f0c040">info@arabunityschool.ae</a>.</p>
+      </div>
+    </div>
+
+    <!-- ── SAFEGUARDING & WELLBEING ── -->
+    <div class="policy-section-title" data-i18n="pol.sec1.title">🛡️ Safeguarding &amp; Wellbeing</div>
+    <div class="policies-grid">
+
+      <div class="policy-card red-top fade-in">
+        <div class="policy-icon">🛡️</div>
+        <h3 data-i18n="pol.p1.h">Child Protection &amp; Safeguarding</h3>
+        <p>AUS has a zero-tolerance approach to any form of abuse or neglect. Our Designated Safeguarding Lead (DSL) oversees all child protection matters in line with KHDA and UAE Federal Law.</p>
+        <a href="mailto:info@arabunityschool.ae?subject=Safeguarding Policy Request" class="policy-link">Request Document →</a>
+      </div>
+
+      <div class="policy-card red-top fade-in fade-in-delay-1">
+        <div class="policy-icon">🚫</div>
+        <h3 data-i18n="pol.p2.h">Anti-Bullying Policy</h3>
+        <p>We are committed to creating a positive, respectful environment. Bullying in any form — physical, verbal, cyber, or social — is taken seriously and responded to promptly.</p>
+        <a href="mailto:info@arabunityschool.ae?subject=Anti-Bullying Policy Request" class="policy-link">Request Document →</a>
+      </div>
+
+      <div class="policy-card teal-top fade-in fade-in-delay-2">
+        <div class="policy-icon">❤️</div>
+        <h3 data-i18n="pol.p3.h">Student Wellbeing Policy</h3>
+        <p>AUS was rated <strong>Very Good</strong> for Student Wellbeing by KHDA (2023–2024). Our policy covers mental health support, pastoral care, counselling access, and student voice initiatives.</p>
+        <a href="mailto:info@arabunityschool.ae?subject=Wellbeing Policy Request" class="policy-link">Request Document →</a>
+      </div>
+
+    </div>
+
+    <!-- ── BEHAVIOUR & CONDUCT ── -->
+    <div class="policy-section-title" data-i18n="pol.sec2.title">📐 Behaviour &amp; Conduct</div>
+    <div class="policies-grid">
+
+      <div class="policy-card gold-top fade-in">
+        <div class="policy-icon">📐</div>
+        <h3 data-i18n="pol.p4.h">Behaviour for Learning Policy</h3>
+        <p>Our behaviour policy promotes positive conduct, respect for all, and responsibility. It outlines rewards, consequences, and procedures for managing challenging behaviour.</p>
+        <a href="mailto:info@arabunityschool.ae?subject=Behaviour Policy Request" class="policy-link">Request Document →</a>
+      </div>
+
+      <div class="policy-card gold-top fade-in fade-in-delay-1">
+        <div class="policy-icon">👗</div>
+        <h3 data-i18n="pol.p5.h">Uniform &amp; Dress Code Policy</h3>
+        <p>All students are expected to wear the AUS uniform correctly and neatly. Our dress code policy promotes equality and a sense of school pride across all year groups.</p>
+        <a href="mailto:info@arabunityschool.ae?subject=Uniform Policy Request" class="policy-link">Request Document →</a>
+      </div>
+
+      <div class="policy-card gold-top fade-in fade-in-delay-2">
+        <div class="policy-icon">📱</div>
+        <h3 data-i18n="pol.p6.h">Mobile Phone &amp; Technology Policy</h3>
+        <p>Students in Years 1–9 are not permitted to use mobile phones during school hours. Sixth Form students may use devices responsibly within designated areas. Strict guidelines apply.</p>
+        <a href="mailto:info@arabunityschool.ae?subject=Technology Policy Request" class="policy-link">Request Document →</a>
+      </div>
+
+    </div>
+
+    <!-- ── INCLUSION & SEND ── -->
+    <div class="policy-section-title" data-i18n="pol.sec3.title">🌟 Inclusion &amp; SEND</div>
+    <div class="policies-grid">
+
+      <div class="policy-card green-top fade-in">
+        <div class="policy-icon">🌟</div>
+        <h3 data-i18n="pol.p7.h">Inclusion &amp; SEND Policy</h3>
+        <p>AUS provides dedicated SEND support across all year groups. Our SEND policy details identification, assessment, Individual Learning Plans (ILPs), and multi-agency collaboration to ensure every student thrives.</p>
+        <a href="mailto:info@arabunityschool.ae?subject=SEND Policy Request" class="policy-link">Request Document →</a>
+      </div>
+
+      <div class="policy-card green-top fade-in fade-in-delay-1">
+        <div class="policy-icon">🌍</div>
+        <h3 data-i18n="pol.p8.h">Equal Opportunities Policy</h3>
+        <p>We welcome students from all 80+ nationalities without discrimination. Our equal opportunities policy ensures fair treatment for all students, staff, and families.</p>
+        <a href="mailto:info@arabunityschool.ae?subject=Equal Opportunities Policy Request" class="policy-link">Request Document →</a>
+      </div>
+
+      <div class="policy-card green-top fade-in fade-in-delay-2">
+        <div class="policy-icon">🗣️</div>
+        <h3 data-i18n="pol.p9.h">English as an Additional Language (EAL)</h3>
+        <p>Our EAL policy outlines the tailored support available for students whose first language is not English, ensuring full access to the curriculum from day one.</p>
+        <a href="mailto:info@arabunityschool.ae?subject=EAL Policy Request" class="policy-link">Request Document →</a>
+      </div>
+
+    </div>
+
+    <!-- ── HEALTH & SAFETY ── -->
+    <div class="policy-section-title" data-i18n="pol.sec4.title">🏥 Health &amp; Safety</div>
+    <div class="policies-grid">
+
+      <div class="policy-card purple-top fade-in">
+        <div class="policy-icon">🏥</div>
+        <h3 data-i18n="pol.p10.h">Health &amp; Safety Policy</h3>
+        <p>The safety of students and staff is paramount. This policy covers risk assessments, emergency procedures, fire safety, first aid provision, and COSHH guidelines across all school areas.</p>
+        <a href="mailto:info@arabunityschool.ae?subject=Health Safety Policy Request" class="policy-link">Request Document →</a>
+      </div>
+
+      <div class="policy-card purple-top fade-in fade-in-delay-1">
+        <div class="policy-icon">🤧</div>
+        <h3 data-i18n="pol.p11.h">Medical &amp; First Aid Policy</h3>
+        <p>We have trained first-aiders at all times during school hours. Our medical policy outlines procedures for illness, medication administration, allergy management, and emergency response.</p>
+        <a href="mailto:info@arabunityschool.ae?subject=Medical Policy Request" class="policy-link">Request Document →</a>
+      </div>
+
+      <div class="policy-card purple-top fade-in fade-in-delay-2">
+        <div class="policy-icon">🍎</div>
+        <h3 data-i18n="pol.p12.h">Food &amp; Nutrition Policy</h3>
+        <p>AUS promotes healthy eating habits. Our canteen provides nutritious meals compliant with Dubai Municipality standards. Guidance on packed lunches and allergy awareness is provided to all families.</p>
+        <a href="mailto:info@arabunityschool.ae?subject=Nutrition Policy Request" class="policy-link">Request Document →</a>
+      </div>
+
+    </div>
+
+    <!-- ── ACADEMIC & ADMISSIONS ── -->
+    <div class="policy-section-title" data-i18n="pol.sec5.title">📚 Academic &amp; Admissions</div>
+    <div class="policies-grid">
+
+      <div class="policy-card fade-in">
+        <div class="policy-icon">📝</div>
+        <h3 data-i18n="pol.p13.h">Admissions Policy</h3>
+        <p>AUS accepts applications year-round for FS2–Year 13. Our admissions policy outlines eligibility, the assessment process, placement procedures, and priority criteria for all applicants.</p>
+        <a href="admissions.html" class="policy-link">View Admissions →</a>
+      </div>
+
+      <div class="policy-card fade-in fade-in-delay-1">
+        <div class="policy-icon">💷</div>
+        <h3 data-i18n="pol.p14.h">Fees Policy</h3>
+        <p>All fees are set and approved by KHDA. Our fees policy covers payment schedules, instalment plans, late payment charges, and withdrawal notice requirements.</p>
+        <a href="admissions.html#fees" class="policy-link">View Fees →</a>
+      </div>
+
+      <div class="policy-card fade-in fade-in-delay-2">
+        <div class="policy-icon">🎓</div>
+        <h3 data-i18n="pol.p15.h">Assessment &amp; Reporting Policy</h3>
+        <p>We believe in regular, meaningful assessment. Our policy outlines formative and summative assessment methods, reporting schedules, parent consultation evenings, and Cambridge examination guidelines.</p>
+        <a href="mailto:info@arabunityschool.ae?subject=Assessment Policy Request" class="policy-link">Request Document →</a>
+      </div>
+
+    </div>
+
+    <!-- ── DATA & COMMUNICATIONS ── -->
+    <div class="policy-section-title" data-i18n="pol.sec6.title">🔒 Data &amp; Communications</div>
+    <div class="policies-grid">
+
+      <div class="policy-card teal-top fade-in">
+        <div class="policy-icon">🔒</div>
+        <h3 data-i18n="pol.p16.h">Data Protection &amp; Privacy Policy</h3>
+        <p>AUS handles all personal data responsibly in accordance with UAE data protection regulations. This policy covers how we collect, store, use, and protect student and family information.</p>
+        <a href="mailto:info@arabunityschool.ae?subject=Data Protection Policy Request" class="policy-link">Request Document →</a>
+      </div>
+
+      <div class="policy-card teal-top fade-in fade-in-delay-1">
+        <div class="policy-icon">📸</div>
+        <h3 data-i18n="pol.p17.h">Photography &amp; Image Use Policy</h3>
+        <p>We obtain written consent before using images of students in any publications, social media, or marketing materials. Parents can update consent preferences at any time.</p>
+        <a href="mailto:info@arabunityschool.ae?subject=Photography Policy Request" class="policy-link">Request Document →</a>
+      </div>
+
+      <div class="policy-card teal-top fade-in fade-in-delay-2">
+        <div class="policy-icon">💻</div>
+        <h3 data-i18n="pol.p18.h">ICT &amp; Digital Safety Policy</h3>
+        <p>All students and staff must adhere to our ICT &amp; Digital Safety Policy, covering safe internet use, responsible online conduct, use of school devices, and consequences for misuse.</p>
+        <a href="mailto:info@arabunityschool.ae?subject=ICT Policy Request" class="policy-link">Request Document →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTNOTE ──────────────────────────────────────────────── -->
+<section class="section bg-offwhite" style="padding:32px 0">
+  <div class="container">
+    <p style="font-size:0.82rem;color:#6b7280;text-align:center;line-height:1.8;max-width:780px;margin:0 auto;border-top:1px solid #e5e7eb;padding-top:24px;">
+      <strong data-i18n="pol.footnote.strong">Note:</strong> <span data-i18n="pol.footnote.p">The summaries provided on this page are for general information purposes only. Complete details of all policies are available upon request. Please contact <a href="mailto:info@arabunityschool.ae" style="color:#2a7d3e;text-decoration:underline">info@arabunityschool.ae</a> to obtain full policy documents.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ── CONTACT CTA ─────────────────────────────────────────── -->
+<section class="section bg-navy" style="padding:60px 0;background:linear-gradient(135deg,#001f3d,#1a5c2e) !important">
+  <div class="container" style="text-align:center">
+    <span class="eyebrow-lbl light" data-i18n="pol.cta.eyebrow">Have Questions?</span>
+    <h2 class="section-heading white" style="margin-bottom:14px" data-i18n="pol.cta.h2">Request a Full Policy <em>Document</em></h2>
+    <p style="color:rgba(255,255,255,0.7);max-width:540px;margin:0 auto 32px;line-height:1.8;font-size:0.95rem;" data-i18n="pol.cta.lead">
+      Full policy documents are available to all parents and prospective families upon request. Email our office or speak to our reception team directly.
+    </p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+      <a href="mailto:info@arabunityschool.ae?subject=Policy Document Request" class="btn btn-gold" data-i18n="pol.cta.btn1">📧 Email for Documents</a>
+      <a href="contact.html" class="btn btn-outline-white" data-i18n="pol.cta.btn2">Contact the Office</a>
+    </div>
+    <p style="color:rgba(255,255,255,0.45);font-size:0.8rem;margin-top:20px" data-i18n="pol.cta.hours">
+      Mon–Thu: 7:30am – 1:50pm &nbsp;|&nbsp; Fri: 7:30am – 11:00am
+    </p>
+  </div>
+</section>
+
+<!-- nav.js injects footer here -->
+<script src="js/lang.js?v=3"></script>
+<script src="js/nav.js?v=23"></script>
+<script>
+  /* fade-in observer */
+  (function() {
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-in').forEach(function(el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight) { el.style.cssText = 'opacity:1;transform:none;'; }
+      else { obs.observe(el); }
+    });
+  })();
+</script>
+</body>
+</html>

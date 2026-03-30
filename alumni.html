@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alumni — Arab Unity School Dubai</title>
+  <meta name="description" content="Meet the inspiring alumni of Arab Unity School Dubai — graduates who have gone on to achieve extraordinary things around the world.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=29">
+  <link rel="stylesheet" href="css/inner.css?v=31">
+  <style>
+    .alumni-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    @media (max-width: 1024px) { .alumni-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 720px)  { .alumni-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px)  { .alumni-grid { grid-template-columns: 1fr; } }
+    .alumni-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      transition: transform 0.25s, box-shadow 0.25s;
+      border-bottom: 3px solid #2a7d3e;
+    }
+    .alumni-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.13);
+    }
+    .alumni-photo {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      background: linear-gradient(135deg, #0d2e18, #0a2540);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: rgba(255,255,255,0.2);
+    }
+    .alumni-photo img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      object-position: center top;
+    }
+    .alumni-info {
+      padding: 22px 22px 24px;
+    }
+    .alumni-year {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #2a7d3e;
+      margin-bottom: 8px;
+    }
+    .alumni-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #0a1f0f;
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+    .alumni-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 10px;
+    }
+    .alumni-desc {
+      font-size: 0.8rem;
+      color: #6b7280;
+      line-height: 1.7;
+    }
+    .coming-soon-banner {
+      background: linear-gradient(135deg, #0a1f0f, #0a2540);
+      border-radius: 14px;
+      padding: 60px 40px;
+      text-align: center;
+      color: #fff;
+      margin: 48px 0;
+    }
+    .coming-soon-banner h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #4fc46e;
+      margin-bottom: 14px;
+    }
+    .coming-soon-banner p {
+      color: rgba(255,255,255,0.65);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── PAGE HERO ─────────────────────────────────────────── -->
+<section class="page-hero">
+  <div class="container page-hero-content">
+    <div class="breadcrumb">
+      <a href="index.html" data-i18n="bc.home">Home</a>
+      <span>›</span>
+      <span data-i18n="bc.alumni">Alumni</span>
+    </div>
+    <h1 class="fade-in" data-i18n="alumni.h1">Our Alumni</h1>
+    <p class="fade-in fade-in-delay-1" data-i18n="alumni.sub">Extraordinary graduates who carry the AUS spirit into every corner of the world — doctors, engineers, architects, entrepreneurs and more.</p>
+  </div>
+</section>
+
+<!-- ── INTRO ─────────────────────────────────────────────── -->
+<section class="section bg-white">
+  <div class="container">
+
+    <div style="text-align:center;max-width:700px;margin:0 auto 48px">
+      <span class="eyebrow-lbl" data-i18n="alumni.intro.eyebrow">AUS Graduates</span>
+      <h2 class="section-heading" data-i18n="alumni.intro.h2">Shaping the World, One Graduate at a Time</h2>
+      <p class="section-lead" style="margin:0 auto" data-i18n="alumni.intro.lead">Our alumni community spans the globe, representing the very best of what a best-value British education can achieve. From Dubai to London, New York to Singapore — AUS graduates are making their mark.</p>
+    </div>
+
+    <!-- Coming Soon Notice -->
+    <div class="coming-soon-banner fade-in">
+      <div style="font-size:3rem;margin-bottom:16px">🎓</div>
+      <h3 data-i18n="alumni.soon.h">Alumni Profiles Coming Soon</h3>
+      <p data-i18n="alumni.soon.p">We are currently gathering inspiring stories from our distinguished alumni network. This section will be updated shortly with profiles, photos, and career highlights from AUS graduates.</p>
+      <p style="margin-top:16px;color:rgba(255,255,255,0.45);font-size:0.8rem">Are you an AUS alumnus? We'd love to hear from you.</p>
+      <a href="contact.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;background:#2a7d3e;color:#fff;font-size:0.72rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:13px 28px;border-radius:3px;transition:background 0.2s" onmouseover="this.style.background='#3aa058'" onmouseout="this.style.background='#2a7d3e'" data-i18n="alumni.touch.btn">
+        Get in Touch →
+      </a>
+    </div>
+
+    <!-- Placeholder alumni cards (to be replaced with real alumni) -->
+    <div style="text-align:center;margin-bottom:32px">
+      <span class="eyebrow-lbl" data-i18n="alumni.notable.eyebrow">Notable Graduates</span>
+      <h2 class="section-heading" data-i18n="alumni.notable.h2">Alumni Spotlight</h2>
+      <p class="section-lead" style="margin:0 auto" data-i18n="alumni.notable.lead">The following profiles will be updated with real alumni provided by the school. Placeholder shown for layout purposes.</p>
+    </div>
+
+    <div class="alumni-grid">
+
+      <!-- Row 1 -->
+      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
+      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
+      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
+      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
+
+      <!-- Row 2 -->
+      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
+      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
+      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
+      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
+
+      <!-- Row 3 -->
+      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
+      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
+      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
+      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
+
+      <!-- Row 4 -->
+      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
+      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
+      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
+      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CTA ────────────────────────────────────────────────── -->
+<div class="cta-banner">
+  <div class="container">
+    <h2 class="fade-in">Are You an <em>AUS Alumnus?</em></h2>
+    <p class="fade-in">We'd love to feature your story and reconnect you with the AUS community.</p>
+    <div class="cta-btns fade-in">
+      <a href="contact.html" class="btn btn-gold">Get in Touch</a>
+      <a href="admissions.html" class="btn btn-outline">Apply for Admission →</a>
+    </div>
+  </div>
+</div>
+
+<script src="js/lang.js?v=3"></script>
+<script src="js/nav.js?v=23"></script>
+<script>
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add('visible'); obs.unobserve(en.target); }
+    });
+  }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-in').forEach(function(el){ obs.observe(el); });
+</script>
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus &amp; Virtual Tour – Arab Unity School Dubai</title>
+  <meta name="description" content="Explore Arab Unity School's campus virtually — labs, sports courts, Taher Hall, robotics studio and more.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=29">
+  <link rel="stylesheet" href="css/inner.css?v=31">
+  <style>
+    .facility-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .facility-item { border-radius: var(--radius); overflow: hidden; position: relative; height: 220px; }
+    .facility-item img { width: 100%; height: 100%; object-fit: cover; }
+    /* zoom removed: .facility-item:hover img { transform: scale(1.06); } */
+    .facility-caption { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,20,50,0.85), transparent); padding: 16px; color: #fff; font-weight: 600; font-size: 0.9rem; }
+    @media(max-width:768px) { .facility-grid { grid-template-columns: 1fr 1fr; } }
+    @media(max-width:480px) { .facility-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<!-- ── PAGE HERO ─────────────────────────────────────────── -->
+<section class="page-hero">
+  <div class="container page-hero-content">
+    <div class="breadcrumb"><a href="index.html" data-i18n="bc.home">Home</a><span>›</span><span data-i18n="bc.tour">Virtual Tour</span></div>
+    <h1 class="fade-in" data-i18n="page.tour.h1">Campus &amp; Virtual Tour</h1>
+    <p class="fade-in fade-in-delay-1" data-i18n="page.tour.sub">Explore Arab Unity School's vibrant campus — laboratories, sports courts, performing arts hall, robotics studio and much more.</p>
+  </div>
+</section>
+
+<!-- ── VIDEO SECTION ─────────────────────────────────────── -->
+<section class="section bg-white">
+  <div class="container">
+    <div class="grid-2" style="align-items:center">
+      <div class="fade-in">
+        <span class="eyebrow-lbl" data-i18n="tour.video.eyebrow">Watch &amp; Discover</span>
+        <h2 class="section-heading" data-i18n="tour.video.h2">See AUS <em>Come Alive</em></h2>
+        <p class="section-lead" style="margin-bottom:28px" data-i18n="tour.video.lead">Take a glimpse into our classrooms, sports fields, laboratories and the vibrant community that makes Arab Unity School so special.</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+          <li style="display:flex;gap:10px;font-size:0.95rem"><span style="color:var(--green);font-weight:700">✓</span> <span data-i18n="tour.feat1">Purpose-built science laboratories</span></li>
+          <li style="display:flex;gap:10px;font-size:0.95rem"><span style="color:var(--green);font-weight:700">✓</span> <span data-i18n="tour.feat2">Fully-equipped robotics studio</span></li>
+          <li style="display:flex;gap:10px;font-size:0.95rem"><span style="color:var(--green);font-weight:700">✓</span> <span data-i18n="tour.feat3">Taher Hall — performing arts centre</span></li>
+          <li style="display:flex;gap:10px;font-size:0.95rem"><span style="color:var(--green);font-weight:700">✓</span> <span data-i18n="tour.feat4">Multi-purpose sports courts</span></li>
+          <li style="display:flex;gap:10px;font-size:0.95rem"><span style="color:var(--green);font-weight:700">✓</span> <span data-i18n="tour.feat5">Modern library &amp; learning resource centre</span></li>
+          <li style="display:flex;gap:10px;font-size:0.95rem"><span style="color:var(--green);font-weight:700">✓</span> <span data-i18n="tour.feat6">Air-conditioned dining hall</span></li>
+        </ul>
+        <a href="contact.html" class="btn btn-gold" data-i18n="tour.btn">Book a Personal Tour →</a>
+      </div>
+      <div class="fade-in fade-in-delay-1">
+        <!-- Photo Slideshow -->
+        <div class="vt-slideshow" style="position:relative;border-radius:20px;overflow:hidden;box-shadow:0 16px 48px rgba(0,34,68,0.18);aspect-ratio:16/9;background:#001226">
+
+          <div class="vt-slide active" style="background-image:url('images/aus-classroom2.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-lab1.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-robotics1.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-stem.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-library1.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-library2.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-pe1.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-pe2.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-field.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-uae-day.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-national-day.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-innovators.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-chess.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-lego.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-kids-play.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-garden.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-students-laptop.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-welcome.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-running.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-torch.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-innovators2.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-science-fair.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-uae-flag.jpg')"></div>
+          <div class="vt-slide" style="background-image:url('images/aus-bumblebee2.jpg')"></div>
+
+          <!-- Overlay -->
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.05) 50%,transparent 100%);z-index:2;pointer-events:none"></div>
+
+          <!-- Caption -->
+          <div id="vtCap" style="position:absolute;bottom:40px;left:16px;font-size:0.65rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.75);z-index:3;pointer-events:none">Our Classrooms</div>
+
+          <!-- Counter -->
+          <div style="position:absolute;top:12px;right:14px;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;color:rgba(255,255,255,0.6);background:rgba(0,0,0,0.3);padding:3px 9px;border-radius:20px;z-index:4"><span id="vtCur">1</span> / 24</div>
+
+          <!-- Prev / Next -->
+          <button onclick="vtMove(-1)" aria-label="Previous" style="position:absolute;top:50%;left:10px;transform:translateY(-50%);z-index:5;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:1.4rem;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;backdrop-filter:blur(4px)" onmouseover="this.style.background='rgba(255,255,255,0.28)'" onmouseout="this.style.background='rgba(255,255,255,0.12)'">&#8249;</button>
+          <button onclick="vtMove(1)"  aria-label="Next"     style="position:absolute;top:50%;right:10px;transform:translateY(-50%);z-index:5;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:1.4rem;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;backdrop-filter:blur(4px)" onmouseover="this.style.background='rgba(255,255,255,0.28)'" onmouseout="this.style.background='rgba(255,255,255,0.12)'">&#8250;</button>
+
+          <!-- Dots -->
+          <div id="vtDots" style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:5"></div>
+
+        </div>
+
+        <style>
+          .vt-slide {
+            position:absolute;inset:0;
+            background-size:cover;background-position:center;
+            opacity:0;transition:opacity 0.9s ease;
+          }
+          .vt-slide.active { opacity:1;z-index:1; }
+          .vt-dot { width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.35);cursor:pointer;border:none;transition:background 0.3s,width 0.3s,border-radius 0.3s; }
+          .vt-dot.active { background:#fff;width:16px;border-radius:3px; }
+        </style>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CAMPUS FACILITIES ──────────────────────────────────── -->
+<section class="section bg-off-white">
+  <div class="container">
+    <div class="text-center fade-in" style="margin-bottom:40px">
+      <span class="eyebrow-lbl" data-i18n="tour.fac.eyebrow">Our Facilities</span>
+      <h2 class="section-heading" data-i18n="tour.fac.h2">Our <em>Facilities</em></h2>
+      <p class="section-lead" style="margin:0 auto" data-i18n="tour.fac.lead">Everything a modern British school needs — designed to inspire curiosity and support achievement at every level.</p>
+    </div>
+    <div class="facility-grid fade-in">
+      <div class="facility-item">
+        <img src="images/aus-lab1.jpg" alt="Science Laboratories">
+        <div class="facility-caption" data-i18n="tour.cap1">🔬 Science Laboratories</div>
+      </div>
+      <div class="facility-item">
+        <img src="images/aus-classroom2.jpg" alt="Modern Classrooms">
+        <div class="facility-caption" data-i18n="tour.cap2">📚 Modern Classrooms</div>
+      </div>
+      <div class="facility-item">
+        <img src="images/aus-pe1.jpg" alt="Sports Courts">
+        <div class="facility-caption" data-i18n="tour.cap3">⚽ Sports Courts</div>
+      </div>
+      <div class="facility-item">
+        <img src="images/aus-robotics1.jpg" alt="Robotics Studio">
+        <div class="facility-caption" data-i18n="tour.cap4">🤖 Robotics Studio</div>
+      </div>
+      <div class="facility-item">
+        <img src="images/aus-national-day.jpg" alt="Performing Arts — Taher Hall">
+        <div class="facility-caption" data-i18n="tour.cap5">🎭 Taher Hall — Performing Arts</div>
+      </div>
+      <div class="facility-item">
+        <img src="images/aus-library1.jpg" alt="Library & Learning Centre">
+        <div class="facility-caption" data-i18n="tour.cap6">📖 Library &amp; Learning Centre</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CAMPUS STATS ───────────────────────────────────────── -->
+<section class="section bg-white">
+  <div class="container">
+    <div class="grid-4">
+      <div class="stat-card fade-in"><div class="num">12+</div><div class="lbl" data-i18n="tour.stat1">Laboratories</div></div>
+      <div class="stat-card fade-in fade-in-delay-1"><div class="num">4</div><div class="lbl" data-i18n="tour.stat2">Sports Courts</div></div>
+      <div class="stat-card fade-in fade-in-delay-2"><div class="num">1</div><div class="lbl" data-i18n="tour.stat3">Performing Arts Hall</div></div>
+      <div class="stat-card fade-in fade-in-delay-3"><div class="num">200,000+</div><div class="lbl" data-i18n="tour.stat4">Alumni Worldwide</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LOCATION ───────────────────────────────────────────── -->
+<section class="section bg-off-white">
+  <div class="container">
+    <div class="grid-2" style="align-items:start">
+      <div class="fade-in">
+        <span class="eyebrow-lbl" data-i18n="tour.loc.eyebrow">How to Find Us</span>
+        <h2 class="section-heading" data-i18n="tour.loc.h2">Located in the Heart of <em>Al Mizhar</em></h2>
+        <p class="section-lead" style="margin-bottom:28px" data-i18n="tour.loc.lead">Arab Unity School is situated in Al Mizhar 1, one of Dubai's most accessible family neighbourhoods — with easy road access from across the emirate.</p>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <span style="font-size:1.4rem;margin-top:2px">📍</span>
+            <div><strong style="color:var(--navy)" data-i18n="tour.loc.addr.h">Address</strong><br><span style="color:var(--mid-gray);font-size:0.9rem" data-i18n="tour.loc.addr.v">5, 3a Street, Al Mizhar 1<br>PO Box 10563, Dubai, UAE</span></div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <span style="font-size:1.4rem;margin-top:2px">🚌</span>
+            <div><strong style="color:var(--navy)" data-i18n="tour.loc.bus.h">Bus Routes</strong><br><span style="color:var(--mid-gray);font-size:0.9rem" data-i18n="tour.loc.bus.v">School buses from Mirdif, Rashidiya, Deira, Bur Dubai, Jumeirah and more.</span></div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <span style="font-size:1.4rem;margin-top:2px">🚗</span>
+            <div><strong style="color:var(--navy)" data-i18n="tour.loc.car.h">By Car</strong><br><span style="color:var(--mid-gray);font-size:0.9rem" data-i18n="tour.loc.car.v">5 minutes from Al Rashidiya interchange. Ample parking available on campus.</span></div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <span style="font-size:1.4rem;margin-top:2px">🕐</span>
+            <div><strong style="color:var(--navy)" data-i18n="tour.loc.hrs.h">School Hours</strong><br><span style="color:var(--mid-gray);font-size:0.9rem" data-i18n="tour.loc.hrs.v">Monday–Thursday: 7:30am–1:50pm<br>Friday: 7:30am–11:00am</span></div>
+          </div>
+        </div>
+        <a href="https://maps.google.com/?q=Arab+Unity+School+Dubai" target="_blank" class="btn btn-navy" style="margin-top:24px" data-i18n="tour.loc.map.btn">Open in Google Maps →</a>
+      </div>
+      <div class="fade-in fade-in-delay-1">
+        <div style="background:var(--light-gray);border-radius:var(--radius-lg);height:380px;display:flex;align-items:center;justify-content:center;overflow:hidden">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.5!2d55.4167!3d25.2000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5f3a5b5a5a5a%3A0x5a5a5a5a5a5a5a5a!2sArab+Unity+School!5e0!3m2!1sen!2sae!4v1"
+            width="100%" height="380" style="border:0;display:block" allowfullscreen loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ────────────────────────────────────────────────── -->
+<div class="cta-banner">
+  <div class="container">
+    <h2 class="fade-in" data-i18n="tour.cta.h2">Come and <em>See It Yourself</em></h2>
+    <p class="fade-in" data-i18n="tour.cta.lead">Nothing replaces a personal visit. Book a guided tour and meet the team.</p>
+    <div class="cta-btns fade-in">
+      <a href="contact.html" class="btn btn-gold" data-i18n="tour.cta.btn1">Book a Personal Tour</a>
+      <a href="admissions.html" class="btn btn-outline" data-i18n="tour.cta.btn2">Apply for Admission →</a>
+    </div>
+  </div>
+</div>
+
+<script src="js/lang.js?v=3"></script>
+<script src="js/nav.js?v=23"></script>
+<script>
+/* ── Virtual Tour Photo Slideshow ── */
+(function() {
+  var captions = [
+    'Our Classrooms','Science Laboratories','Robotics Studio','STEM Innovation',
+    'Library & Learning Centre','Learning Resources','Sports & Physical Education',
+    'Sports Fields','School Campus','UAE National Day','Community Celebrations',
+    'Young Innovators','Chess & Strategy Club','Creative Learning','Early Years Play',
+    'Garden & Outdoor Learning','Digital Learning','Welcoming Community',
+    'Athletics & Sports','School Spirit',
+    'Science Exhibition','Science Fair','UAE National Pride','School Events'
+  ];
+
+  var slides  = document.querySelectorAll('.vt-slide');
+  /* Force no zoom/scale on all slides */
+  slides.forEach(function(s){ s.style.transform='none'; s.style.transition='opacity 0.9s ease'; });
+  var dotsWrap= document.getElementById('vtDots');
+  var capEl   = document.getElementById('vtCap');
+  var curEl   = document.getElementById('vtCur');
+  var total   = slides.length;
+  var cur     = 0;
+  var timer;
+
+  /* Build dots */
+  slides.forEach(function(_, i) {
+    var d = document.createElement('button');
+    d.className = 'vt-dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Photo ' + (i + 1));
+    d.onclick = function() { goTo(i); resetTimer(); };
+    dotsWrap.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[cur].classList.remove('active');
+    slides[cur].style.transform = 'none';
+    dotsWrap.children[cur].classList.remove('active');
+    cur = ((n % total) + total) % total;
+    slides[cur].classList.add('active');
+    slides[cur].style.transform = 'none';
+    dotsWrap.children[cur].classList.add('active');
+    if (capEl) capEl.textContent = captions[cur];
+    if (curEl) curEl.textContent = cur + 1;
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    timer = setInterval(function() { goTo(cur + 1); }, 3500);
+  }
+
+  window.vtMove = function(dir) { goTo(cur + dir); resetTimer(); };
+  resetTimer();
+})();
+
+var obs = new IntersectionObserver(function(entries){ entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('visible'); } }); }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.fade-in').forEach(function(el){ obs.observe(el); });
+</script>
+</body>
+</html>

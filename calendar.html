@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Approved School Calendar 2024–2025 — Arab Unity School Dubai</title>
+  <meta name="description" content="KHDA-approved academic calendar for Arab Unity School Dubai. Term dates, holidays, IGCSE & A-Level exam periods for 2024–2025.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=29">
+  <link rel="stylesheet" href="css/inner.css?v=31">
+  <style>
+    /* ── Calendar page styles ── */
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 28px;
+      margin-top: 40px;
+    }
+    .term-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 18px rgba(0,0,0,0.08);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .term-card:hover { transform: translateY(-4px); box-shadow: 0 10px 32px rgba(0,0,0,0.13); }
+    .term-card-header {
+      padding: 20px 24px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .term-card-header.autumn { background: linear-gradient(135deg, #c9a84c, #e8c96a); }
+    .term-card-header.spring { background: linear-gradient(135deg, #2563eb, #60a5fa); }
+    .term-card-header.summer { background: linear-gradient(135deg, #16a34a, #4ade80); }
+    .term-card-header.exam   { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+    .term-icon { font-size: 2rem; }
+    .term-name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+    }
+    .term-dates-short {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.85);
+      margin: 2px 0 0;
+      font-weight: 500;
+    }
+    .term-body { padding: 20px 24px; }
+    .term-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid #f3f4f6;
+      gap: 12px;
+    }
+    .term-row:last-child { border-bottom: none; }
+    .term-row-label {
+      font-size: 0.82rem;
+      color: #6b7280;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+    .term-row-value {
+      font-size: 0.85rem;
+      color: #1e1a4e;
+      font-weight: 600;
+      text-align: right;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 3px;
+      margin-left: 6px;
+    }
+    .tag-holiday { background: #fef3c7; color: #92400e; }
+    .tag-exam    { background: #ede9fe; color: #5b21b6; }
+    .tag-event   { background: #dcfce7; color: #15803d; }
+
+    /* Holiday table */
+    .holiday-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin-top: 32px;
+    }
+    .holiday-table thead tr {
+      background: #1e1a4e;
+      color: #fff;
+    }
+    .holiday-table th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .holiday-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #f3f4f6;
+      color: #374151;
+    }
+    .holiday-table tbody tr:hover { background: #f9fafb; }
+    .holiday-table .cat-public   { color: #c9a84c; font-weight: 700; }
+    .holiday-table .cat-school   { color: #2563eb; font-weight: 700; }
+    .holiday-table .cat-break    { color: #16a34a; font-weight: 700; }
+
+    .notice-banner {
+      background: linear-gradient(135deg, #1e1a4e, #2d2676);
+      border-radius: 10px;
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: #fff;
+      margin-bottom: 40px;
+    }
+    .notice-banner .nb-icon { font-size: 2rem; flex-shrink: 0; }
+    .notice-banner p { margin: 0; font-size: 0.88rem; color: rgba(255,255,255,0.8); line-height: 1.7; }
+    .notice-banner strong { color: #f0c040; }
+
+    @media (max-width: 640px) {
+      .cal-grid { grid-template-columns: 1fr; }
+      .holiday-table th, .holiday-table td { padding: 10px 10px; font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- nav.js injects navbar -->
+
+<!-- ── HERO ── -->
+<section class="page-hero">
+  <div class="page-hero-content fade-in">
+    <nav class="breadcrumb">
+      <a href="index.html" data-i18n="bc.home">Home</a>
+      <span>›</span>
+      <span data-i18n="bc.calendar">School Calendar</span>
+    </nav>
+    <h1 class="page-hero-title" data-i18n="cal.h1">Approved School <em>Calendar</em></h1>
+    <p class="page-hero-lead" data-i18n="cal.sub">KHDA-approved academic year 2024–2025. Term dates, public holidays, and examination periods.</p>
+  </div>
+</section>
+
+<!-- ── MAIN ── -->
+<section class="section bg-offwhite">
+  <div class="container">
+
+    <!-- Notice -->
+    <div class="notice-banner fade-in">
+      <div class="nb-icon">📋</div>
+      <p>This calendar is <strong>approved by KHDA</strong> and reflects the official academic year 2024–2025. All term dates are subject to KHDA confirmation. For the latest updates please contact the school office or visit <strong>KHDA.gov.ae</strong>.</p>
+    </div>
+
+    <!-- Term Cards -->
+    <span class="eyebrow-lbl">Academic Year 2024–2025</span>
+    <h2 class="section-heading">Term <em>Dates</em></h2>
+    <div class="cal-grid">
+
+      <!-- Autumn Term -->
+      <div class="term-card fade-in">
+        <div class="term-card-header autumn">
+          <div class="term-icon">🍂</div>
+          <div>
+            <p class="term-name" data-i18n="cal.term1.name">Autumn Term</p>
+            <p class="term-dates-short">Sep 2024 – Dec 2024</p>
+          </div>
+        </div>
+        <div class="term-body">
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.starts">Term Starts</span>
+            <span class="term-row-value">Sunday, 1 September 2024</span>
+          </div>
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.midterm">Mid-Term Break</span>
+            <span class="term-row-value">20 – 24 October 2024</span>
+          </div>
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.ends">Term Ends</span>
+            <span class="term-row-value">Thursday, 19 December 2024</span>
+          </div>
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.days">School Days</span>
+            <span class="term-row-value">~75 days</span>
+          </div>
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.holiday">Key Holiday</span>
+            <span class="term-row-value">UAE National Day <span class="tag tag-holiday" data-i18n="cal.tag.public">Public</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spring Term -->
+      <div class="term-card fade-in fade-in-delay-1">
+        <div class="term-card-header spring">
+          <div class="term-icon">🌸</div>
+          <div>
+            <p class="term-name" data-i18n="cal.term2.name">Spring Term</p>
+            <p class="term-dates-short">Jan 2025 – Mar 2025</p>
+          </div>
+        </div>
+        <div class="term-body">
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.starts">Term Starts</span>
+            <span class="term-row-value">Sunday, 5 January 2025</span>
+          </div>
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.midterm">Mid-Term Break</span>
+            <span class="term-row-value">16 – 20 February 2025</span>
+          </div>
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.ends">Term Ends</span>
+            <span class="term-row-value">Thursday, 27 March 2025</span>
+          </div>
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.days">School Days</span>
+            <span class="term-row-value">~55 days</span>
+          </div>
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.holiday">Key Holiday</span>
+            <span class="term-row-value">New Year & Ramadan <span class="tag tag-holiday" data-i18n="cal.tag.public">Public</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summer Term -->
+      <div class="term-card fade-in fade-in-delay-2">
+        <div class="term-card-header summer">
+          <div class="term-icon">☀️</div>
+          <div>
+            <p class="term-name" data-i18n="cal.term3.name">Summer Term</p>
+            <p class="term-dates-short">Apr 2025 – Jun 2025</p>
+          </div>
+        </div>
+        <div class="term-body">
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.starts">Term Starts</span>
+            <span class="term-row-value">Sunday, 6 April 2025</span>
+          </div>
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.midterm">Mid-Term Break</span>
+            <span class="term-row-value">18 – 22 May 2025</span>
+          </div>
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.ends">Term Ends</span>
+            <span class="term-row-value">Thursday, 26 June 2025</span>
+          </div>
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.days">School Days</span>
+            <span class="term-row-value">~55 days</span>
+          </div>
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.holiday">Key Holiday</span>
+            <span class="term-row-value">Eid Al Adha <span class="tag tag-holiday" data-i18n="cal.tag.public">Public</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exam Periods -->
+      <div class="term-card fade-in fade-in-delay-3">
+        <div class="term-card-header exam">
+          <div class="term-icon">📝</div>
+          <div>
+            <p class="term-name" data-i18n="cal.term4.name">Examination Periods</p>
+            <p class="term-dates-short">Cambridge IGCSE & A-Level</p>
+          </div>
+        </div>
+        <div class="term-body">
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.igcse.mock">IGCSE Mock Exams</span>
+            <span class="term-row-value">Feb 2025 <span class="tag tag-exam">Exam</span></span>
+          </div>
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.al.mock">A-Level Mock Exams</span>
+            <span class="term-row-value">Mar 2025 <span class="tag tag-exam">Exam</span></span>
+          </div>
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.igcse">Cambridge IGCSE</span>
+            <span class="term-row-value">May – Jun 2025 <span class="tag tag-exam">Exam</span></span>
+          </div>
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.alevel">Cambridge A-Level</span>
+            <span class="term-row-value">May – Jun 2025 <span class="tag tag-exam">Exam</span></span>
+          </div>
+          <div class="term-row">
+            <span class="term-row-label" data-i18n="cal.row.internal">Internal Assessments</span>
+            <span class="term-row-value">End of each term</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /cal-grid -->
+
+    <!-- Public Holidays Table -->
+    <div style="margin-top:60px" class="fade-in">
+      <span class="eyebrow-lbl" data-i18n="cal.holidays.eyebrow">UAE Public & School Holidays</span>
+      <h2 class="section-heading" data-i18n="cal.holidays.h2">Holiday <em>Schedule</em></h2>
+      <div style="overflow-x:auto">
+        <table class="holiday-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th data-i18n="cal.th.holiday">Holiday / Break</th>
+              <th data-i18n="cal.th.dates">Date(s)</th>
+              <th data-i18n="cal.th.duration">Duration</th>
+              <th data-i18n="cal.th.type">Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td data-i18n="cal.hol.1">New Year's Day</td>
+              <td>1 January 2025</td>
+              <td>1 day</td>
+              <td><span class="cat-public" data-i18n="cal.type.public">Public Holiday</span></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td data-i18n="cal.hol.2">Autumn Mid-Term Break</td>
+              <td>20 – 24 October 2024</td>
+              <td>5 days</td>
+              <td><span class="cat-break" data-i18n="cal.type.break">School Break</span></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td data-i18n="cal.hol.3">UAE National Day</td>
+              <td>2 – 3 December 2024</td>
+              <td>2 days</td>
+              <td><span class="cat-public" data-i18n="cal.type.public">Public Holiday</span></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td data-i18n="cal.hol.4">Christmas / Winter Break</td>
+              <td>20 Dec 2024 – 4 Jan 2025</td>
+              <td>~16 days</td>
+              <td><span class="cat-break" data-i18n="cal.type.break">School Break</span></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td data-i18n="cal.hol.5">Spring Mid-Term Break</td>
+              <td>16 – 20 February 2025</td>
+              <td>5 days</td>
+              <td><span class="cat-break" data-i18n="cal.type.break">School Break</span></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td data-i18n="cal.hol.6">Ramadan Adjusted Hours</td>
+              <td>Mar 2025 (TBC)</td>
+              <td>~30 days</td>
+              <td><span class="cat-public" data-i18n="cal.type.public">Public Holiday</span></td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td data-i18n="cal.hol.7">Eid Al Fitr</td>
+              <td>Mar / Apr 2025 (TBC)</td>
+              <td>~4 days</td>
+              <td><span class="cat-public" data-i18n="cal.type.public">Public Holiday</span></td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td data-i18n="cal.hol.8">Spring / Easter Break</td>
+              <td>28 Mar – 5 Apr 2025</td>
+              <td>~9 days</td>
+              <td><span class="cat-break" data-i18n="cal.type.break">School Break</span></td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td data-i18n="cal.hol.9">Summer Mid-Term Break</td>
+              <td>18 – 22 May 2025</td>
+              <td>5 days</td>
+              <td><span class="cat-break" data-i18n="cal.type.break">School Break</span></td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td data-i18n="cal.hol.10">Eid Al Adha</td>
+              <td>Jun 2025 (TBC)</td>
+              <td>~4 days</td>
+              <td><span class="cat-public" data-i18n="cal.type.public">Public Holiday</span></td>
+            </tr>
+            <tr>
+              <td>11</td>
+              <td data-i18n="cal.hol.11">Summer Vacation</td>
+              <td>27 Jun – 31 Aug 2025</td>
+              <td>~66 days</td>
+              <td><span class="cat-break" data-i18n="cal.type.break">School Break</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:0.78rem;color:#9ca3af;margin-top:12px" data-i18n="cal.footnote">* Islamic holiday dates are subject to moon sighting confirmation. School will communicate updates via official channels.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="section bg-navy" style="padding:56px 0">
+  <div class="container" style="text-align:center">
+    <span class="eyebrow-lbl light" data-i18n="cal.cta.eyebrow">Need More Information?</span>
+    <h2 class="section-heading white" style="margin-bottom:14px" data-i18n="cal.cta.h2">Questions About <em>Term Dates?</em></h2>
+    <p style="color:rgba(255,255,255,0.7);max-width:500px;margin:0 auto 28px;line-height:1.8;font-size:0.92rem" data-i18n="cal.cta.lead">Contact our school office for the official printed calendar or visit us in person during office hours.</p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a href="contact.html" class="btn btn-gold" data-i18n="cal.cta.btn1">Contact the Office</a>
+      <a href="events.html" class="btn btn-outline-white" data-i18n="cal.cta.btn2">View Events Calendar →</a>
+    </div>
+  </div>
+</section>
+
+<script src="js/lang.js?v=3"></script>
+<script src="js/nav.js?v=23"></script>
+<script>
+  (function() {
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-in').forEach(function(el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight) { el.style.cssText = 'opacity:1;transform:none;'; }
+      else { obs.observe(el); }
+    });
+  })();
+</script>
+</body>
+</html>
