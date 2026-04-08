@@ -93,6 +93,13 @@ var AUS_TRANSLATIONS = {
   /* ── INDEX — Director Statement ──────────────────────── */
   'stmt.quote':  { en: 'Every child — regardless of background — deserves a world-class British education delivered with genuine care. That belief has driven Arab Unity School for 50 years.', ar: 'كل طفل — بصرف النظر عن خلفيته — يستحق تعليمًا بريطانيًا عالمي المستوى يُقدَّم بعناية حقيقية. هذا الإيمان هو ما دفع مدرسة الوحدة العربية طوال 50 عامًا.' },
   'stmt.cite':   { en: 'Arwa A. Taher — Executive Director, Arab Unity School', ar: 'أروى أ. طاهر — المدير التنفيذي، مدرسة الوحدة العربية' },
+  'dir.h2':      { en: 'A Message from Our Director', ar: 'رسالة من مديرتنا' },
+  'dir.badge1':  { en: 'EXECUTIVE', ar: 'المدير' },
+  'dir.badge2':  { en: 'DIRECTOR', ar: 'التنفيذي' },
+  'dir.quote':   { en: '"Arab Unity School is not just an institution — it is a family legacy. Carrying forward the vision of my parents, I am committed to ensuring AUS continues to inspire, challenge and care for every student who walks through our doors. This is more than a school. It is a community, and it is home."', ar: '"مدرسة الوحدة العربية ليست مجرد مؤسسة تعليمية — إنها إرث عائلي. محافظةً على رؤية والديّ، أنا ملتزمة بضمان أن تستمر مدرستنا في إلهام كل طالب يدخل أبوابنا وتحديه ورعايته. هذه أكثر من مدرسة. إنها مجتمع، وهي وطن."' },
+  'dir.name':    { en: 'Ms. Arwa A. Taher', ar: 'السيدة أروى أ. طاهر' },
+  'dir.title':   { en: 'Executive Director — Arab Unity School, Dubai · Est. 1975', ar: 'المدير التنفيذي — مدرسة الوحدة العربية، دبي · تأسست 1975' },
+  'dir.btn':     { en: 'Meet the Full Leadership Team →', ar: 'تعرّف على فريق القيادة الكامل ←' },
 
   /* ── INDEX — Three Pillars ────────────────────────────── */
   'pillars.eyebrow':    { en: 'Why Choose AUS', ar: 'لماذا تختار مدرستنا؟' },
