@@ -1,0 +1,158 @@
+/* ============================================================
+   DIRECTOR MESSAGE SECTION — Simple single-column design
+============================================================ */
+
+.section-director-msg {
+  padding: 72px 0;
+  background: linear-gradient(135deg, #faf8f5 0%, #fff 100%);
+}
+
+.dir-msg-card {
+  max-width: 880px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 48px rgba(0,34,68,0.1);
+  padding: 48px 56px 52px;
+  text-align: left;
+}
+
+/* Photo circle at top-left */
+.dir-msg-photo {
+  width: 140px;
+  height: 140px;
+  min-width: 140px;
+  min-height: 140px;
+  border-radius: 50%;
+  margin-bottom: 24px;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 3px solid #fff;
+  background: #b8911a;
+}
+
+.dir-msg-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+/* Label below photo */
+.dir-msg-label {
+  position: absolute;
+  bottom: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+.dir-msg-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #7a8a9c;
+  display: block;
+}
+
+/* Content */
+.dir-msg-content {
+  margin-top: 12px;
+}
+
+.dir-msg-quote {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  line-height: 1.85;
+  color: #2a3a52;
+  margin: 0 0 28px;
+}
+
+.dir-msg-meta {
+  margin-bottom: 28px;
+}
+
+.dir-msg-meta strong {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #001f3d;
+  margin-bottom: 4px;
+}
+
+.dir-msg-meta span {
+  display: block;
+  font-size: 0.85rem;
+  color: #6b7a94;
+}
+
+.dir-msg-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: #001f3d;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.dir-msg-btn:hover {
+  background: #003a70;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,31,61,0.2);
+}
+
+/* RTL */
+html[dir="rtl"] .dir-msg-card {
+  text-align: right;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section-director-msg {
+    padding: 56px 0;
+  }
+  
+  .dir-msg-card {
+    margin: 0 20px;
+    padding: 36px 28px 40px;
+    text-align: center;
+  }
+  
+  .dir-msg-photo {
+    width: 120px;
+    height: 120px;
+    min-width: 120px;
+    min-height: 120px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .dir-msg-photo img {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .dir-msg-quote {
+    font-size: 1.05rem;
+  }
+  
+  html[dir="rtl"] .dir-msg-card {
+    text-align: center;
+  }
+}
