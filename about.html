@@ -10,6 +10,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css?v=29">
   <link rel="stylesheet" href="css/inner.css?v=31">
+  <style>
+    @media(max-width:700px){
+      .about-dir-card{flex-direction:column!important}
+      .about-dir-photo{width:100%!important;min-width:unset!important;height:260px!important}
+    }
+  </style>
 </head>
 <body>
 
@@ -78,6 +84,33 @@
       </div>
     </div>
   </div>
+</section>
+
+<!-- ── DIRECTOR MESSAGE ────────────────────────────────────── -->
+<section style="background:#f5f3ef;padding:72px 20px">
+  <div style="max-width:860px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:40px">
+      <span style="display:inline-block;background:#e8e0d0;color:#b8911a;font-size:0.68rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;padding:6px 18px;border-radius:20px;margin-bottom:14px">Leadership</span>
+      <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2.4rem;font-weight:700;color:#001226;margin:0">A Message from Our <em style="color:#b8911a;font-style:italic">Director</em></h2>
+    </div>
+    <div class="about-dir-card" style="background:#fff;border-radius:16px;box-shadow:0 12px 48px rgba(0,34,68,0.09);overflow:hidden;display:flex;gap:0;align-items:stretch">
+      <!-- Photo -->
+      <div class="about-dir-photo" style="width:240px;min-width:240px;flex-shrink:0">
+        <img src="images/arwa-taher.jpg" alt="Ms. Arwa A. Taher – Executive Director"
+             style="width:100%;height:100%;min-height:320px;object-fit:cover;object-position:center top;display:block;">
+      </div>
+      <!-- Content -->
+      <div style="padding:44px 48px;display:flex;flex-direction:column;justify-content:center">
+        <div style="display:inline-block;background:#fdf3d8;color:#b8911a;font-size:0.65rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:20px;width:fit-content" data-i18n="dir.badge1">EXECUTIVE DIRECTOR</div>
+        <blockquote style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.18rem;font-style:italic;line-height:1.85;color:#2a3a52;margin:0 0 28px;padding:0;border:none" data-i18n="dir.quote">"Arab Unity School is not just an institution — it is a family legacy. Carrying forward the vision of my parents, I am committed to ensuring AUS continues to inspire, challenge and care for every student who walks through our doors. This is more than a school. It is a community, and it is home."</blockquote>
+        <div style="margin-bottom:28px">
+          <strong style="display:block;font-size:1.05rem;font-weight:700;color:#001f3d;margin-bottom:4px" data-i18n="dir.name">Ms. Arwa A. Taher</strong>
+          <span style="font-size:0.85rem;color:#6b7a94" data-i18n="dir.title">Executive Director — Arab Unity School, Dubai · Est. 1975</span>
+        </div>
+        <a href="leadership.html" style="display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:#001f3d;color:#fff;border-radius:8px;font-weight:600;font-size:0.88rem;text-decoration:none;transition:background 0.25s" data-i18n="dir.btn">Meet the Full Leadership Team →</a>
+      </div>
+    </div><!-- end about-dir-card -->
+  </div><!-- end max-width container -->
 </section>
 
 <!-- ── OUR HISTORY / TIMELINE ─────────────────────────────── -->
@@ -332,32 +365,6 @@
   </div>
 </section>
 
-<!-- ── DIRECTOR MESSAGE ───────────────────────────────────── -->
-<section class="section bg-off-white">
-  <div class="container">
-    <div class="text-center fade-in" style="margin-bottom:48px">
-      <span class="eyebrow-lbl" data-i18n="about.dir.eyebrow">Leadership</span>
-      <h2 class="section-heading" data-i18n="about.dir.h2">A Message from Our <em>Director</em></h2>
-    </div>
-    <div style="max-width:860px;margin:0 auto">
-      <div class="fade-in" style="background:var(--white);border-radius:var(--radius-lg);padding:48px;box-shadow:var(--shadow-md);display:flex;gap:32px;align-items:flex-start">
-        <div style="flex-shrink:0;text-align:center">
-          <div style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#b8911a,#d4a833);display:flex;align-items:center;justify-content:center;font-size:2.2rem;margin-bottom:8px">👩‍💼</div>
-          <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--mid-gray)">Executive<br>Director</div>
-        </div>
-        <div>
-          <blockquote style="font-family:var(--font-head);font-size:1.2rem;font-style:italic;color:var(--text);line-height:1.8;margin-bottom:20px" data-i18n="about.dir.quote">"Arab Unity School is not just an institution — it is a family legacy. Carrying forward the vision of my parents, I am committed to ensuring AUS continues to inspire, challenge and care for every student who walks through our doors. This is more than a school. It is a community, and it is home."</blockquote>
-          <div>
-            <strong style="color:var(--navy);display:block;margin-bottom:2px;font-size:1rem" data-i18n="about.dir.name">Ms. Arwa A. Taher</strong>
-            <span style="font-size:0.82rem;color:var(--mid-gray)" data-i18n="about.dir.title">Executive Director — Arab Unity School, Dubai · Est. 1975</span>
-          </div>
-          <a href="leadership.html" class="btn btn-navy" style="margin-top:20px" data-i18n="about.dir.btn">Meet the Full Leadership Team →</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ── CTA ────────────────────────────────────────────────── -->
 <div class="cta-banner">
   <div class="container">
@@ -370,7 +377,7 @@
   </div>
 </div>
 
-<script src="js/lang.js?v=7"></script>
+<script src="js/lang.js?v=8"></script>
 <script src="js/nav.js?v=23"></script>
 <script>
 var obs = new IntersectionObserver(function(entries){ entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('visible'); } }); }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
