@@ -15,6 +15,314 @@
 <body>
 
 <!-- ================================================================
+  INTRO SPLASH — 50 Years of Excellence (4 s auto-dismiss)
+================================================================ -->
+<div id="intro-splash" aria-hidden="true">
+  <div class="intro-bg-layer"></div>
+
+  <!-- Animated particles -->
+  <div class="intro-particles">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- Shield / Logo emblem -->
+  <div class="intro-emblem">
+    <img src="images/aus-shield.png" alt="AUS Shield" onerror="this.style.display='none'">
+  </div>
+
+  <!-- Main text block -->
+  <div class="intro-text">
+    <p class="intro-since">Est. 1975 · Dubai, UAE</p>
+    <div class="intro-number-row">
+      <span class="intro-number" id="introCounter">0</span>
+      <span class="intro-years-label">YEARS</span>
+    </div>
+    <h1 class="intro-headline">of <em>Excellence</em></h1>
+    <div class="intro-divider"></div>
+    <p class="intro-school-name">Arab Unity School</p>
+    <p class="intro-tagline">Best Value British Education · Al Mizhar, Dubai</p>
+  </div>
+
+  <!-- Progress bar at bottom -->
+  <div class="intro-progress-track">
+    <div class="intro-progress-bar" id="introProgressBar"></div>
+  </div>
+
+  <!-- Skip button -->
+  <button class="intro-skip" id="introSkip" onclick="dismissIntro()">Skip ›</button>
+</div>
+
+<style>
+/* ── Intro Splash ─────────────────────────────────────────── */
+#intro-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #06160a;
+  opacity: 1;
+  transition: opacity 0.9s ease, visibility 0.9s ease;
+}
+#intro-splash.splash-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Deep dark green radial glow */
+.intro-bg-layer {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 45%, rgba(42,125,62,0.30) 0%, transparent 70%),
+    radial-gradient(ellipse 100% 80% at 50% 100%, rgba(184,145,26,0.12) 0%, transparent 60%);
+  animation: introPulse 3s ease-in-out infinite alternate;
+}
+@keyframes introPulse {
+  from { opacity: 0.7; }
+  to   { opacity: 1; }
+}
+
+/* Floating particles */
+.intro-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.intro-particles span {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(184,145,26,0.18);
+  animation: floatUp linear infinite;
+}
+.intro-particles span:nth-child(1) { width:8px;  height:8px;  left:10%;  bottom:-20px; animation-duration:6s;  animation-delay:0s;   }
+.intro-particles span:nth-child(2) { width:14px; height:14px; left:22%;  bottom:-20px; animation-duration:8s;  animation-delay:0.5s; }
+.intro-particles span:nth-child(3) { width:6px;  height:6px;  left:40%;  bottom:-20px; animation-duration:7s;  animation-delay:1s;   }
+.intro-particles span:nth-child(4) { width:10px; height:10px; left:55%;  bottom:-20px; animation-duration:5.5s;animation-delay:0.3s; }
+.intro-particles span:nth-child(5) { width:12px; height:12px; left:68%;  bottom:-20px; animation-duration:9s;  animation-delay:0.8s; }
+.intro-particles span:nth-child(6) { width:7px;  height:7px;  left:80%;  bottom:-20px; animation-duration:6.5s;animation-delay:1.5s; }
+.intro-particles span:nth-child(7) { width:9px;  height:9px;  left:88%;  bottom:-20px; animation-duration:7.5s;animation-delay:0.2s; }
+.intro-particles span:nth-child(8) { width:5px;  height:5px;  left:5%;   bottom:-20px; animation-duration:5s;  animation-delay:1.2s; }
+@keyframes floatUp {
+  0%   { transform: translateY(0)    rotate(0deg);   opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+}
+
+/* School emblem */
+.intro-emblem {
+  position: relative;
+  z-index: 2;
+  width: 90px;
+  height: 90px;
+  margin-bottom: 28px;
+  animation: emblFade 0.8s ease 0.3s both;
+}
+.intro-emblem img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 18px rgba(184,145,26,0.5));
+}
+@keyframes emblFade {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Text block */
+.intro-text {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.intro-since {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(184,145,26,0.85);
+  animation: slideUp 0.7s ease 0.5s both;
+}
+
+/* Big counter row */
+.intro-number-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  line-height: 1;
+  animation: slideUp 0.7s ease 0.6s both;
+}
+.intro-number {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(6rem, 18vw, 10rem);
+  font-weight: 700;
+  color: #b8911a;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-shadow: 0 0 60px rgba(184,145,26,0.4);
+}
+.intro-years-label {
+  font-size: clamp(1.1rem, 3vw, 1.8rem);
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: rgba(255,255,255,0.55);
+  padding-bottom: clamp(0.8rem, 2vw, 1.4rem);
+  text-transform: uppercase;
+}
+
+.intro-headline {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 6vw, 3.8rem);
+  font-weight: 300;
+  color: #fff;
+  margin: 0;
+  letter-spacing: 0.04em;
+  animation: slideUp 0.7s ease 0.7s both;
+}
+.intro-headline em {
+  font-style: italic;
+  color: #d4a833;
+}
+
+.intro-divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #b8911a, transparent);
+  margin: 10px auto;
+  animation: slideUp 0.7s ease 0.8s both;
+}
+
+.intro-school-name {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.3rem, 3.5vw, 2rem);
+  font-weight: 600;
+  color: rgba(255,255,255,0.92);
+  letter-spacing: 0.06em;
+  margin: 0;
+  animation: slideUp 0.7s ease 0.85s both;
+}
+
+.intro-tagline {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin: 0;
+  animation: slideUp 0.7s ease 0.9s both;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Progress bar */
+.intro-progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255,255,255,0.08);
+  z-index: 3;
+}
+.intro-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #2a7d3e, #b8911a);
+  transition: width linear;
+}
+
+/* Skip button */
+.intro-skip {
+  position: absolute;
+  top: 22px;
+  right: 28px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.55);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  padding: 7px 18px;
+  border-radius: 3px;
+  cursor: pointer;
+  z-index: 4;
+  transition: background 0.2s, color 0.2s;
+  font-family: inherit;
+}
+.intro-skip:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+/* Prevent body scroll while splash shows */
+body.splash-active { overflow: hidden; }
+</style>
+
+<script>
+(function () {
+  /* Don't show on every navigation — only once per browser session */
+  if (sessionStorage.getItem('aus_intro_shown')) {
+    document.getElementById('intro-splash').style.display = 'none';
+    return;
+  }
+  sessionStorage.setItem('aus_intro_shown', '1');
+  document.body.classList.add('splash-active');
+
+  var DURATION = 4000; /* 4 seconds total */
+  var start    = Date.now();
+  var splash   = document.getElementById('intro-splash');
+  var bar      = document.getElementById('introProgressBar');
+  var counter  = document.getElementById('introCounter');
+
+  /* Animate progress bar */
+  bar.style.transitionDuration = DURATION + 'ms';
+  requestAnimationFrame(function () {
+    bar.style.width = '100%';
+  });
+
+  /* Count up to 50 over ~2.4 s (60 % of duration) */
+  var countDuration = DURATION * 0.62;
+  var countStart    = null;
+  function animateCount(ts) {
+    if (!countStart) countStart = ts;
+    var elapsed = ts - countStart;
+    var progress = Math.min(elapsed / countDuration, 1);
+    /* Ease-out cubic */
+    var eased = 1 - Math.pow(1 - progress, 3);
+    counter.textContent = Math.round(eased * 50);
+    if (progress < 1) requestAnimationFrame(animateCount);
+  }
+  requestAnimationFrame(animateCount);
+
+  /* Auto-dismiss after DURATION */
+  setTimeout(dismissIntro, DURATION);
+})();
+
+function dismissIntro() {
+  var splash = document.getElementById('intro-splash');
+  if (!splash || splash.classList.contains('splash-out')) return;
+  splash.classList.add('splash-out');
+  document.body.classList.remove('splash-active');
+  setTimeout(function () { splash.style.display = 'none'; }, 950);
+}
+</script>
+
+<!-- ================================================================
   HERO SECTION — Full-screen cinematic slideshow
 ================================================================ -->
 <section class="hero-main" id="hero">

@@ -101,6 +101,129 @@
       line-height: 1.8;
       font-size: 0.95rem;
     }
+
+    /* ── Manal Siddiqui Featured Card ──────────────────── */
+    .manal-card {
+      display: flex;
+      gap: 48px;
+      align-items: flex-start;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.10);
+      overflow: hidden;
+      border-left: 6px solid #2a7d3e;
+    }
+    .manal-photo-col {
+      flex: 0 0 280px;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .manal-photo-col img {
+      width: 100%;
+      height: 100%;
+      min-height: 420px;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    .manal-content-col {
+      flex: 1;
+      padding: 40px 40px 40px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .manal-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .mbadge {
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 3px;
+    }
+    .mbadge-green  { background: #d1fae5; color: #065f46; }
+    .mbadge-blue   { background: #dbeafe; color: #1e40af; }
+    .mbadge-gold   { background: #fef3c7; color: #92400e; }
+    .manal-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #0a1f0f;
+      line-height: 1.1;
+      margin: 0;
+    }
+    .manal-role {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #2a7d3e;
+      margin: 0;
+      line-height: 1.5;
+    }
+    .manal-bio {
+      font-size: 0.88rem;
+      color: #4b5563;
+      line-height: 1.8;
+      margin: 0;
+    }
+    .manal-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .manal-tags span {
+      background: #f0fdf4;
+      color: #166534;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid #bbf7d0;
+    }
+    .manal-linkedin {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+      background: #0077b5;
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 11px 24px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+      align-self: flex-start;
+    }
+    .manal-linkedin:hover {
+      background: #005582;
+      transform: translateY(-2px);
+    }
+    @media (max-width: 860px) {
+      .manal-card {
+        flex-direction: column;
+        border-left: none;
+        border-top: 6px solid #2a7d3e;
+      }
+      .manal-photo-col {
+        flex: none;
+        width: 100%;
+        min-height: 300px;
+      }
+      .manal-photo-col img {
+        min-height: 300px;
+      }
+      .manal-content-col {
+        padding: 28px 28px 32px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -128,50 +251,51 @@
       <p class="section-lead" style="margin:0 auto" data-i18n="alumni.intro.lead">Our alumni community spans the globe, representing the very best of what a best-value British education can achieve. From Dubai to London, New York to Singapore — AUS graduates are making their mark.</p>
     </div>
 
-    <!-- Coming Soon Notice -->
-    <div class="coming-soon-banner fade-in">
+    <!-- ── FEATURED: Manal Siddiqui ──────────────────────── -->
+    <div style="text-align:center;margin-bottom:40px">
+      <span class="eyebrow-lbl">Alumni Spotlight</span>
+      <h2 class="section-heading">Featured <em>Alumni Profile</em></h2>
+    </div>
+
+    <!-- Manal Siddiqui Featured Card -->
+    <div class="fade-in manal-card">
+      <div class="manal-photo-col">
+        <img src="images/manal-siddiqui.jpg" alt="Manal Siddiqui – AUS Alumni Class of 1997">
+      </div>
+      <div class="manal-content-col">
+        <div class="manal-badges">
+          <span class="mbadge mbadge-green">Class of 1997</span>
+          <span class="mbadge mbadge-blue">Alumni Association Founder</span>
+          <span class="mbadge mbadge-gold">Board of Advisors</span>
+        </div>
+        <h3 class="manal-name">Manal Siddiqui</h3>
+        <p class="manal-role">Head of Services / Consulting — SAP Middle East &nbsp;|&nbsp; Founder, AUS Alumni Association</p>
+        <p class="manal-bio">Manal joined AUS in 1986 in kindergarten and completed his O-Levels in 1997 with distinction — achieving <strong>3 A*s and 3 A's</strong>. He founded the <strong>AUS Alumni Association in February 2013</strong> and currently serves as the <strong>Alumni Representative on the AUS Board of Advisors</strong> (since 2022).</p>
+        <p class="manal-bio">Manal holds a <strong>BSc in Management Information Systems</strong> from Oklahoma State University (where he was named "Mr. OSU International" 2003), an <strong>MSc in Leading Sales Transformation</strong> from Middlesex University London, and an <strong>MSc from AI4Gov</strong> specialising in AI &amp; Governance. He is currently pursuing a <strong>PhD in Computer Science (AI)</strong> at The British University in Dubai.</p>
+        <p class="manal-bio">With <strong>21+ years of industry experience</strong> — including 13+ years at SAP — Manal has held regional leadership roles at LinkedIn, Wipro, Siemens, Mashreqbank, and Satyam Computers. Beyond business, he represented the <strong>UAE U-19 national cricket team (1997–1998)</strong> and is an <strong>ICC-certified Level 1 Coach</strong>.</p>
+        <div class="manal-tags">
+          <span>🎓 AUS 1986–1997</span>
+          <span>💼 SAP 13+ Years</span>
+          <span>🤖 PhD – AI (BUiD)</span>
+          <span>🏏 UAE U-19 Cricket</span>
+          <span>📋 IAC – HCT 2022</span>
+        </div>
+        <a href="https://www.linkedin.com/in/manalsiddiqui" target="_blank" rel="noopener" class="manal-linkedin">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          Connect on LinkedIn
+        </a>
+      </div>
+    </div>
+
+    <!-- More Coming Soon -->
+    <div class="coming-soon-banner fade-in" style="margin-top:48px">
       <div style="font-size:3rem;margin-bottom:16px">🎓</div>
-      <h3 data-i18n="alumni.soon.h">Alumni Profiles Coming Soon</h3>
-      <p data-i18n="alumni.soon.p">We are currently gathering inspiring stories from our distinguished alumni network. This section will be updated shortly with profiles, photos, and career highlights from AUS graduates.</p>
+      <h3>More Alumni Profiles Coming Soon</h3>
+      <p>We are currently gathering inspiring stories from our distinguished alumni network. This section will be updated with more profiles, photos, and career highlights from AUS graduates.</p>
       <p style="margin-top:16px;color:rgba(255,255,255,0.45);font-size:0.8rem">Are you an AUS alumnus? We'd love to hear from you.</p>
-      <a href="contact.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;background:#2a7d3e;color:#fff;font-size:0.72rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:13px 28px;border-radius:3px;transition:background 0.2s" onmouseover="this.style.background='#3aa058'" onmouseout="this.style.background='#2a7d3e'" data-i18n="alumni.touch.btn">
+      <a href="contact.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:24px;background:#2a7d3e;color:#fff;font-size:0.72rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:13px 28px;border-radius:3px;transition:background 0.2s" onmouseover="this.style.background='#3aa058'" onmouseout="this.style.background='#2a7d3e'">
         Get in Touch →
       </a>
-    </div>
-
-    <!-- Placeholder alumni cards (to be replaced with real alumni) -->
-    <div style="text-align:center;margin-bottom:32px">
-      <span class="eyebrow-lbl" data-i18n="alumni.notable.eyebrow">Notable Graduates</span>
-      <h2 class="section-heading" data-i18n="alumni.notable.h2">Alumni Spotlight</h2>
-      <p class="section-lead" style="margin:0 auto" data-i18n="alumni.notable.lead">The following profiles will be updated with real alumni provided by the school. Placeholder shown for layout purposes.</p>
-    </div>
-
-    <div class="alumni-grid">
-
-      <!-- Row 1 -->
-      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
-      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
-      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
-      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
-
-      <!-- Row 2 -->
-      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
-      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
-      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
-      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
-
-      <!-- Row 3 -->
-      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
-      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
-      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
-      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
-
-      <!-- Row 4 -->
-      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
-      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
-      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
-      <div class="alumni-card fade-in"><div class="alumni-photo"><span>👤</span></div><div class="alumni-info"><div class="alumni-year">Class of — · To be added</div><div class="alumni-name">Alumni Name</div><div class="alumni-title">Profession / Job Title</div><p class="alumni-desc">Profile and career story to be provided by Mr. Manal.</p></div></div>
-
     </div>
 
   </div>
@@ -189,7 +313,7 @@
   </div>
 </div>
 
-<script src="js/lang.js?v=7"></script>
+<script src="js/lang.js?v=8"></script>
 <script src="js/nav.js?v=23"></script>
 <script>
   var obs = new IntersectionObserver(function(entries){
