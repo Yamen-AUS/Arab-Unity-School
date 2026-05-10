@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUS CMS — Settings</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#002244;--navy2:#003a70;--navy3:#001830;
+  --green:#1a5c30;--green2:#2a7d3e;--gold:#c8a94a;
+  --red:#ef4444;--amber:#f59e0b;--blue:#3b82f6;
+  --sidebar-w:260px;--header-h:64px;
+  --gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;
+  --gray-400:#94a3b8;--gray-500:#64748b;--gray-600:#475569;--gray-700:#334155;--gray-900:#0f172a;
+  --radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.05);
+}
+body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-700);display:flex;min-height:100vh;}
+
+/* ── Sidebar ── */
+.sidebar{width:var(--sidebar-w);background:var(--navy3);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;z-index:100;overflow-y:auto;transition:transform .3s}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+.sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:12px}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#e8c96a);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.logo-text h2{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:#fff;line-height:1.1}
+.logo-text p{font-size:.68rem;color:rgba(255,255,255,.35);margin-top:1px}
+.sidebar-user{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:10px}
+.user-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff;flex-shrink:0}
+.user-info .name{font-size:.82rem;font-weight:600;color:#fff}
+.user-info .role-badge{font-size:.65rem;font-weight:700;padding:1px 7px;border-radius:20px;display:inline-block;margin-top:2px}
+.nav-section{padding:12px 0}
+.nav-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);padding:0 20px 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;color:rgba(255,255,255,.55);font-size:.83rem;font-weight:500;transition:all .15s;text-decoration:none;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.9)}
+.nav-item.active{background:rgba(255,255,255,.08);color:#fff;border-left-color:var(--gold)}
+.nav-item i{width:16px;font-size:.8rem;text-align:center}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:10px}
+.nav-badge.amber{background:var(--amber)}
+.sidebar-footer{margin-top:auto;padding:16px 20px;border-top:1px solid rgba(255,255,255,.07)}
+.btn-logout{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.4);font-size:.8rem;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;transition:color .2s;padding:0}
+.btn-logout:hover{color:var(--red)}
+
+/* ── Main ── */
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column}
+.top-header{height:var(--header-h);background:#fff;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;padding:0 28px;gap:16px;position:sticky;top:0;z-index:50;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.header-title{font-size:1.05rem;font-weight:700;color:var(--navy);flex:1}
+.icon-btn{width:36px;height:36px;border-radius:8px;background:var(--gray-100);border:1px solid var(--gray-200);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray-500);font-size:.82rem;transition:background .15s}
+.icon-btn:hover{background:var(--gray-200)}
+.header-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:#fff}
+.hamburger{display:none;background:none;border:none;font-size:1.1rem;color:var(--navy);cursor:pointer;padding:4px}
+.content{padding:28px;flex:1}
+
+/* ── Page Header ── */
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap}
+.page-header h1{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--navy)}
+.page-header p{font-size:.85rem;color:var(--gray-500);margin-top:4px}
+
+/* ── Buttons ── */
+.btn-primary{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background .2s;font-family:'Inter',sans-serif}
+.btn-primary:hover{background:var(--navy2)}
+.btn-green{background:var(--green2);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;transition:background .2s}
+.btn-green:hover{background:var(--green)}
+.btn-outline{background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:8px;padding:9px 18px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .2s;font-family:'Inter',sans-serif}
+.btn-outline:hover{border-color:var(--navy);color:var(--navy)}
+.btn-danger{background:#fff;color:var(--red);border:1px solid #fecaca;border-radius:8px;padding:9px 18px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .2s;font-family:'Inter',sans-serif}
+.btn-danger:hover{background:#fef2f2}
+.btn-amber{background:var(--amber);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif}
+
+/* ── Settings layout ── */
+.settings-layout{display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:start}
+.settings-nav{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;position:sticky;top:calc(var(--header-h) + 20px)}
+.settings-nav-item{display:flex;align-items:center;gap:10px;padding:11px 16px;font-size:.83rem;font-weight:500;color:var(--gray-600);cursor:pointer;border-left:3px solid transparent;transition:all .15s}
+.settings-nav-item:hover{background:var(--gray-50);color:var(--navy)}
+.settings-nav-item.active{background:#f0f4ff;color:var(--navy);border-left-color:var(--navy);font-weight:700}
+.settings-nav-item i{width:16px;font-size:.8rem;text-align:center;opacity:.7}
+.settings-nav-divider{height:1px;background:var(--gray-100);margin:4px 0}
+
+/* ── Card ── */
+.card{background:#fff;border-radius:var(--radius);border:1px solid var(--gray-200);box-shadow:var(--shadow);overflow:hidden;margin-bottom:20px}
+.card-header{padding:18px 22px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.card-header-left{display:flex;align-items:center;gap:12px}
+.card-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.card-header h3{font-size:.9rem;font-weight:700;color:var(--navy)}
+.card-header p{font-size:.75rem;color:var(--gray-400);margin-top:1px}
+.card-body{padding:22px}
+
+/* ── Form ── */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-row.single{grid-template-columns:1fr}
+.form-row.triple{grid-template-columns:1fr 1fr 1fr}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{font-size:.72rem;font-weight:700;color:var(--gray-500);letter-spacing:.06em;text-transform:uppercase}
+.form-group input,.form-group textarea,.form-group select{border:1px solid var(--gray-200);border-radius:8px;padding:9px 12px;font-size:.85rem;color:var(--gray-700);font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;background:#fff}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--navy2);box-shadow:0 0 0 3px rgba(0,34,68,.07)}
+.form-group textarea{resize:vertical;min-height:80px;line-height:1.6}
+.form-group .hint{font-size:.72rem;color:var(--gray-400);margin-top:3px}
+.form-actions{display:flex;align-items:center;gap:10px;padding-top:8px;flex-wrap:wrap}
+
+/* ── Toggle switch ── */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--gray-100);gap:16px}
+.toggle-row:last-child{border-bottom:none}
+.toggle-info{flex:1}
+.toggle-info .toggle-title{font-size:.85rem;font-weight:600;color:var(--gray-700)}
+.toggle-info .toggle-desc{font-size:.75rem;color:var(--gray-400);margin-top:2px}
+.switch{position:relative;width:42px;height:24px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.switch-slider{position:absolute;inset:0;border-radius:24px;background:var(--gray-200);cursor:pointer;transition:background .2s}
+.switch-slider::before{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.switch input:checked + .switch-slider{background:var(--green2)}
+.switch input:checked + .switch-slider::before{transform:translateX(18px)}
+
+/* ── Language tabs ── */
+.lang-tabs{display:flex;gap:0;border:1px solid var(--gray-200);border-radius:10px;overflow:hidden;width:fit-content;margin-bottom:20px}
+.lang-tab{padding:8px 20px;font-size:.82rem;font-weight:600;cursor:pointer;background:#fff;color:var(--gray-500);border:none;font-family:'Inter',sans-serif;transition:all .15s;display:flex;align-items:center;gap:8px}
+.lang-tab:not(:last-child){border-right:1px solid var(--gray-200)}
+.lang-tab.active{background:var(--navy);color:#fff}
+.flag{font-size:1.1rem;line-height:1}
+
+/* ── Translation editor ── */
+.trans-table{width:100%;border-collapse:collapse}
+.trans-table th{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400);padding:0 12px 10px;text-align:left;border-bottom:1px solid var(--gray-100)}
+.trans-table td{padding:8px 12px;border-bottom:1px solid var(--gray-50);vertical-align:middle}
+.trans-table tr:last-child td{border-bottom:none}
+.trans-table tr:hover td{background:var(--gray-50)}
+.trans-key{font-size:.72rem;font-family:monospace;color:var(--gray-400);background:var(--gray-100);padding:2px 7px;border-radius:5px}
+.trans-en{font-size:.82rem;color:var(--gray-700)}
+.trans-input{width:100%;border:1px solid var(--gray-200);border-radius:7px;padding:7px 10px;font-size:.82rem;font-family:'Inter',sans-serif;color:var(--gray-700);outline:none;transition:border-color .2s;background:#fff}
+.trans-input:focus{border-color:var(--navy2)}
+.trans-badge{font-size:.64rem;font-weight:700;padding:2px 8px;border-radius:20px}
+.trans-badge.done{background:#dcfce7;color:#166534}
+.trans-badge.missing{background:#fef9c3;color:#854d0e}
+.trans-filter{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.trans-filter-btn{padding:5px 14px;border-radius:7px;border:1px solid var(--gray-200);background:#fff;font-size:.76rem;font-weight:600;color:var(--gray-500);cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
+.trans-filter-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.trans-search{flex:1;max-width:260px;border:1px solid var(--gray-200);border-radius:8px;padding:7px 12px 7px 32px;font-size:.82rem;color:var(--gray-700);font-family:'Inter',sans-serif;outline:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 10px center;}
+.trans-search:focus{border-color:var(--navy2)}
+
+/* ── Social links ── */
+.social-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-100)}
+.social-row:last-child{border-bottom:none}
+.social-icon-wrap{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.social-label{font-size:.82rem;font-weight:600;color:var(--gray-700);min-width:90px}
+.social-input{flex:1;border:1px solid var(--gray-200);border-radius:7px;padding:8px 12px;font-size:.82rem;font-family:'Inter',sans-serif;color:var(--gray-700);outline:none;transition:border-color .2s}
+.social-input:focus{border-color:var(--navy2)}
+
+/* ── Backup ── */
+.backup-list{display:flex;flex-direction:column;gap:10px}
+.backup-item{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--gray-200);border-radius:10px;background:var(--gray-50)}
+.backup-icon{width:38px;height:38px;border-radius:9px;background:#fff;border:1px solid var(--gray-200);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
+.backup-info{flex:1}
+.backup-name{font-size:.83rem;font-weight:600;color:var(--gray-700)}
+.backup-meta{font-size:.73rem;color:var(--gray-400);margin-top:2px}
+.backup-size{font-size:.75rem;font-weight:600;color:var(--gray-500);margin-right:8px}
+.backup-actions{display:flex;gap:6px}
+.backup-btn{padding:5px 12px;border-radius:7px;font-size:.75rem;font-weight:600;cursor:pointer;border:1px solid var(--gray-200);background:#fff;color:var(--gray-600);font-family:'Inter',sans-serif;transition:all .15s}
+.backup-btn:hover{border-color:var(--navy);color:var(--navy)}
+.backup-btn.restore{color:var(--green2);border-color:#bbf7d0}
+.backup-btn.restore:hover{background:#f0fdf4}
+.backup-btn.del{color:var(--red);border-color:#fecaca}
+.backup-btn.del:hover{background:#fef2f2}
+
+/* ── Analytics ── */
+.analytics-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--gray-200);border-radius:10px;margin-bottom:10px}
+.analytics-logo{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;background:var(--gray-100)}
+.analytics-info{flex:1}
+.analytics-name{font-size:.85rem;font-weight:700;color:var(--gray-700)}
+.analytics-desc{font-size:.74rem;color:var(--gray-400);margin-top:2px}
+.analytics-status{font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:20px}
+.status-connected{background:#dcfce7;color:#166534}
+.status-disconnected{background:var(--gray-100);color:var(--gray-500)}
+
+/* ── Emergency editor ── */
+.alert-preview{border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;font-size:.85rem;font-weight:600;margin-bottom:16px;transition:all .3s}
+.alert-preview.info{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+.alert-preview.warning{background:#fffbeb;color:#92400e;border:1px solid #fde68a}
+.alert-preview.urgent{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+
+/* ── Progress bar ── */
+.progress-bar-wrap{background:var(--gray-100);border-radius:20px;height:6px;overflow:hidden}
+.progress-bar-fill{height:100%;border-radius:20px;transition:width .6s ease}
+
+/* ── Status chip ── */
+.chip{font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:20px}
+.chip-green{background:#dcfce7;color:#166534}
+.chip-amber{background:#fef9c3;color:#854d0e}
+.chip-blue{background:#dbeafe;color:#1e40af}
+.chip-red{background:#fef2f2;color:#991b1b}
+.chip-gray{background:var(--gray-100);color:var(--gray-600)}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--navy3);color:#fff;border-radius:10px;padding:12px 20px;font-size:.83rem;font-weight:600;display:flex;align-items:center;gap:10px;z-index:9999;transform:translateY(80px);opacity:0;transition:all .35s;box-shadow:0 8px 24px rgba(0,0,0,.25);pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast i{color:var(--gold)}
+
+/* ── Danger zone ── */
+.danger-zone{background:#fff;border:1px solid #fecaca;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:20px}
+.danger-zone .card-header{background:#fff7f7;border-bottom-color:#fecaca}
+.danger-zone .card-header h3{color:var(--red)}
+.danger-action{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #fef2f2;gap:16px;flex-wrap:wrap}
+.danger-action:last-child{border-bottom:none}
+.danger-action-info .title{font-size:.85rem;font-weight:600;color:var(--gray-700)}
+.danger-action-info .desc{font-size:.74rem;color:var(--gray-400);margin-top:2px}
+
+/* ── RTL preview ── */
+.rtl-preview{border:1px solid var(--gray-200);border-radius:10px;padding:18px;background:var(--gray-50);direction:rtl;font-family:'Cairo','Noto Naskh Arabic',serif;font-size:.9rem;color:var(--gray-700);line-height:1.8}
+.rtl-preview strong{font-size:1rem;color:var(--navy)}
+
+/* ── Sidebar overlay ── */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90}
+.sidebar-overlay.open{display:block}
+
+/* ── Section panels ── */
+.settings-panel{display:none}
+.settings-panel.active{display:block}
+
+/* ── Responsive ── */
+@media(max-width:1100px){.settings-layout{grid-template-columns:1fr}.settings-nav{position:static;display:flex;flex-wrap:wrap;gap:2px;padding:8px}.settings-nav-item{border-left:none;border-bottom:3px solid transparent;border-radius:8px;padding:8px 14px}.settings-nav-item.active{border-bottom-color:var(--navy);background:#f0f4ff}}
+@media(max-width:900px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.hamburger{display:block}}
+@media(max-width:600px){.content{padding:16px}.form-row{grid-template-columns:1fr}.form-row.triple{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- ── Sidebar ── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🏫</div>
+    <div class="logo-text"><h2>AUS CMS</h2><p>Arab Unity School</p></div>
+  </div>
+  <div class="sidebar-user">
+    <div class="user-avatar" id="userAvatar" style="background:#ef4444">SA</div>
+    <div class="user-info">
+      <div class="name" id="userName">Super Admin</div>
+      <span class="role-badge" id="roleBadge" style="background:rgba(239,68,68,.2);color:#ef4444">Super Admin</span>
+    </div>
+  </div>
+  <nav>
+    <div class="nav-section">
+      <div class="nav-label">Main</div>
+      <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="pages.html" class="nav-item"><i class="fas fa-file-alt"></i> Pages</a>
+      <a href="media.html" class="nav-item"><i class="fas fa-images"></i> Media Library</a>
+      <a href="announcements.html" class="nav-item"><i class="fas fa-bullhorn"></i> Announcements <span class="nav-badge">3</span></a>
+      <a href="events.html" class="nav-item"><i class="fas fa-calendar-alt"></i> Events</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">School</div>
+      <a href="staff.html" class="nav-item"><i class="fas fa-users"></i> Staff Profiles</a>
+      <a href="admissions-cms.html" class="nav-item"><i class="fas fa-user-plus"></i> Admissions</a>
+      <a href="results-cms.html" class="nav-item"><i class="fas fa-chart-bar"></i> Results</a>
+      <a href="gallery.html" class="nav-item"><i class="fas fa-photo-video"></i> Gallery</a>
+      <a href="documents.html" class="nav-item"><i class="fas fa-file-download"></i> Documents <span class="nav-badge amber">2</span></a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">System</div>
+      <a href="users.html" class="nav-item"><i class="fas fa-user-shield"></i> Users & Roles</a>
+      <a href="seo.html" class="nav-item"><i class="fas fa-search"></i> SEO Manager</a>
+      <a href="settings.html" class="nav-item active"><i class="fas fa-cog"></i> Settings</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+  </div>
+</aside>
+
+<!-- ── Main ── -->
+<div class="main">
+  <header class="top-header">
+    <button class="hamburger" onclick="openSidebar()"><i class="fas fa-bars"></i></button>
+    <span class="header-title">Settings</span>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="icon-btn" title="Notifications"><i class="fas fa-bell"></i></button>
+      <div class="header-avatar" id="headerAvatar" style="background:#ef4444">SA</div>
+    </div>
+  </header>
+
+  <div class="content">
+    <div class="page-header">
+      <div>
+        <h1>Settings</h1>
+        <p>Configure site-wide settings, languages, backups, integrations and emergency alerts for Arab Unity School</p>
+      </div>
+      <button class="btn-green" onclick="saveAll()"><i class="fas fa-save"></i> Save All Changes</button>
+    </div>
+
+    <!-- ── Two-column layout ── -->
+    <div class="settings-layout">
+
+      <!-- Left nav -->
+      <nav class="settings-nav">
+        <div class="settings-nav-item active" onclick="showPanel('general')"><i class="fas fa-school"></i> General</div>
+        <div class="settings-nav-item" onclick="showPanel('language')"><i class="fas fa-language"></i> Language & Translation</div>
+        <div class="settings-nav-item" onclick="showPanel('emergency')"><i class="fas fa-exclamation-triangle"></i> Emergency Alerts</div>
+        <div class="settings-nav-divider"></div>
+        <div class="settings-nav-item" onclick="showPanel('social')"><i class="fas fa-share-alt"></i> Social Media</div>
+        <div class="settings-nav-item" onclick="showPanel('analytics')"><i class="fas fa-chart-line"></i> Analytics & Tracking</div>
+        <div class="settings-nav-divider"></div>
+        <div class="settings-nav-item" onclick="showPanel('backup')"><i class="fas fa-database"></i> Backup & Restore</div>
+        <div class="settings-nav-item" onclick="showPanel('danger')"><i class="fas fa-skull-crossbones"></i> Danger Zone</div>
+      </nav>
+
+      <!-- Right panels -->
+      <div>
+
+        <!-- ══ GENERAL ══ -->
+        <div class="settings-panel active" id="panel-general">
+
+          <!-- School Identity -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon" style="background:#e8f4ff;color:var(--navy)"><i class="fas fa-school"></i></div>
+                <div><h3>School Identity</h3><p>Name, logo, tagline and contact details</p></div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>School Name (English)</label>
+                  <input type="text" value="Arab Unity School">
+                </div>
+                <div class="form-group">
+                  <label>School Name (Arabic)</label>
+                  <input type="text" value="مدرسة الوحدة العربية" dir="rtl">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Tagline / Motto</label>
+                  <input type="text" value="Where Excellence Meets Tradition">
+                </div>
+                <div class="form-group">
+                  <label>School Code (KHDA)</label>
+                  <input type="text" value="AUS-DXB-001">
+                </div>
+              </div>
+              <div class="form-row single">
+                <div class="form-group">
+                  <label>Short Description</label>
+                  <textarea>Arab Unity School is a leading KHDA-rated private school in Dubai offering British Curriculum education from Foundation Stage to A-Levels, serving students since 1975.</textarea>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Logo URL</label>
+                  <input type="text" value="../images/logo.png">
+                  <span class="hint">Recommended: SVG or PNG with transparent background, min 200×200px</span>
+                </div>
+                <div class="form-group">
+                  <label>Favicon URL</label>
+                  <input type="text" value="../images/favicon.ico">
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="btn-primary" onclick="toast('School identity saved')"><i class="fas fa-save"></i> Save Identity</button>
+                <button class="btn-outline"><i class="fas fa-upload"></i> Upload Logo</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Details -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon" style="background:#f0fdf4;color:var(--green2)"><i class="fas fa-address-card"></i></div>
+                <div><h3>Contact Details</h3><p>Address, phone, email and office hours</p></div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="form-row single">
+                <div class="form-group">
+                  <label>Street Address</label>
+                  <input type="text" value="Al Ittihad Road, Deira, Dubai, United Arab Emirates">
+                </div>
+              </div>
+              <div class="form-row triple">
+                <div class="form-group">
+                  <label>Main Phone</label>
+                  <input type="text" value="+971 4 294 0334">
+                </div>
+                <div class="form-group">
+                  <label>Admissions Phone</label>
+                  <input type="text" value="+971 4 294 0335">
+                </div>
+                <div class="form-group">
+                  <label>Fax</label>
+                  <input type="text" value="+971 4 294 0336">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>General Email</label>
+                  <input type="email" value="info@arabunityschool.ae">
+                </div>
+                <div class="form-group">
+                  <label>Admissions Email</label>
+                  <input type="email" value="admissions@arabunityschool.ae">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Office Hours</label>
+                  <input type="text" value="Sunday – Thursday, 7:00 AM – 3:30 PM">
+                </div>
+                <div class="form-group">
+                  <label>Google Maps Embed URL</label>
+                  <input type="text" value="https://maps.google.com/embed?...">
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="btn-primary" onclick="toast('Contact details saved')"><i class="fas fa-save"></i> Save Contact Info</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Site Behaviour -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon" style="background:#fef9f0;color:var(--amber)"><i class="fas fa-sliders-h"></i></div>
+                <div><h3>Site Behaviour</h3><p>Maintenance mode, default language, cache and performance</p></div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-title">Maintenance Mode</div>
+                  <div class="toggle-desc">Show a maintenance page to all visitors while you make updates</div>
+                </div>
+                <label class="switch"><input type="checkbox" id="maintenanceToggle" onchange="handleMaintenance(this)"><span class="switch-slider"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-title">Enable Arabic (RTL) Mode</div>
+                  <div class="toggle-desc">Allow users to switch the website to Arabic / right-to-left layout</div>
+                </div>
+                <label class="switch"><input type="checkbox" checked><span class="switch-slider"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-title">Cookie Consent Banner</div>
+                  <div class="toggle-desc">Display a GDPR-style cookie consent notice to new visitors</div>
+                </div>
+                <label class="switch"><input type="checkbox" checked><span class="switch-slider"></span></label>
+              </div>
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <div class="toggle-title">Browser Caching (lang.js)</div>
+                  <div class="toggle-desc">Force-refresh the language file on all browsers by bumping the version number</div>
+                </div>
+                <label class="switch"><input type="checkbox" checked><span class="switch-slider"></span></label>
+              </div>
+              <div style="margin-top:18px">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Default Language</label>
+                    <select>
+                      <option value="en" selected>English</option>
+                      <option value="ar">Arabic</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>lang.js Cache Version</label>
+                    <input type="text" id="cacheVersion" value="v=12">
+                    <span class="hint">Current: <strong>v=12</strong> — increment to bust mobile cache</span>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button class="btn-primary" onclick="bumpVersion()"><i class="fas fa-sync-alt"></i> Bump Cache Version</button>
+                  <button class="btn-outline" onclick="toast('Site settings saved')"><i class="fas fa-save"></i> Save Settings</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ LANGUAGE & TRANSLATION ══ -->
+        <div class="settings-panel" id="panel-language">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon" style="background:#e8f4ff;color:var(--navy)"><i class="fas fa-language"></i></div>
+                <div><h3>Language & Translation</h3><p>Manage English and Arabic content strings for all pages</p></div>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <span class="chip chip-green"><i class="fas fa-check-circle"></i> 212 translated</span>
+                <span class="chip chip-amber"><i class="fas fa-exclamation-circle"></i> 14 missing</span>
+              </div>
+            </div>
+            <div class="card-body">
+
+              <!-- Language toggle -->
+              <div class="lang-tabs">
+                <button class="lang-tab active" onclick="switchLang('ar',this)"><span class="flag">🇦🇪</span> Arabic</button>
+                <button class="lang-tab" onclick="switchLang('ur',this)"><span class="flag">🇵🇰</span> Urdu</button>
+                <button class="lang-tab" onclick="switchLang('fr',this)"><span class="flag">🇫🇷</span> French</button>
+              </div>
+
+              <!-- Progress -->
+              <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+                <div style="flex:1">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                    <span style="font-size:.78rem;font-weight:700;color:var(--gray-600)">Arabic Translation Progress</span>
+                    <span style="font-size:.78rem;font-weight:700;color:var(--green2)" id="transPercent">94%</span>
+                  </div>
+                  <div class="progress-bar-wrap">
+                    <div class="progress-bar-fill" id="transBar" style="width:94%;background:var(--green2)"></div>
+                  </div>
+                </div>
+                <button class="btn-outline" style="font-size:.76rem;padding:7px 14px" onclick="autoTranslate()">
+                  <i class="fas fa-magic"></i> Auto-fill Missing
+                </button>
+              </div>
+
+              <!-- Filter + search -->
+              <div class="trans-filter">
+                <button class="trans-filter-btn active" onclick="filterTrans('all',this)">All</button>
+                <button class="trans-filter-btn" onclick="filterTrans('missing',this)">Missing Only</button>
+                <button class="trans-filter-btn" onclick="filterTrans('nav',this)">Navigation</button>
+                <button class="trans-filter-btn" onclick="filterTrans('home',this)">Home</button>
+                <button class="trans-filter-btn" onclick="filterTrans('admissions',this)">Admissions</button>
+                <button class="trans-filter-btn" onclick="filterTrans('leadership',this)">Leadership</button>
+                <input type="text" class="trans-search" placeholder="Search keys…" oninput="searchTrans(this.value)">
+              </div>
+
+              <!-- Translation table -->
+              <div style="overflow-x:auto">
+                <table class="trans-table" id="transTable">
+                  <thead>
+                    <tr>
+                      <th style="width:140px">Key</th>
+                      <th>English</th>
+                      <th>Arabic Translation</th>
+                      <th style="width:80px">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="transBody"></tbody>
+                </table>
+              </div>
+
+              <div class="form-actions" style="margin-top:18px">
+                <button class="btn-primary" onclick="saveTranslations()"><i class="fas fa-save"></i> Save Translations</button>
+                <button class="btn-outline" onclick="exportLangFile()"><i class="fas fa-download"></i> Export lang.js</button>
+                <button class="btn-outline" onclick="importLangFile()"><i class="fas fa-upload"></i> Import lang.js</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- RTL Preview -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon" style="background:#fef9f0;color:var(--amber)"><i class="fas fa-eye"></i></div>
+                <div><h3>Arabic RTL Preview</h3><p>Live preview of the Arabic layout direction</p></div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="rtl-preview">
+                <strong>مدرسة الوحدة العربية</strong><br>
+                حيث يلتقي التميز بالتراث — نقدم تعليماً بريطانياً متميزاً في دبي منذ عام ١٩٧٥. نرحب بطلابنا من مرحلة رياض الأطفال حتى المرحلة الثانوية وصولاً إلى شهادة A-Level.<br><br>
+                <span style="font-size:.78rem;color:var(--gray-400)">Nav sample: الرئيسية · من نحن · المناهج · القبول · التواصل</span>
+              </div>
+              <div style="margin-top:14px;display:flex;gap:8px">
+                <button class="btn-outline" onclick="toast('Opening Arabic preview…')"><i class="fas fa-external-link-alt"></i> Open Live Preview</button>
+                <button class="btn-outline" onclick="toast('RTL stylesheet regenerated')"><i class="fas fa-sync-alt"></i> Regen RTL CSS</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ EMERGENCY ALERTS ══ -->
+        <div class="settings-panel" id="panel-emergency">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon" style="background:#fef2f2;color:var(--red)"><i class="fas fa-exclamation-triangle"></i></div>
+                <div><h3>Emergency Alert Banner</h3><p>Display a site-wide banner for urgent school announcements</p></div>
+              </div>
+              <span class="chip chip-red" id="alertStatusChip">● Active</span>
+            </div>
+            <div class="card-body">
+              <!-- Live preview -->
+              <div class="alert-preview urgent" id="alertPreview">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="alertPreviewText">⚠️ Important: School closes early today at 12:00 PM due to scheduled maintenance. Parents please arrange early pick-up.</span>
+              </div>
+
+              <div class="toggle-row" style="padding:0 0 14px">
+                <div class="toggle-info">
+                  <div class="toggle-title">Show Emergency Banner</div>
+                  <div class="toggle-desc">Enable to display this alert across the entire website</div>
+                </div>
+                <label class="switch"><input type="checkbox" id="alertActiveToggle" checked onchange="updateAlertChip()"><span class="switch-slider"></span></label>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Alert Type</label>
+                  <select id="alertType" onchange="updateAlertPreview()">
+                    <option value="urgent" selected>🔴 Urgent / Emergency</option>
+                    <option value="warning">🟡 Warning / Important</option>
+                    <option value="info">🔵 Information / Notice</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Show Until</label>
+                  <input type="datetime-local" value="2026-05-15T15:00">
+                </div>
+              </div>
+              <div class="form-row single">
+                <div class="form-group">
+                  <label>Alert Message (English)</label>
+                  <textarea id="alertMsgEn" oninput="updateAlertPreview()" style="min-height:70px">⚠️ Important: School closes early today at 12:00 PM due to scheduled maintenance. Parents please arrange early pick-up.</textarea>
+                </div>
+              </div>
+              <div class="form-row single">
+                <div class="form-group">
+                  <label>Alert Message (Arabic)</label>
+                  <textarea dir="rtl" style="min-height:70px;font-family:'Cairo',sans-serif">⚠️ هام: تُغلق المدرسة مبكراً اليوم عند الساعة 12:00 ظهراً بسبب أعمال الصيانة المجدولة. يُرجى من أولياء الأمور ترتيب الاصطحاب المبكر.</textarea>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Link Label (optional)</label>
+                  <input type="text" placeholder="e.g. Read More">
+                </div>
+                <div class="form-group">
+                  <label>Link URL (optional)</label>
+                  <input type="url" placeholder="https://…">
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="btn-danger" onclick="toast('Alert deactivated'); document.getElementById('alertActiveToggle').checked=false; updateAlertChip()"><i class="fas fa-times-circle"></i> Deactivate Alert</button>
+                <button class="btn-primary" onclick="toast('Emergency alert published live')"><i class="fas fa-broadcast-tower"></i> Publish Alert</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Alert History -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon" style="background:var(--gray-100);color:var(--gray-500)"><i class="fas fa-history"></i></div>
+                <div><h3>Alert History</h3><p>Previously published emergency alerts</p></div>
+              </div>
+            </div>
+            <div class="card-body">
+              <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+                <thead><tr>
+                  <th style="text-align:left;padding-bottom:10px;color:var(--gray-400);font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--gray-100)">Message</th>
+                  <th style="text-align:left;padding-bottom:10px;color:var(--gray-400);font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--gray-100)">Type</th>
+                  <th style="text-align:left;padding-bottom:10px;color:var(--gray-400);font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--gray-100)">Date</th>
+                  <th style="text-align:left;padding-bottom:10px;color:var(--gray-400);font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--gray-100)">Actions</th>
+                </tr></thead>
+                <tbody>
+                  <tr><td style="padding:9px 0;border-bottom:1px solid var(--gray-50)">School Closed — National Day</td><td style="padding:9px 8px;border-bottom:1px solid var(--gray-50)"><span class="chip chip-blue">Info</span></td><td style="padding:9px 8px;border-bottom:1px solid var(--gray-50);color:var(--gray-400)">02 Dec 2025</td><td style="padding:9px 0;border-bottom:1px solid var(--gray-50)"><button class="backup-btn" onclick="toast('Alert restored to editor')">Restore</button></td></tr>
+                  <tr><td style="padding:9px 0;border-bottom:1px solid var(--gray-50)">Exam Week — No PE for Grades 9–12</td><td style="padding:9px 8px;border-bottom:1px solid var(--gray-50)"><span class="chip chip-amber">Warning</span></td><td style="padding:9px 8px;border-bottom:1px solid var(--gray-50);color:var(--gray-400)">18 Nov 2025</td><td style="padding:9px 0;border-bottom:1px solid var(--gray-50)"><button class="backup-btn" onclick="toast('Alert restored to editor')">Restore</button></td></tr>
+                  <tr><td style="padding:9px 0">Early Closure — Parent-Teacher Meetings</td><td style="padding:9px 8px"><span class="chip chip-red">Urgent</span></td><td style="padding:9px 8px;color:var(--gray-400)">05 Oct 2025</td><td style="padding:9px 0"><button class="backup-btn" onclick="toast('Alert restored to editor')">Restore</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SOCIAL MEDIA ══ -->
+        <div class="settings-panel" id="panel-social">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon" style="background:#f0f4ff;color:#4f46e5"><i class="fas fa-share-alt"></i></div>
+                <div><h3>Social Media Links</h3><p>Manage official school social media profiles</p></div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="social-row">
+                <div class="social-icon-wrap" style="background:#1877f2;color:#fff"><i class="fab fa-facebook-f"></i></div>
+                <span class="social-label">Facebook</span>
+                <input class="social-input" type="url" value="https://www.facebook.com/arabunityschool">
+                <span class="chip chip-green" style="flex-shrink:0">Live</span>
+              </div>
+              <div class="social-row">
+                <div class="social-icon-wrap" style="background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff"><i class="fab fa-instagram"></i></div>
+                <span class="social-label">Instagram</span>
+                <input class="social-input" type="url" value="https://www.instagram.com/arabunityschool">
+                <span class="chip chip-green" style="flex-shrink:0">Live</span>
+              </div>
+              <div class="social-row">
+                <div class="social-icon-wrap" style="background:#1da1f2;color:#fff"><i class="fab fa-twitter"></i></div>
+                <span class="social-label">X / Twitter</span>
+                <input class="social-input" type="url" placeholder="https://x.com/…">
+                <span class="chip chip-gray" style="flex-shrink:0">Not set</span>
+              </div>
+              <div class="social-row">
+                <div class="social-icon-wrap" style="background:#ff0000;color:#fff"><i class="fab fa-youtube"></i></div>
+                <span class="social-label">YouTube</span>
+                <input class="social-input" type="url" value="https://www.youtube.com/@arabunityschool">
+                <span class="chip chip-green" style="flex-shrink:0">Live</span>
+              </div>
+              <div class="social-row">
+                <div class="social-icon-wrap" style="background:#0a66c2;color:#fff"><i class="fab fa-linkedin-in"></i></div>
+                <span class="social-label">LinkedIn</span>
+                <input class="social-input" type="url" placeholder="https://linkedin.com/school/…">
+                <span class="chip chip-gray" style="flex-shrink:0">Not set</span>
+              </div>
+              <div class="social-row">
+                <div class="social-icon-wrap" style="background:#25d366;color:#fff"><i class="fab fa-whatsapp"></i></div>
+                <span class="social-label">WhatsApp</span>
+                <input class="social-input" type="url" value="https://wa.me/97142940334">
+                <span class="chip chip-green" style="flex-shrink:0">Live</span>
+              </div>
+              <div class="form-actions" style="margin-top:14px">
+                <button class="btn-primary" onclick="toast('Social media links saved')"><i class="fas fa-save"></i> Save Links</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Open Graph -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon" style="background:#f0f4ff;color:#4f46e5"><i class="fas fa-share-square"></i></div>
+                <div><h3>Open Graph / Share Preview</h3><p>How the website looks when shared on social media</p></div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="form-row single"><div class="form-group">
+                <label>OG Title</label>
+                <input type="text" value="Arab Unity School Dubai — Excellence in British Education">
+              </div></div>
+              <div class="form-row single"><div class="form-group">
+                <label>OG Description</label>
+                <textarea style="min-height:64px">A leading KHDA-rated school in Dubai offering British Curriculum education from Foundation Stage to A-Levels since 1975.</textarea>
+              </div></div>
+              <div class="form-row"><div class="form-group">
+                <label>OG Image URL</label>
+                <input type="url" value="../images/og-cover.jpg">
+                <span class="hint">Recommended: 1200×630px JPG</span>
+              </div>
+              <div class="form-group">
+                <label>Twitter Card Type</label>
+                <select><option>summary_large_image</option><option>summary</option></select>
+              </div></div>
+              <div class="form-actions">
+                <button class="btn-primary" onclick="toast('Open Graph settings saved')"><i class="fas fa-save"></i> Save OG Settings</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ ANALYTICS ══ -->
+        <div class="settings-panel" id="panel-analytics">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon" style="background:#f0fdf4;color:var(--green2)"><i class="fas fa-chart-line"></i></div>
+                <div><h3>Analytics & Tracking</h3><p>Connect third-party analytics and tracking services</p></div>
+              </div>
+            </div>
+            <div class="card-body">
+
+              <div class="analytics-card">
+                <div class="analytics-logo" style="background:#fff3cd">📊</div>
+                <div class="analytics-info">
+                  <div class="analytics-name">Google Analytics 4</div>
+                  <div class="analytics-desc">Track page views, sessions, bounce rate and conversions</div>
+                </div>
+                <span class="analytics-status status-connected">✓ Connected</span>
+              </div>
+              <div class="form-row" style="margin-bottom:16px">
+                <div class="form-group">
+                  <label>GA4 Measurement ID</label>
+                  <input type="text" value="G-XXXXXXXXXX">
+                </div>
+                <div class="form-group">
+                  <label>Data Stream</label>
+                  <input type="text" value="AUS Web — arabunityschool.ae" readonly>
+                </div>
+              </div>
+
+              <div class="analytics-card">
+                <div class="analytics-logo" style="background:#e8f4ff">🔍</div>
+                <div class="analytics-info">
+                  <div class="analytics-name">Google Search Console</div>
+                  <div class="analytics-desc">Monitor search performance, indexing and crawl errors</div>
+                </div>
+                <span class="analytics-status status-connected">✓ Connected</span>
+              </div>
+              <div class="form-row" style="margin-bottom:16px">
+                <div class="form-group">
+                  <label>Site Verification Token</label>
+                  <input type="text" value="google-site-verification=xxxxxxxxxxx">
+                </div>
+                <div class="form-group">
+                  <label>Sitemap URL</label>
+                  <input type="url" value="https://arabunityschool.ae/sitemap.xml">
+                </div>
+              </div>
+
+              <div class="analytics-card">
+                <div class="analytics-logo">🎯</div>
+                <div class="analytics-info">
+                  <div class="analytics-name">Meta Pixel</div>
+                  <div class="analytics-desc">Track Facebook and Instagram ad conversions</div>
+                </div>
+                <span class="analytics-status status-disconnected">Not connected</span>
+              </div>
+              <div class="form-row" style="margin-bottom:16px">
+                <div class="form-group">
+                  <label>Meta Pixel ID</label>
+                  <input type="text" placeholder="Enter Pixel ID…">
+                </div>
+                <div class="form-group" style="justify-content:flex-end;padding-top:22px">
+                  <button class="btn-outline" onclick="toast('Meta Pixel connected')"><i class="fab fa-facebook"></i> Connect Pixel</button>
+                </div>
+              </div>
+
+              <div class="analytics-card">
+                <div class="analytics-logo" style="background:#f9f0ff">🟣</div>
+                <div class="analytics-info">
+                  <div class="analytics-name">Hotjar</div>
+                  <div class="analytics-desc">Heatmaps, session recordings and user feedback</div>
+                </div>
+                <span class="analytics-status status-disconnected">Not connected</span>
+              </div>
+              <div class="form-row" style="margin-bottom:20px">
+                <div class="form-group">
+                  <label>Hotjar Site ID</label>
+                  <input type="text" placeholder="Enter Hotjar ID…">
+                </div>
+                <div class="form-group" style="justify-content:flex-end;padding-top:22px">
+                  <button class="btn-outline" onclick="toast('Hotjar integration saved')"><i class="fas fa-fire"></i> Connect Hotjar</button>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn-primary" onclick="toast('Analytics settings saved')"><i class="fas fa-save"></i> Save All Analytics</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Custom Scripts -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon" style="background:#fef9f0;color:var(--amber)"><i class="fas fa-code"></i></div>
+                <div><h3>Custom Scripts</h3><p>Inject custom HTML/JS into the &lt;head&gt; or before &lt;/body&gt;</p></div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="form-row single"><div class="form-group">
+                <label>Head Scripts (&lt;head&gt;)</label>
+                <textarea style="min-height:90px;font-family:monospace;font-size:.78rem">&lt;!-- Google Tag Manager --&gt;</textarea>
+              </div></div>
+              <div class="form-row single"><div class="form-group">
+                <label>Body Scripts (before &lt;/body&gt;)</label>
+                <textarea style="min-height:90px;font-family:monospace;font-size:.78rem">&lt;!-- Intercom or chat widget here --&gt;</textarea>
+              </div></div>
+              <div class="form-actions">
+                <button class="btn-primary" onclick="toast('Custom scripts saved')"><i class="fas fa-save"></i> Save Scripts</button>
+                <span style="font-size:.75rem;color:var(--red)"><i class="fas fa-exclamation-triangle"></i> Invalid scripts can break the website</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ BACKUP & RESTORE ══ -->
+        <div class="settings-panel" id="panel-backup">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon" style="background:#f0fdf4;color:var(--green2)"><i class="fas fa-database"></i></div>
+                <div><h3>Backup & Restore</h3><p>Download, schedule and restore website content backups</p></div>
+              </div>
+              <button class="btn-green" onclick="createBackup()"><i class="fas fa-plus"></i> Create Backup Now</button>
+            </div>
+            <div class="card-body">
+
+              <!-- Auto backup setting -->
+              <div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:10px;padding:16px;margin-bottom:20px">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+                  <div>
+                    <div style="font-size:.85rem;font-weight:700;color:var(--gray-700)">Automatic Backups</div>
+                    <div style="font-size:.75rem;color:var(--gray-400);margin-top:2px">Schedule regular backups to protect your content</div>
+                  </div>
+                  <label class="switch"><input type="checkbox" checked><span class="switch-slider"></span></label>
+                </div>
+                <div class="form-row triple">
+                  <div class="form-group">
+                    <label>Frequency</label>
+                    <select><option>Daily</option><option selected>Weekly</option><option>Monthly</option></select>
+                  </div>
+                  <div class="form-group">
+                    <label>Time</label>
+                    <input type="time" value="02:00">
+                  </div>
+                  <div class="form-group">
+                    <label>Retain Last</label>
+                    <select><option>3 backups</option><option selected>5 backups</option><option>10 backups</option></select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Backup list -->
+              <div class="backup-list" id="backupList">
+                <div class="backup-item">
+                  <div class="backup-icon">💾</div>
+                  <div class="backup-info">
+                    <div class="backup-name">backup_2026-05-10_02-00.zip</div>
+                    <div class="backup-meta">Automatic weekly backup · Includes: Pages, Media, Translations, Settings</div>
+                  </div>
+                  <span class="backup-size">18.4 MB</span>
+                  <div class="backup-actions">
+                    <button class="backup-btn restore" onclick="toast('Restoring backup…')"><i class="fas fa-undo"></i> Restore</button>
+                    <button class="backup-btn" onclick="toast('Downloading backup…')"><i class="fas fa-download"></i></button>
+                    <button class="backup-btn del" onclick="deleteBackup(this)"><i class="fas fa-trash"></i></button>
+                  </div>
+                </div>
+                <div class="backup-item">
+                  <div class="backup-icon">💾</div>
+                  <div class="backup-info">
+                    <div class="backup-name">backup_2026-05-03_02-00.zip</div>
+                    <div class="backup-meta">Automatic weekly backup · Includes: Pages, Media, Translations, Settings</div>
+                  </div>
+                  <span class="backup-size">17.9 MB</span>
+                  <div class="backup-actions">
+                    <button class="backup-btn restore" onclick="toast('Restoring backup…')"><i class="fas fa-undo"></i> Restore</button>
+                    <button class="backup-btn" onclick="toast('Downloading backup…')"><i class="fas fa-download"></i></button>
+                    <button class="backup-btn del" onclick="deleteBackup(this)"><i class="fas fa-trash"></i></button>
+                  </div>
+                </div>
+                <div class="backup-item">
+                  <div class="backup-icon">💾</div>
+                  <div class="backup-info">
+                    <div class="backup-name">backup_manual_2026-04-28.zip</div>
+                    <div class="backup-meta">Manual backup · Created by Super Admin before major update</div>
+                  </div>
+                  <span class="backup-size">17.2 MB</span>
+                  <div class="backup-actions">
+                    <button class="backup-btn restore" onclick="toast('Restoring backup…')"><i class="fas fa-undo"></i> Restore</button>
+                    <button class="backup-btn" onclick="toast('Downloading backup…')"><i class="fas fa-download"></i></button>
+                    <button class="backup-btn del" onclick="deleteBackup(this)"><i class="fas fa-trash"></i></button>
+                  </div>
+                </div>
+                <div class="backup-item">
+                  <div class="backup-icon">💾</div>
+                  <div class="backup-info">
+                    <div class="backup-name">backup_2026-04-26_02-00.zip</div>
+                    <div class="backup-meta">Automatic weekly backup</div>
+                  </div>
+                  <span class="backup-size">16.8 MB</span>
+                  <div class="backup-actions">
+                    <button class="backup-btn restore" onclick="toast('Restoring backup…')"><i class="fas fa-undo"></i> Restore</button>
+                    <button class="backup-btn" onclick="toast('Downloading backup…')"><i class="fas fa-download"></i></button>
+                    <button class="backup-btn del" onclick="deleteBackup(this)"><i class="fas fa-trash"></i></button>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top:18px">
+                <button class="btn-outline" onclick="toast('Opening import dialog…')"><i class="fas fa-upload"></i> Import Backup File</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ DANGER ZONE ══ -->
+        <div class="settings-panel" id="panel-danger">
+          <div class="danger-zone">
+            <div class="card-header">
+              <div class="card-header-left">
+                <div class="card-icon" style="background:#fef2f2;color:var(--red)"><i class="fas fa-skull-crossbones"></i></div>
+                <div><h3>Danger Zone</h3><p>Irreversible actions — proceed with extreme caution</p></div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="danger-action">
+                <div class="danger-action-info">
+                  <div class="title">Clear All Cache</div>
+                  <div class="desc">Purge all cached files, images and browser assets. Pages will rebuild on next visit.</div>
+                </div>
+                <button class="btn-amber" onclick="toast('Cache cleared — all files purged')"><i class="fas fa-broom"></i> Clear Cache</button>
+              </div>
+              <div class="danger-action">
+                <div class="danger-action-info">
+                  <div class="title">Reset All Translations</div>
+                  <div class="desc">Delete all Arabic translations and reset lang.js to English-only defaults.</div>
+                </div>
+                <button class="btn-danger" onclick="confirmReset('translations')"><i class="fas fa-language"></i> Reset Translations</button>
+              </div>
+              <div class="danger-action">
+                <div class="danger-action-info">
+                  <div class="title">Revoke All Active Sessions</div>
+                  <div class="desc">Force logout all CMS users currently signed in. They must log in again.</div>
+                </div>
+                <button class="btn-danger" onclick="toast('All sessions revoked — 17 users signed out')"><i class="fas fa-user-times"></i> Revoke Sessions</button>
+              </div>
+              <div class="danger-action">
+                <div class="danger-action-info">
+                  <div class="title">Reset CMS to Defaults</div>
+                  <div class="desc">Wipe all CMS settings, users and content. This <strong>cannot be undone</strong>. Ensure a backup exists first.</div>
+                </div>
+                <button class="btn-danger" onclick="confirmReset('cms')"><i class="fas fa-undo"></i> Reset CMS</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /right panels -->
+    </div><!-- /settings-layout -->
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- Toast -->
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg">Saved</span></div>
+
+<!-- Confirm Modal -->
+<div id="confirmModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9000;display:flex;align-items:center;justify-content:center;display:none">
+  <div style="background:#fff;border-radius:14px;padding:28px;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+    <div style="font-size:2rem;margin-bottom:12px">⚠️</div>
+    <h3 style="font-size:1rem;font-weight:700;color:var(--gray-900);margin-bottom:8px" id="confirmTitle">Are you sure?</h3>
+    <p style="font-size:.85rem;color:var(--gray-500);margin-bottom:22px" id="confirmDesc">This action cannot be undone.</p>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-danger" id="confirmBtn" onclick="executeReset()"><i class="fas fa-trash"></i> Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── Auth ───
+const USERS={
+  'superadmin@aus.ae':{pass:'admin123',role:'Super Admin',color:'#ef4444',initials:'SA'},
+  'principal@aus.ae':{pass:'principal1',role:'Principal',color:'#8b5cf6',initials:'PR'},
+  'marketing@aus.ae':{pass:'mktg2024',role:'Marketing',color:'#3b82f6',initials:'MK'},
+  'admissions@aus.ae':{pass:'adm2024!',role:'Admissions',color:'#f59e0b',initials:'AD'},
+  'academic@aus.ae':{pass:'acad2024',role:'Academic',color:'#10b981',initials:'AC'},
+  'readonly@aus.ae':{pass:'readonly',role:'Read Only',color:'#64748b',initials:'RO'}
+};
+function initAuth(){
+  const s=sessionStorage.getItem('ausUser');
+  if(!s){location.href='index.html';return;}
+  const u=JSON.parse(s);
+  document.getElementById('userAvatar').textContent=u.initials;
+  document.getElementById('userAvatar').style.background=u.color;
+  document.getElementById('headerAvatar').textContent=u.initials;
+  document.getElementById('headerAvatar').style.background=u.color;
+  document.getElementById('userName').textContent=u.name||u.role;
+  document.getElementById('roleBadge').textContent=u.role;
+  document.getElementById('roleBadge').style.background=u.color+'33';
+  document.getElementById('roleBadge').style.color=u.color;
+}
+function logout(){sessionStorage.removeItem('ausUser');location.href='index.html';}
+
+// ─── Sidebar ───
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('open')}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('open')}
+
+// ─── Settings nav ───
+function showPanel(id){
+  document.querySelectorAll('.settings-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.settings-nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ─── Toast ───
+let toastTimer;
+function toast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ─── Save all ───
+function saveAll(){toast('✅ All settings saved successfully')}
+
+// ─── Maintenance toggle ───
+function handleMaintenance(el){
+  if(el.checked) toast('⚠️ Maintenance mode ENABLED — visitors will see the maintenance page');
+  else toast('✅ Maintenance mode disabled — site is live');
+}
+
+// ─── Cache version bump ───
+function bumpVersion(){
+  const el=document.getElementById('cacheVersion');
+  const cur=el.value.replace('v=','');
+  const n=parseInt(cur)||12;
+  el.value='v='+(n+1);
+  toast('Cache version bumped to v='+(n+1)+' — update all HTML files');
+}
+
+// ─── Alert preview ───
+function updateAlertPreview(){
+  const msg=document.getElementById('alertMsgEn').value;
+  const type=document.getElementById('alertType').value;
+  const preview=document.getElementById('alertPreview');
+  document.getElementById('alertPreviewText').textContent=msg;
+  preview.className='alert-preview '+type;
+}
+function updateAlertChip(){
+  const on=document.getElementById('alertActiveToggle').checked;
+  const chip=document.getElementById('alertStatusChip');
+  chip.className='chip '+(on?'chip-red':'chip-gray');
+  chip.textContent=on?'● Active':'○ Inactive';
+}
+
+// ─── Translation data ───
+const TRANS_DATA=[
+  {key:'nav.home',section:'nav',en:'Home',ar:'الرئيسية'},
+  {key:'nav.about',section:'nav',en:'About Us',ar:'من نحن'},
+  {key:'nav.curriculum',section:'nav',en:'Curriculum',ar:'المناهج'},
+  {key:'nav.admissions',section:'admissions',en:'Admissions',ar:'القبول والتسجيل'},
+  {key:'nav.results',section:'nav',en:'Results',ar:'النتائج'},
+  {key:'nav.leadership',section:'leadership',en:'Leadership',ar:'القيادة'},
+  {key:'nav.contact',section:'nav',en:'Contact',ar:'اتصل بنا'},
+  {key:'nav.news',section:'nav',en:'News & Events',ar:'الأخبار والفعاليات'},
+  {key:'home.hero.title',section:'home',en:'Where Excellence Meets Tradition',ar:'حيث يلتقي التميز بالتراث'},
+  {key:'home.hero.subtitle',section:'home',en:'British Curriculum Education in Dubai since 1975',ar:'التعليم بالمنهج البريطاني في دبي منذ ١٩٧٥'},
+  {key:'home.hero.cta1',section:'home',en:'Apply Now',ar:'سجّل الآن'},
+  {key:'home.hero.cta2',section:'home',en:'Virtual Tour',ar:'جولة افتراضية'},
+  {key:'home.stats.students',section:'home',en:'Students',ar:'طالب وطالبة'},
+  {key:'home.stats.years',section:'home',en:'Years of Excellence',ar:'عاماً من التميز'},
+  {key:'home.stats.nationalities',section:'home',en:'Nationalities',ar:'جنسية'},
+  {key:'admissions.title',section:'admissions',en:'Admissions',ar:'القبول والتسجيل'},
+  {key:'admissions.fees.annual',section:'admissions',en:'Annual Tuition Fees',ar:'الرسوم الدراسية السنوية'},
+  {key:'admissions.transport.title',section:'admissions',en:'Bus Transport Fees',ar:'رسوم الحافلة المدرسية'},
+  {key:'admissions.reg.fee',section:'admissions',en:'Registration Fee',ar:'رسوم التسجيل'},
+  {key:'leadership.title',section:'leadership',en:'Our Leadership',ar:'قيادتنا'},
+  {key:'leadership.arwa.name',section:'leadership',en:'Ms. Arwa A. Taher',ar:'الأستاذة أروى أحمد طاهر'},
+  {key:'leadership.arwa.role',section:'leadership',en:'Chairman / Owner',ar:'الرئيس / المالك'},
+  {key:'about.mission',section:'nav',en:'Our Mission',ar:'رسالتنا'},
+  {key:'about.vision',section:'nav',en:'Our Vision',ar:'رؤيتنا'},
+  {key:'results.dsib',section:'nav',en:'DSIB Inspection Results',ar:'نتائج تفتيش DSIB'},
+  {key:'results.outstanding',section:'nav',en:'Outstanding',ar:''},
+  {key:'results.very_good',section:'nav',en:'Very Good',ar:''},
+];
+
+let currentLang='ar';
+let transFilter='all';
+let transSearch='';
+
+function renderTransTable(){
+  const tbody=document.getElementById('transBody');
+  const filtered=TRANS_DATA.filter(row=>{
+    if(transFilter!=='all'&&row.section!==transFilter)return false;
+    if(transSearch&&!row.key.toLowerCase().includes(transSearch)&&!row.en.toLowerCase().includes(transSearch)&&!row.ar.toLowerCase().includes(transSearch))return false;
+    return true;
+  });
+  tbody.innerHTML=filtered.map(row=>{
+    const val=row.ar||'';
+    const missing=!val.trim();
+    return `<tr>
+      <td><span class="trans-key">${row.key}</span></td>
+      <td class="trans-en">${row.en}</td>
+      <td><input class="trans-input" data-key="${row.key}" value="${val}" placeholder="Enter Arabic…" dir="rtl" oninput="markChanged(this)"></td>
+      <td><span class="trans-badge ${missing?'missing':'done'}">${missing?'Missing':'Done'}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function markChanged(el){
+  const row=TRANS_DATA.find(r=>r.key===el.dataset.key);
+  if(row){row.ar=el.value;renderTransTable();}
+}
+
+function switchLang(lang,btn){
+  currentLang=lang;
+  document.querySelectorAll('.lang-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  toast('Switched to '+lang.toUpperCase()+' translation');
+}
+
+function filterTrans(f,btn){
+  transFilter=f;
+  document.querySelectorAll('.trans-filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTransTable();
+}
+
+function searchTrans(val){
+  transSearch=val.toLowerCase();
+  renderTransTable();
+}
+
+function autoTranslate(){
+  let filled=0;
+  TRANS_DATA.forEach(r=>{if(!r.ar.trim()){r.ar='[Auto: '+r.en+']';filled++;}});
+  renderTransTable();
+  toast(filled+' missing fields auto-filled');
+}
+
+function saveTranslations(){
+  toast('✅ Translations saved — lang.js will be regenerated');
+}
+
+function exportLangFile(){
+  toast('📥 Exporting lang.js file…');
+}
+
+function importLangFile(){
+  toast('📤 Import dialog opened');
+}
+
+// ─── Backup ───
+function createBackup(){
+  const now=new Date();
+  const name=`backup_manual_${now.toISOString().slice(0,10)}.zip`;
+  const list=document.getElementById('backupList');
+  const item=document.createElement('div');
+  item.className='backup-item';
+  item.style.background='#f0fdf4';
+  item.style.borderColor='#bbf7d0';
+  item.innerHTML=`<div class="backup-icon">💾</div>
+    <div class="backup-info"><div class="backup-name">${name}</div><div class="backup-meta">Manual backup · Just created · Includes: Pages, Media, Translations, Settings</div></div>
+    <span class="backup-size">18.7 MB</span>
+    <div class="backup-actions">
+      <button class="backup-btn restore" onclick="toast('Restoring backup…')"><i class="fas fa-undo"></i> Restore</button>
+      <button class="backup-btn" onclick="toast('Downloading backup…')"><i class="fas fa-download"></i></button>
+      <button class="backup-btn del" onclick="deleteBackup(this)"><i class="fas fa-trash"></i></button>
+    </div>`;
+  list.prepend(item);
+  toast('✅ Backup created: '+name);
+}
+
+function deleteBackup(btn){
+  const item=btn.closest('.backup-item');
+  item.style.opacity='0';
+  item.style.transition='opacity .3s';
+  setTimeout(()=>item.remove(),300);
+  toast('Backup deleted');
+}
+
+// ─── Danger zone ───
+let resetTarget='';
+function confirmReset(type){
+  resetTarget=type;
+  const modal=document.getElementById('confirmModal');
+  if(type==='translations'){
+    document.getElementById('confirmTitle').textContent='Reset All Translations?';
+    document.getElementById('confirmDesc').textContent='All Arabic translations will be permanently deleted. This cannot be undone.';
+  } else {
+    document.getElementById('confirmTitle').textContent='Reset Entire CMS?';
+    document.getElementById('confirmDesc').textContent='ALL settings, users, content and translations will be wiped. Make sure you have a backup.';
+  }
+  modal.style.display='flex';
+}
+function closeModal(){document.getElementById('confirmModal').style.display='none';}
+function executeReset(){
+  closeModal();
+  if(resetTarget==='translations') toast('⚠️ All translations reset to defaults');
+  else toast('⚠️ CMS reset complete — redirecting to setup…');
+}
+
+// ─── Init ───
+document.addEventListener('DOMContentLoaded',()=>{
+  initAuth();
+  renderTransTable();
+});
+</script>
+</body>
+</html>

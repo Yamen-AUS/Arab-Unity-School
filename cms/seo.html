@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUS CMS — SEO Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#002244;--navy2:#003a70;--navy3:#001830;
+  --green:#1a5c30;--green2:#2a7d3e;--gold:#c8a94a;
+  --red:#ef4444;--amber:#f59e0b;--blue:#3b82f6;
+  --sidebar-w:260px;--header-h:64px;
+  --gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;
+  --gray-400:#94a3b8;--gray-500:#64748b;--gray-700:#334155;--gray-900:#0f172a;
+  --radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.05);
+}
+body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-700);display:flex;min-height:100vh;}
+.sidebar{width:var(--sidebar-w);background:var(--navy3);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;z-index:100;overflow-y:auto;transition:transform .3s}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+.sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:12px}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#e8c96a);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.logo-text h2{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:#fff;line-height:1.1}
+.logo-text p{font-size:.68rem;color:rgba(255,255,255,.35);margin-top:1px}
+.sidebar-user{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:10px}
+.user-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff;flex-shrink:0}
+.user-info .name{font-size:.82rem;font-weight:600;color:#fff}
+.user-info .role-badge{font-size:.65rem;font-weight:700;padding:1px 7px;border-radius:20px;display:inline-block;margin-top:2px}
+.nav-section{padding:12px 0}
+.nav-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);padding:0 20px 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;color:rgba(255,255,255,.55);font-size:.83rem;font-weight:500;transition:all .15s;text-decoration:none;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.9)}
+.nav-item.active{background:rgba(255,255,255,.08);color:#fff;border-left-color:var(--gold)}
+.nav-item i{width:16px;font-size:.8rem;text-align:center}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:10px}
+.nav-badge.amber{background:var(--amber)}
+.sidebar-footer{margin-top:auto;padding:16px 20px;border-top:1px solid rgba(255,255,255,.07)}
+.btn-logout{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.4);font-size:.8rem;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;transition:color .2s;padding:0}
+.btn-logout:hover{color:var(--red)}
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column}
+.top-header{height:var(--header-h);background:#fff;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;padding:0 28px;gap:16px;position:sticky;top:0;z-index:50;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.header-title{font-size:1.05rem;font-weight:700;color:var(--navy);flex:1}
+.icon-btn{width:36px;height:36px;border-radius:8px;background:var(--gray-100);border:1px solid var(--gray-200);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray-500);font-size:.82rem}
+.header-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:#fff}
+.hamburger{display:none;background:none;border:none;font-size:1.1rem;color:var(--navy);cursor:pointer;padding:4px}
+.content{padding:28px;flex:1}
+/* Page header */
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap}
+.page-header h1{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--navy)}
+.page-header p{font-size:.85rem;color:var(--gray-500);margin-top:4px}
+.btn-primary{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background .2s}
+.btn-primary:hover{background:var(--navy2)}
+.btn-green{background:var(--green2);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+/* Score ring cards */
+.score-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.score-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);text-align:center}
+.ring-wrap{position:relative;width:80px;height:80px;margin:0 auto 12px}
+.ring-svg{width:80px;height:80px;transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--gray-100);stroke-width:8}
+.ring-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1s ease}
+.ring-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;color:var(--gray-900)}
+.score-label{font-size:.82rem;font-weight:700;color:var(--gray-700)}
+.score-sub{font-size:.72rem;color:var(--gray-400);margin-top:3px}
+/* Layout */
+.seo-grid{display:grid;grid-template-columns:1fr 360px;gap:24px;margin-bottom:28px}
+.card{background:#fff;border-radius:var(--radius);border:1px solid var(--gray-200);box-shadow:var(--shadow);overflow:hidden}
+.card-header{padding:16px 20px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.card-header h3{font-size:.9rem;font-weight:700;color:var(--navy)}
+.card-header p{font-size:.75rem;color:var(--gray-400);margin-top:1px}
+.card-body{padding:20px}
+/* Page selector */
+.page-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.page-tab{padding:6px 14px;border-radius:7px;border:1px solid var(--gray-200);background:#fff;font-size:.78rem;font-weight:600;color:var(--gray-500);cursor:pointer;transition:all .15s}
+.page-tab:hover{border-color:var(--navy);color:var(--navy)}
+.page-tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+/* Form */
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:.73rem;font-weight:700;color:var(--gray-500);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.form-group input,.form-group textarea{width:100%;border:1px solid var(--gray-200);border-radius:8px;padding:9px 12px;font-size:.85rem;color:var(--gray-700);font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--navy2)}
+.char-count{font-size:.7rem;font-weight:600}
+.char-count.ok{color:var(--green2)}
+.char-count.warn{color:var(--amber)}
+.char-count.bad{color:var(--red)}
+/* SERP preview */
+.serp-preview{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:10px;padding:16px;margin-top:16px}
+.serp-preview .serp-url{font-size:.75rem;color:#006621;margin-bottom:2px}
+.serp-preview .serp-title{font-size:1.05rem;color:#1a0dab;font-weight:400;cursor:pointer;text-decoration:none;display:block;margin-bottom:3px;line-height:1.3}
+.serp-preview .serp-title:hover{text-decoration:underline}
+.serp-preview .serp-desc{font-size:.82rem;color:var(--gray-600);line-height:1.5}
+.serp-preview .serp-breadcrumb{font-size:.72rem;color:var(--gray-400);margin-bottom:4px}
+/* Issues list */
+.issue-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--gray-100)}
+.issue-item:last-child{border-bottom:none}
+.issue-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.72rem;flex-shrink:0}
+.issue-title{font-size:.82rem;font-weight:600;color:var(--gray-700)}
+.issue-desc{font-size:.74rem;color:var(--gray-400);margin-top:2px}
+.issue-badge{font-size:.64rem;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:auto;white-space:nowrap;flex-shrink:0}
+/* Keywords */
+.kw-table{width:100%;border-collapse:collapse}
+.kw-table th{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400);padding:0 12px 8px;text-align:left;border-bottom:1px solid var(--gray-100)}
+.kw-table td{padding:9px 12px;border-bottom:1px solid var(--gray-50);font-size:.82rem}
+.kw-table tr:last-child td{border-bottom:none}
+.rank-badge{font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:20px}
+.trend-up{color:var(--green2)}
+.trend-down{color:var(--red)}
+/* Sitemap */
+.sitemap-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;border:1px solid var(--gray-200);margin-bottom:6px;font-size:.8rem}
+.sitemap-item .url{color:var(--navy2);font-weight:500;flex:1;font-family:monospace;font-size:.75rem}
+.sitemap-status{font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:20px}
+/* Bottom grid */
+.bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+/* Chart */
+.chart-wrap{height:180px;position:relative}
+/* Sidebar overlay */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90}
+@media(max-width:1200px){.score-grid{grid-template-columns:repeat(2,1fr)}.seo-grid{grid-template-columns:1fr}}
+@media(max-width:900px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.sidebar-overlay.open{display:block}.main{margin-left:0}.hamburger{display:block}}
+@media(max-width:600px){.content{padding:16px}.score-grid{grid-template-columns:1fr 1fr}.bottom-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo"><div class="logo-icon">🏫</div><div class="logo-text"><h2>AUS CMS</h2><p>Arab Unity School</p></div></div>
+  <div class="sidebar-user">
+    <div class="user-avatar" id="userAvatar" style="background:#ef4444">SA</div>
+    <div class="user-info"><div class="name" id="userName">Super Admin</div><span class="role-badge" id="roleBadge" style="background:rgba(239,68,68,.2);color:#ef4444">Super Admin</span></div>
+  </div>
+  <nav>
+    <div class="nav-section">
+      <div class="nav-label">Main</div>
+      <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="pages.html" class="nav-item"><i class="fas fa-file-alt"></i> Pages</a>
+      <a href="media.html" class="nav-item"><i class="fas fa-images"></i> Media Library</a>
+      <a href="announcements.html" class="nav-item"><i class="fas fa-bullhorn"></i> Announcements <span class="nav-badge">3</span></a>
+      <a href="events.html" class="nav-item"><i class="fas fa-calendar-alt"></i> Events</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">School</div>
+      <a href="staff.html" class="nav-item"><i class="fas fa-users"></i> Staff Profiles</a>
+      <a href="admissions-cms.html" class="nav-item"><i class="fas fa-user-plus"></i> Admissions</a>
+      <a href="results-cms.html" class="nav-item"><i class="fas fa-chart-bar"></i> Results</a>
+      <a href="gallery.html" class="nav-item"><i class="fas fa-photo-video"></i> Gallery</a>
+      <a href="documents.html" class="nav-item"><i class="fas fa-file-download"></i> Documents <span class="nav-badge amber">2</span></a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">System</div>
+      <a href="users.html" class="nav-item"><i class="fas fa-user-shield"></i> Users & Roles</a>
+      <a href="seo.html" class="nav-item active"><i class="fas fa-search"></i> SEO Manager</a>
+      <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer"><button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button></div>
+</aside>
+
+<div class="main">
+  <header class="top-header">
+    <button class="hamburger" onclick="openSidebar()"><i class="fas fa-bars"></i></button>
+    <span class="header-title">SEO Manager</span>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="icon-btn"><i class="fas fa-bell"></i></button>
+      <div class="header-avatar" id="headerAvatar" style="background:#ef4444">SA</div>
+    </div>
+  </header>
+
+  <div class="content">
+    <div class="page-header">
+      <div>
+        <h1>SEO Manager</h1>
+        <p>Optimise page titles, meta descriptions, keywords and search performance for Arab Unity School</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn-primary" onclick="generateSitemap()"><i class="fas fa-sitemap"></i> Generate Sitemap</button>
+        <button class="btn-green" onclick="saveAllSEO()"><i class="fas fa-save"></i> Save All Changes</button>
+      </div>
+    </div>
+
+    <!-- Score cards -->
+    <div class="score-grid">
+      <div class="score-card">
+        <div class="ring-wrap">
+          <svg class="ring-svg" viewBox="0 0 80 80">
+            <circle class="ring-bg" cx="40" cy="40" r="32"/>
+            <circle class="ring-fill" cx="40" cy="40" r="32" stroke="#c8a94a" stroke-dasharray="201" stroke-dashoffset="20" id="ring1"/>
+          </svg>
+          <div class="ring-text">91</div>
+        </div>
+        <div class="score-label">Overall SEO Score</div>
+        <div class="score-sub" style="color:var(--green2)">Excellent</div>
+      </div>
+      <div class="score-card">
+        <div class="ring-wrap">
+          <svg class="ring-svg" viewBox="0 0 80 80">
+            <circle class="ring-bg" cx="40" cy="40" r="32"/>
+            <circle class="ring-fill" cx="40" cy="40" r="32" stroke="#3b82f6" stroke-dasharray="201" stroke-dashoffset="32"/>
+          </svg>
+          <div class="ring-text">84</div>
+        </div>
+        <div class="score-label">Performance</div>
+        <div class="score-sub">Page Speed</div>
+      </div>
+      <div class="score-card">
+        <div class="ring-wrap">
+          <svg class="ring-svg" viewBox="0 0 80 80">
+            <circle class="ring-bg" cx="40" cy="40" r="32"/>
+            <circle class="ring-fill" cx="40" cy="40" r="32" stroke="#10b981" stroke-dasharray="201" stroke-dashoffset="14"/>
+          </svg>
+          <div class="ring-text">93</div>
+        </div>
+        <div class="score-label">Accessibility</div>
+        <div class="score-sub" style="color:var(--green2)">Very Good</div>
+      </div>
+      <div class="score-card">
+        <div class="ring-wrap">
+          <svg class="ring-svg" viewBox="0 0 80 80">
+            <circle class="ring-bg" cx="40" cy="40" r="32"/>
+            <circle class="ring-fill" cx="40" cy="40" r="32" stroke="#8b5cf6" stroke-dasharray="201" stroke-dashoffset="18"/>
+          </svg>
+          <div class="ring-text">91</div>
+        </div>
+        <div class="score-label">Best Practices</div>
+        <div class="score-sub">Technical SEO</div>
+      </div>
+    </div>
+
+    <!-- Page SEO editor + Issues -->
+    <div class="seo-grid">
+      <!-- Left: per-page editor -->
+      <div class="card">
+        <div class="card-header">
+          <div><h3>📄 Page SEO Settings</h3><p>Edit meta title, description and keywords per page</p></div>
+        </div>
+        <div class="card-body">
+          <!-- Page tabs -->
+          <div class="page-tabs" id="pageTabs"></div>
+
+          <!-- Fields -->
+          <div class="form-group">
+            <label>
+              Meta Title
+              <span class="char-count ok" id="titleCount">0 / 60</span>
+            </label>
+            <input type="text" id="metaTitle" placeholder="e.g. Arab Unity School Dubai — British Curriculum" oninput="updateCounts();updateSERP()" maxlength="70">
+          </div>
+          <div class="form-group">
+            <label>
+              Meta Description
+              <span class="char-count ok" id="descCount">0 / 160</span>
+            </label>
+            <textarea id="metaDesc" rows="3" placeholder="A brief description of this page for search engines…" oninput="updateCounts();updateSERP()" maxlength="200" style="resize:vertical"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Focus Keywords</label>
+            <input type="text" id="metaKw" placeholder="british school dubai, igcse dubai, arab unity school" oninput="updateSERP()">
+          </div>
+          <div class="form-group">
+            <label>Canonical URL</label>
+            <input type="text" id="canonicalUrl" placeholder="https://arabunityschool.ae/">
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap">
+            <label style="display:flex;align-items:center;gap:7px;font-size:.82rem;cursor:pointer">
+              <input type="checkbox" id="indexPage" checked> Allow search engines to index this page
+            </label>
+            <label style="display:flex;align-items:center;gap:7px;font-size:.82rem;cursor:pointer">
+              <input type="checkbox" id="followLinks" checked> Follow links
+            </label>
+          </div>
+
+          <!-- SERP Preview -->
+          <div style="margin-bottom:8px;font-size:.72rem;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.06em">🔍 Google Search Preview</div>
+          <div class="serp-preview">
+            <div class="serp-breadcrumb">arabunityschool.ae</div>
+            <a class="serp-title" id="serpTitle" href="#">Arab Unity School Dubai — British Curriculum | AUS</a>
+            <div class="serp-desc" id="serpDesc">Premium British education from FS2 to Year 13 in Dubai. KHDA-rated Very Good. Cambridge IGCSE & A-Levels. Apply now for AY 2026–27.</div>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
+            <button class="btn-green" onclick="savePage()"><i class="fas fa-save"></i> Save Page SEO</button>
+            <button class="btn-primary" onclick="autoGenerate()"><i class="fas fa-magic"></i> Auto-Generate</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Issues + quick wins -->
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <!-- SEO Issues -->
+        <div class="card">
+          <div class="card-header">
+            <div><h3>⚠️ SEO Issues</h3><p>Items needing attention</p></div>
+            <span style="font-size:.72rem;color:var(--gray-400)">3 issues</span>
+          </div>
+          <div class="card-body" style="padding:0 16px">
+            <div class="issue-item">
+              <div class="issue-icon" style="background:#fee2e2"><i class="fas fa-exclamation" style="color:#ef4444"></i></div>
+              <div style="flex:1">
+                <div class="issue-title">Missing Alt Text</div>
+                <div class="issue-desc">14 images are missing alt text across the site</div>
+              </div>
+              <span class="issue-badge" style="background:#fee2e2;color:#991b1b">High</span>
+            </div>
+            <div class="issue-item">
+              <div class="issue-icon" style="background:#fef3c7"><i class="fas fa-exclamation-circle" style="color:#f59e0b"></i></div>
+              <div style="flex:1">
+                <div class="issue-title">Short Meta Description</div>
+                <div class="issue-desc">Events page description is only 42 characters</div>
+              </div>
+              <span class="issue-badge" style="background:#fef3c7;color:#92400e">Medium</span>
+            </div>
+            <div class="issue-item">
+              <div class="issue-icon" style="background:#fef3c7"><i class="fas fa-exclamation-circle" style="color:#f59e0b"></i></div>
+              <div style="flex:1">
+                <div class="issue-title">Duplicate Meta Title</div>
+                <div class="issue-desc">Alumni & Results pages share the same title tag</div>
+              </div>
+              <span class="issue-badge" style="background:#fef3c7;color:#92400e">Medium</span>
+            </div>
+            <div class="issue-item">
+              <div class="issue-icon" style="background:#d1fae5"><i class="fas fa-check" style="color:#10b981"></i></div>
+              <div style="flex:1">
+                <div class="issue-title">Structured Data</div>
+                <div class="issue-desc">Schema markup is correctly implemented</div>
+              </div>
+              <span class="issue-badge" style="background:#d1fae5;color:#065f46">Good</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Keyword rankings -->
+        <div class="card">
+          <div class="card-header"><div><h3>🎯 Keyword Rankings</h3></div></div>
+          <div style="overflow-x:auto">
+            <table class="kw-table">
+              <thead><tr><th>Keyword</th><th>Rank</th><th>Trend</th></tr></thead>
+              <tbody>
+                <tr><td>british school dubai</td><td><span class="rank-badge" style="background:#d1fae5;color:#065f46">#4</span></td><td><span class="trend-up"><i class="fas fa-arrow-up"></i> +2</span></td></tr>
+                <tr><td>igcse school dubai</td><td><span class="rank-badge" style="background:#d1fae5;color:#065f46">#7</span></td><td><span class="trend-up"><i class="fas fa-arrow-up"></i> +1</span></td></tr>
+                <tr><td>arab unity school</td><td><span class="rank-badge" style="background:#d1fae5;color:#065f46">#1</span></td><td><span style="color:var(--gray-400)">—</span></td></tr>
+                <tr><td>a level school dubai</td><td><span class="rank-badge" style="background:#dbeafe;color:#1e40af">#12</span></td><td><span class="trend-down"><i class="fas fa-arrow-down"></i> -1</span></td></tr>
+                <tr><td>school admissions dubai 2026</td><td><span class="rank-badge" style="background:#fef3c7;color:#92400e">#18</span></td><td><span class="trend-up"><i class="fas fa-arrow-up"></i> +4</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom: Sitemap + Traffic chart -->
+    <div class="bottom-grid">
+      <!-- Sitemap -->
+      <div class="card">
+        <div class="card-header">
+          <div><h3>🗺️ Sitemap</h3><p>Auto-generated XML sitemap</p></div>
+          <button class="btn-primary" style="font-size:.75rem;padding:7px 14px" onclick="generateSitemap()"><i class="fas fa-sync"></i> Regenerate</button>
+        </div>
+        <div class="card-body">
+          <div id="sitemapList"></div>
+          <div style="margin-top:12px;padding:10px 14px;background:var(--gray-50);border-radius:8px;font-size:.75rem;color:var(--gray-500)">
+            <i class="fas fa-info-circle"></i> Last generated: <strong>Today, 09:14 AM</strong> · 
+            <a href="#" style="color:var(--navy2);font-weight:600">View sitemap.xml</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search traffic -->
+      <div class="card">
+        <div class="card-header"><div><h3>📈 Search Traffic</h3><p>Organic visits — last 7 days</p></div></div>
+        <div class="card-body">
+          <div class="chart-wrap"><canvas id="trafficChart"></canvas></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px">
+            <div style="text-align:center">
+              <div style="font-size:1.2rem;font-weight:800;color:var(--navy)">2,841</div>
+              <div style="font-size:.7rem;color:var(--gray-400)">Total Visits</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:1.2rem;font-weight:800;color:var(--green2)">+18%</div>
+              <div style="font-size:.7rem;color:var(--gray-400)">vs Last Week</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:1.2rem;font-weight:800;color:var(--navy)">3:24</div>
+              <div style="font-size:.7rem;color:var(--gray-400)">Avg. Time on Site</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Auth
+const user = JSON.parse(sessionStorage.getItem('cms_user') || 'null');
+if (!user) { window.location.href = 'index.html'; }
+else {
+  const ini = user.username.substring(0,2).toUpperCase();
+  ['userAvatar','headerAvatar'].forEach(id => {
+    document.getElementById(id).textContent = ini;
+    document.getElementById(id).style.background = user.color||'#002244';
+  });
+  document.getElementById('userName').textContent = user.role;
+  document.getElementById('roleBadge').textContent = user.role;
+  document.getElementById('roleBadge').style.background = (user.color||'#002244')+'25';
+  document.getElementById('roleBadge').style.color = user.color||'#002244';
+}
+
+// Page SEO data
+const PAGE_SEO = {
+  Home: { title:'Arab Unity School Dubai — British Curriculum | AUS', desc:'Premium British education from FS2 to Year 13 in Dubai. KHDA-rated Very Good. Cambridge IGCSE & A-Levels. Apply now for AY 2026–27.', kw:'british school dubai, arab unity school, igcse dubai', url:'https://arabunityschool.ae/' },
+  About: { title:'About Arab Unity School — 50 Years of Excellence | Dubai', desc:'Learn about Arab Unity School's 50-year history, leadership, vision and values. Founded 1975 by the Taher Family. KHDA Very Good rated.', kw:'about arab unity school, school history dubai, taher family school', url:'https://arabunityschool.ae/about.html' },
+  Admissions: { title:'School Admissions Dubai 2026-27 — Arab Unity School', desc:'Apply to Arab Unity School Dubai for AY 2026-27. British curriculum, competitive fees from AED 8,462. Open for all year groups FS2–Year 13.', kw:'school admissions dubai 2026, british school apply dubai', url:'https://arabunityschool.ae/admissions.html' },
+  Curriculum: { title:'British Curriculum Dubai — Cambridge IGCSE & A-Levels | AUS', desc:'Arab Unity School offers the full British National Curriculum from FS2 to Year 13, leading to Cambridge IGCSE and A-Level qualifications in Dubai.', kw:'cambridge igcse dubai, a level school dubai, british curriculum', url:'https://arabunityschool.ae/curriculum.html' },
+  Results: { title:'IGCSE & A-Level Results — Arab Unity School Dubai', desc:'Outstanding Cambridge IGCSE and A-Level examination results. KHDA 2023-24: Very Good in Post-16 Provision and Student Development.', kw:'igcse results dubai, a level results arab unity school', url:'https://arabunityschool.ae/results.html' },
+  Leadership: { title:'School Leadership Team — Arab Unity School Dubai', desc:'Meet the leadership team at Arab Unity School Dubai, led by Chairman Ms. Arwa A. Taher and Group CEO Mr. Kelvin Hornsby.', kw:'arab unity school leadership, school principal dubai', url:'https://arabunityschool.ae/leadership.html' },
+  Events: { title:'School Events & Calendar — Arab Unity School Dubai', desc:'', kw:'school events dubai, arab unity school calendar', url:'https://arabunityschool.ae/events.html' },
+  Alumni: { title:'AUS Alumni — Arab Unity School Graduates | Dubai', desc:'Join the 200,000+ proud alumni of Arab Unity School Dubai. Reconnect, network and celebrate 50 years of excellence together.', kw:'arab unity school alumni, aus graduates dubai', url:'https://arabunityschool.ae/alumni.html' },
+};
+
+const pages = Object.keys(PAGE_SEO);
+let currentPage = 'Home';
+
+// Build page tabs
+document.getElementById('pageTabs').innerHTML = pages.map(p =>
+  `<button class="page-tab ${p===currentPage?'active':''}" onclick="selectPage('${p}',this)">${p}</button>`
+).join('');
+
+function selectPage(name, btn) {
+  currentPage = name;
+  document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const d = PAGE_SEO[name];
+  document.getElementById('metaTitle').value = d.title;
+  document.getElementById('metaDesc').value = d.desc;
+  document.getElementById('metaKw').value = d.kw;
+  document.getElementById('canonicalUrl').value = d.url;
+  updateCounts(); updateSERP();
+}
+selectPage('Home', document.querySelector('.page-tab'));
+
+function updateCounts() {
+  const t = document.getElementById('metaTitle').value.length;
+  const d = document.getElementById('metaDesc').value.length;
+  const tc = document.getElementById('titleCount');
+  const dc = document.getElementById('descCount');
+  tc.textContent = `${t} / 60`;
+  tc.className = 'char-count ' + (t < 30 ? 'warn' : t <= 60 ? 'ok' : 'bad');
+  dc.textContent = `${d} / 160`;
+  dc.className = 'char-count ' + (d < 70 ? 'warn' : d <= 160 ? 'ok' : 'bad');
+}
+
+function updateSERP() {
+  const t = document.getElementById('metaTitle').value || 'Page Title';
+  const d = document.getElementById('metaDesc').value || 'Meta description will appear here…';
+  document.getElementById('serpTitle').textContent = t;
+  document.getElementById('serpDesc').textContent = d;
+}
+
+function autoGenerate() {
+  const d = PAGE_SEO[currentPage];
+  document.getElementById('metaTitle').value = d.title;
+  document.getElementById('metaDesc').value = d.desc || `Discover ${currentPage} at Arab Unity School Dubai — British curriculum, outstanding results and 50 years of excellence.`;
+  updateCounts(); updateSERP();
+  showToast('SEO fields auto-generated!', '#8b5cf6');
+}
+
+function savePage() {
+  PAGE_SEO[currentPage].title = document.getElementById('metaTitle').value;
+  PAGE_SEO[currentPage].desc = document.getElementById('metaDesc').value;
+  PAGE_SEO[currentPage].kw = document.getElementById('metaKw').value;
+  showToast(`SEO saved for ${currentPage}`, '#10b981');
+}
+function saveAllSEO() { showToast('All SEO settings saved!', '#10b981'); }
+
+// Sitemap
+function generateSitemap() {
+  document.getElementById('sitemapList').innerHTML = pages.map(p => {
+    const d = PAGE_SEO[p];
+    return `<div class="sitemap-item">
+      <i class="fas fa-file-code" style="color:var(--gray-400);font-size:.75rem;flex-shrink:0"></i>
+      <span class="url">${d.url}</span>
+      <span class="sitemap-status" style="background:#d1fae5;color:#065f46">✓ Indexed</span>
+    </div>`;
+  }).join('');
+  showToast('Sitemap regenerated — 13 URLs', '#10b981');
+}
+generateSitemap();
+
+// Traffic chart
+const ctx = document.getElementById('trafficChart').getContext('2d');
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+    datasets: [{
+      label: 'Organic Visits',
+      data: [340, 410, 390, 520, 480, 280, 421],
+      borderColor: '#2a7d3e', backgroundColor: 'rgba(42,125,62,0.08)',
+      borderWidth: 2.5, tension: 0.4, fill: true,
+      pointBackgroundColor: '#2a7d3e', pointRadius: 4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+      y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+function showToast(msg, color='#10b981') {
+  const t = document.createElement('div');
+  t.style.cssText = `position:fixed;bottom:24px;right:24px;background:${color};color:#fff;padding:12px 20px;border-radius:10px;font-size:.85rem;font-weight:600;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,.2);transition:opacity .3s`;
+  t.innerHTML = `<i class="fas fa-check-circle"></i> ${msg}`;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; setTimeout(()=>t.remove(),300); }, 2500);
+}
+function openSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
+function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+function logout() { sessionStorage.removeItem('cms_user'); window.location.href = 'index.html'; }
+updateCounts();
+</script>
+</body>
+</html>

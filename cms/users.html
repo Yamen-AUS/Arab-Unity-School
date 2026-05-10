@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUS CMS — Users & Roles</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#002244;--navy2:#003a70;--navy3:#001830;
+  --green:#1a5c30;--green2:#2a7d3e;
+  --gold:#c8a94a;--red:#ef4444;--amber:#f59e0b;--blue:#3b82f6;--purple:#8b5cf6;
+  --sidebar-w:260px;--header-h:64px;
+  --gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;
+  --gray-400:#94a3b8;--gray-500:#64748b;--gray-700:#334155;--gray-900:#0f172a;
+  --radius:12px;--shadow:0 1px 3px rgba(0,0,0,0.08),0 4px 12px rgba(0,0,0,0.05);
+}
+body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-700);display:flex;min-height:100vh;}
+/* Sidebar - reuse same styles */
+.sidebar{width:var(--sidebar-w);background:var(--navy3);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;z-index:100;overflow-y:auto;transition:transform .3s;}
+.sidebar::-webkit-scrollbar{width:4px;}.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px;}
+.sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:12px;}
+.sidebar-logo .logo-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#e8c96a);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.sidebar-logo .logo-text h2{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:#fff;line-height:1.1;}
+.sidebar-logo .logo-text p{font-size:.68rem;color:rgba(255,255,255,.35);margin-top:1px;}
+.sidebar-user{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:10px;}
+.user-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff;flex-shrink:0;}
+.user-info .name{font-size:.82rem;font-weight:600;color:#fff;}
+.user-info .role-badge{font-size:.65rem;font-weight:700;padding:1px 7px;border-radius:20px;display:inline-block;margin-top:2px;}
+.nav-section{padding:12px 0;}
+.nav-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);padding:0 20px 6px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;color:rgba(255,255,255,.55);font-size:.83rem;font-weight:500;transition:all .15s;text-decoration:none;border-left:3px solid transparent;}
+.nav-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.9);}
+.nav-item.active{background:rgba(255,255,255,.08);color:#fff;border-left-color:var(--gold);}
+.nav-item i{width:16px;font-size:.8rem;text-align:center;}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:10px;}
+.nav-badge.amber{background:var(--amber);}
+.sidebar-footer{margin-top:auto;padding:16px 20px;border-top:1px solid rgba(255,255,255,.07);}
+.btn-logout{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.4);font-size:.8rem;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;transition:color .2s;padding:0;}
+.btn-logout:hover{color:var(--red);}
+/* Main */
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;}
+.top-header{height:var(--header-h);background:#fff;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;padding:0 28px;gap:16px;position:sticky;top:0;z-index:50;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.header-title{font-size:1.05rem;font-weight:700;color:var(--navy);flex:1;}
+.header-actions{display:flex;align-items:center;gap:10px;}
+.icon-btn{width:36px;height:36px;border-radius:8px;background:var(--gray-100);border:1px solid var(--gray-200);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray-500);font-size:.82rem;transition:background .15s;}
+.icon-btn:hover{background:var(--gray-200);}
+.header-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:#fff;cursor:pointer;}
+.hamburger{display:none;background:none;border:none;font-size:1.1rem;color:var(--navy);cursor:pointer;padding:4px;}
+.content{padding:28px;flex:1;}
+/* Page header */
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap;}
+.page-header h1{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--navy);}
+.page-header p{font-size:.85rem;color:var(--gray-500);margin-top:4px;}
+.btn-primary{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background .2s;}
+.btn-primary:hover{background:var(--navy2);}
+.btn-green{background:var(--green2);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background .2s;}
+.btn-green:hover{background:var(--green);}
+/* Role cards grid */
+.roles-overview{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;}
+.role-overview-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);position:relative;overflow:hidden;cursor:pointer;transition:box-shadow .2s,transform .2s;}
+.role-overview-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.12);transform:translateY(-2px);}
+.role-overview-card .bar{position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:12px 0 0 12px;}
+.role-ov-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.role-ov-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.role-ov-count{font-size:2rem;font-weight:800;color:var(--gray-900);}
+.role-ov-name{font-size:.88rem;font-weight:700;color:var(--gray-700);}
+.role-ov-desc{font-size:.75rem;color:var(--gray-400);margin-top:3px;}
+.role-perms{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;}
+.perm-tag{font-size:.65rem;font-weight:600;padding:2px 8px;border-radius:4px;background:var(--gray-100);color:var(--gray-500);}
+.perm-tag.yes{background:#d1fae5;color:#065f46;}
+.perm-tag.no{background:#fee2e2;color:#991b1b;text-decoration:line-through;opacity:.7;}
+/* Tabs */
+.tabs{display:flex;gap:4px;margin-bottom:24px;background:var(--gray-100);border-radius:10px;padding:4px;width:fit-content;}
+.tab-btn{padding:8px 18px;border-radius:7px;border:none;background:transparent;font-size:.82rem;font-weight:600;color:var(--gray-500);cursor:pointer;transition:all .15s;}
+.tab-btn.active{background:#fff;color:var(--navy);box-shadow:0 1px 4px rgba(0,0,0,.1);}
+/* Users table */
+.card{background:#fff;border-radius:var(--radius);border:1px solid var(--gray-200);box-shadow:var(--shadow);overflow:hidden;}
+.card-header{padding:16px 20px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.card-header h3{font-size:.9rem;font-weight:700;color:var(--navy);}
+.search-bar{display:flex;align-items:center;gap:8px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:7px 12px;min-width:200px;}
+.search-bar input{border:none;background:transparent;outline:none;font-size:.82rem;color:var(--gray-700);font-family:'Inter',sans-serif;width:100%;}
+.search-bar i{color:var(--gray-400);font-size:.78rem;}
+.users-table{width:100%;border-collapse:collapse;}
+.users-table th{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400);padding:0 16px 10px;text-align:left;border-bottom:1px solid var(--gray-100);}
+.users-table td{padding:12px 16px;border-bottom:1px solid var(--gray-50);font-size:.83rem;color:var(--gray-700);vertical-align:middle;}
+.users-table tr:last-child td{border-bottom:none;}
+.users-table tr:hover td{background:var(--gray-50);}
+.u-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#fff;flex-shrink:0;}
+.u-name-cell{display:flex;align-items:center;gap:10px;}
+.u-name{font-weight:600;color:var(--gray-900);}
+.u-email{font-size:.74rem;color:var(--gray-400);}
+.role-pill{font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+.status-dot{display:inline-flex;align-items:center;gap:5px;font-size:.75rem;font-weight:600;}
+.status-dot::before{content:'';width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.status-dot.active::before{background:#10b981;}
+.status-dot.inactive::before{background:var(--gray-300);}
+.tbl-actions{display:flex;gap:5px;}
+.tbl-btn{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.72rem;cursor:pointer;border:1px solid var(--gray-200);background:#fff;color:var(--gray-500);transition:all .15s;}
+.tbl-btn:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
+.tbl-btn.danger:hover{background:var(--red);border-color:var(--red);}
+/* Permissions matrix */
+.perm-matrix{width:100%;border-collapse:collapse;font-size:.78rem;}
+.perm-matrix th{padding:10px 14px;text-align:center;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-bottom:2px solid var(--gray-100);}
+.perm-matrix th:first-child{text-align:left;}
+.perm-matrix td{padding:10px 14px;border-bottom:1px solid var(--gray-50);text-align:center;vertical-align:middle;}
+.perm-matrix td:first-child{text-align:left;font-weight:600;color:var(--gray-700);}
+.perm-matrix tr:hover td{background:var(--gray-50);}
+.perm-matrix .section-row td{background:var(--gray-50);font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);padding:6px 14px;}
+.pcheck{font-size:1rem;}
+.pcheck.yes{color:#10b981;}
+.pcheck.no{color:#e2e8f0;}
+.pcheck.partial{color:var(--amber);}
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:all .2s;}
+.modal-overlay.open{opacity:1;visibility:visible;}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.3);transform:translateY(20px);transition:transform .2s;}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-header{padding:20px 24px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;}
+.modal-header h3{font-size:1rem;font-weight:700;color:var(--navy);}
+.modal-close{width:32px;height:32px;border-radius:8px;border:1px solid var(--gray-200);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-500);font-size:.85rem;}
+.modal-close:hover{background:var(--gray-100);}
+.modal-body{padding:24px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:.75rem;font-weight:600;color:var(--gray-500);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;border:1px solid var(--gray-200);border-radius:8px;padding:9px 12px;font-size:.85rem;color:var(--gray-700);font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;background:#fff;}
+.form-group input:focus,.form-group select:focus{border-color:var(--navy2);}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--gray-100);display:flex;justify-content:flex-end;gap:10px;}
+.btn-cancel{padding:9px 18px;border:1px solid var(--gray-200);border-radius:8px;background:#fff;font-size:.82rem;font-weight:600;color:var(--gray-500);cursor:pointer;}
+/* Sidebar overlay */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90;}
+/* Responsive */
+@media(max-width:1100px){.roles-overview{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:900px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.sidebar-overlay.open{display:block}.main{margin-left:0}.hamburger{display:block}}
+@media(max-width:600px){.content{padding:16px}.roles-overview{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🏫</div>
+    <div class="logo-text"><h2>AUS CMS</h2><p>Arab Unity School</p></div>
+  </div>
+  <div class="sidebar-user">
+    <div class="user-avatar" id="userAvatar" style="background:#ef4444">SA</div>
+    <div class="user-info">
+      <div class="name" id="userName">Super Admin</div>
+      <span class="role-badge" id="roleBadge" style="background:rgba(239,68,68,.2);color:#ef4444">Super Admin</span>
+    </div>
+  </div>
+  <nav>
+    <div class="nav-section">
+      <div class="nav-label">Main</div>
+      <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="pages.html" class="nav-item"><i class="fas fa-file-alt"></i> Pages</a>
+      <a href="media.html" class="nav-item"><i class="fas fa-images"></i> Media Library</a>
+      <a href="announcements.html" class="nav-item"><i class="fas fa-bullhorn"></i> Announcements <span class="nav-badge">3</span></a>
+      <a href="events.html" class="nav-item"><i class="fas fa-calendar-alt"></i> Events</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">School</div>
+      <a href="staff.html" class="nav-item"><i class="fas fa-users"></i> Staff Profiles</a>
+      <a href="admissions-cms.html" class="nav-item"><i class="fas fa-user-plus"></i> Admissions</a>
+      <a href="results-cms.html" class="nav-item"><i class="fas fa-chart-bar"></i> Results</a>
+      <a href="gallery.html" class="nav-item"><i class="fas fa-photo-video"></i> Gallery</a>
+      <a href="documents.html" class="nav-item"><i class="fas fa-file-download"></i> Documents <span class="nav-badge amber">2</span></a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">System</div>
+      <a href="users.html" class="nav-item active"><i class="fas fa-user-shield"></i> Users & Roles</a>
+      <a href="seo.html" class="nav-item"><i class="fas fa-search"></i> SEO Manager</a>
+      <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+  </div>
+</aside>
+
+<div class="main">
+  <header class="top-header">
+    <button class="hamburger" onclick="openSidebar()"><i class="fas fa-bars"></i></button>
+    <span class="header-title">Users &amp; Roles</span>
+    <div class="header-actions">
+      <button class="icon-btn"><i class="fas fa-bell"></i></button>
+      <div class="header-avatar" id="headerAvatar" style="background:#ef4444">SA</div>
+    </div>
+  </header>
+
+  <div class="content">
+    <div class="page-header">
+      <div>
+        <h1>Users &amp; Roles</h1>
+        <p>Manage CMS access, permissions and team members for Arab Unity School</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn-primary" onclick="openModal('addUserModal')"><i class="fas fa-user-plus"></i> Add New User</button>
+        <button class="btn-green" onclick="showTab('permissions')"><i class="fas fa-shield-alt"></i> Edit Permissions</button>
+      </div>
+    </div>
+
+    <!-- Role overview cards -->
+    <div class="roles-overview">
+      <div class="role-overview-card" onclick="filterRole('Super Admin')">
+        <div class="bar" style="background:#ef4444"></div>
+        <div class="role-ov-top">
+          <div class="role-ov-icon" style="background:#fee2e2"><i class="fas fa-crown" style="color:#ef4444"></i></div>
+          <span class="role-ov-count">1</span>
+        </div>
+        <div class="role-ov-name">Super Admin</div>
+        <div class="role-ov-desc">Full unrestricted access to all CMS features</div>
+        <div class="role-perms">
+          <span class="perm-tag yes">All Access</span>
+          <span class="perm-tag yes">Publish</span>
+          <span class="perm-tag yes">Delete</span>
+          <span class="perm-tag yes">Users</span>
+        </div>
+      </div>
+      <div class="role-overview-card" onclick="filterRole('Principal')">
+        <div class="bar" style="background:#8b5cf6"></div>
+        <div class="role-ov-top">
+          <div class="role-ov-icon" style="background:#ede9fe"><i class="fas fa-graduation-cap" style="color:#8b5cf6"></i></div>
+          <span class="role-ov-count">2</span>
+        </div>
+        <div class="role-ov-name">Principal / Leadership</div>
+        <div class="role-ov-desc">Edit all content, cannot manage users</div>
+        <div class="role-perms">
+          <span class="perm-tag yes">Edit All</span>
+          <span class="perm-tag yes">Publish</span>
+          <span class="perm-tag no">Users</span>
+          <span class="perm-tag yes">Media</span>
+        </div>
+      </div>
+      <div class="role-overview-card" onclick="filterRole('Marketing')">
+        <div class="bar" style="background:#3b82f6"></div>
+        <div class="role-ov-top">
+          <div class="role-ov-icon" style="background:#dbeafe"><i class="fas fa-bullhorn" style="color:#3b82f6"></i></div>
+          <span class="role-ov-count">3</span>
+        </div>
+        <div class="role-ov-name">Marketing Team</div>
+        <div class="role-ov-desc">Manage content, media, events & announcements</div>
+        <div class="role-perms">
+          <span class="perm-tag yes">Content</span>
+          <span class="perm-tag yes">Media</span>
+          <span class="perm-tag no">Settings</span>
+          <span class="perm-tag yes">Events</span>
+        </div>
+      </div>
+      <div class="role-overview-card" onclick="filterRole('Admissions')">
+        <div class="bar" style="background:#f59e0b"></div>
+        <div class="role-ov-top">
+          <div class="role-ov-icon" style="background:#fef3c7"><i class="fas fa-user-plus" style="color:#f59e0b"></i></div>
+          <span class="role-ov-count">2</span>
+        </div>
+        <div class="role-ov-name">Admissions Team</div>
+        <div class="role-ov-desc">Manage admissions pages, fees and forms only</div>
+        <div class="role-perms">
+          <span class="perm-tag yes">Admissions</span>
+          <span class="perm-tag yes">Forms</span>
+          <span class="perm-tag no">Other Pages</span>
+        </div>
+      </div>
+      <div class="role-overview-card" onclick="filterRole('Academic')">
+        <div class="bar" style="background:#10b981"></div>
+        <div class="role-ov-top">
+          <div class="role-ov-icon" style="background:#d1fae5"><i class="fas fa-book" style="color:#10b981"></i></div>
+          <span class="role-ov-count">4</span>
+        </div>
+        <div class="role-ov-name">Academic Team</div>
+        <div class="role-ov-desc">Edit curriculum, results and academic content</div>
+        <div class="role-perms">
+          <span class="perm-tag yes">Curriculum</span>
+          <span class="perm-tag yes">Results</span>
+          <span class="perm-tag no">Admissions</span>
+          <span class="perm-tag no">Settings</span>
+        </div>
+      </div>
+      <div class="role-overview-card" onclick="filterRole('Read Only')">
+        <div class="bar" style="background:#64748b"></div>
+        <div class="role-ov-top">
+          <div class="role-ov-icon" style="background:#f1f5f9"><i class="fas fa-eye" style="color:#64748b"></i></div>
+          <span class="role-ov-count">5</span>
+        </div>
+        <div class="role-ov-name">Read Only</div>
+        <div class="role-ov-desc">View CMS content only, no editing allowed</div>
+        <div class="role-perms">
+          <span class="perm-tag yes">View</span>
+          <span class="perm-tag no">Edit</span>
+          <span class="perm-tag no">Publish</span>
+          <span class="perm-tag no">Delete</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('users')">All Users</button>
+      <button class="tab-btn" onclick="showTab('permissions')">Permissions Matrix</button>
+    </div>
+
+    <!-- Users Tab -->
+    <div id="tab-users">
+      <div class="card">
+        <div class="card-header">
+          <h3 id="tableTitle">All CMS Users (17)</h3>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <div class="search-bar"><i class="fas fa-search"></i><input type="text" placeholder="Search users…" id="userSearch" oninput="filterUsers()"></div>
+            <select id="roleFilter" onchange="filterUsers()" style="border:1px solid var(--gray-200);border-radius:8px;padding:7px 12px;font-size:.82rem;color:var(--gray-700);background:#fff;outline:none;cursor:pointer;">
+              <option value="">All Roles</option>
+              <option>Super Admin</option><option>Principal</option><option>Marketing</option>
+              <option>Admissions</option><option>Academic</option><option>Read Only</option>
+            </select>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="users-table" id="usersTable">
+            <thead>
+              <tr>
+                <th>User</th><th>Role</th><th>Department</th><th>Last Active</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="usersTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Permissions Tab -->
+    <div id="tab-permissions" style="display:none;">
+      <div class="card">
+        <div class="card-header">
+          <h3>Permissions Matrix</h3>
+          <span style="font-size:.78rem;color:var(--gray-400)"><i class="fas fa-info-circle"></i> Click any cell to toggle permission</span>
+        </div>
+        <div style="overflow-x:auto;padding:0 0 4px">
+          <table class="perm-matrix">
+            <thead>
+              <tr>
+                <th style="min-width:200px">Permission</th>
+                <th style="color:#ef4444">Super Admin</th>
+                <th style="color:#8b5cf6">Principal</th>
+                <th style="color:#3b82f6">Marketing</th>
+                <th style="color:#f59e0b">Admissions</th>
+                <th style="color:#10b981">Academic</th>
+                <th style="color:#64748b">Read Only</th>
+              </tr>
+            </thead>
+            <tbody id="permMatrix"></tbody>
+          </table>
+        </div>
+        <div style="padding:16px 20px;border-top:1px solid var(--gray-100);display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+          <span style="font-size:.75rem;color:var(--gray-400)">Legend:</span>
+          <span style="font-size:.75rem;color:#10b981"><i class="fas fa-check-circle"></i> Full Access</span>
+          <span style="font-size:.75rem;color:var(--amber)"><i class="fas fa-dot-circle"></i> Limited Access</span>
+          <span style="font-size:.75rem;color:#e2e8f0;text-shadow:0 0 1px #aaa"><i class="fas fa-times-circle"></i> No Access</span>
+          <button class="btn-primary" style="margin-left:auto;font-size:.78rem;padding:8px 16px" onclick="savePerms()"><i class="fas fa-save"></i> Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal-overlay" id="addUserModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="fas fa-user-plus" style="color:var(--green2);margin-right:8px"></i>Add New CMS User</h3>
+      <button class="modal-close" onclick="closeModal('addUserModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>First Name</label><input type="text" placeholder="e.g. Sarah"></div>
+        <div class="form-group"><label>Last Name</label><input type="text" placeholder="e.g. Ahmed"></div>
+      </div>
+      <div class="form-group"><label>Email Address</label><input type="email" placeholder="sarah.ahmed@arabunityschool.ae"></div>
+      <div class="form-group"><label>Username</label><input type="text" placeholder="sarahahmed"></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Role</label>
+          <select>
+            <option>Super Admin</option><option>Principal</option><option selected>Marketing</option>
+            <option>Admissions</option><option>Academic</option><option>Read Only</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Department</label>
+          <select>
+            <option>Management</option><option>Marketing</option><option>Admissions</option>
+            <option>Academic</option><option>Operations</option><option>Finance</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Password</label><input type="password" placeholder="Min. 8 characters"></div>
+        <div class="form-group"><label>Confirm Password</label><input type="password" placeholder="Re-enter password"></div>
+      </div>
+      <div class="form-group">
+        <label>Language Preference</label>
+        <select><option>English</option><option>Arabic</option><option>Both</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('addUserModal')">Cancel</button>
+      <button class="btn-primary" onclick="addUser()"><i class="fas fa-check"></i> Create User</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Auth
+const user = JSON.parse(sessionStorage.getItem('cms_user') || 'null');
+if (!user) { window.location.href = 'index.html'; }
+else {
+  const ini = user.username.substring(0,2).toUpperCase();
+  document.getElementById('userAvatar').textContent = ini;
+  document.getElementById('userAvatar').style.background = user.color||'#002244';
+  document.getElementById('userName').textContent = user.role;
+  document.getElementById('roleBadge').textContent = user.role;
+  document.getElementById('roleBadge').style.background = (user.color||'#002244')+'25';
+  document.getElementById('roleBadge').style.color = user.color||'#002244';
+  document.getElementById('headerAvatar').textContent = ini;
+  document.getElementById('headerAvatar').style.background = user.color||'#002244';
+}
+
+// Users data
+const USERS_DATA = [
+  { name:'Arwa Taher', email:'arwa@arabunityschool.ae', role:'Super Admin', dept:'Management', lastActive:'Just now', status:'active', color:'#ef4444' },
+  { name:'Kelvin Hornsby', email:'kelvin@arabunityschool.ae', role:'Principal', dept:'Leadership', lastActive:'2 hours ago', status:'active', color:'#8b5cf6' },
+  { name:'Ben (VP)', email:'ben@arabunityschool.ae', role:'Principal', dept:'Leadership', lastActive:'Yesterday', status:'active', color:'#8b5cf6' },
+  { name:'Sarah Ali', email:'sarah@arabunityschool.ae', role:'Marketing', dept:'Marketing', lastActive:'1 hour ago', status:'active', color:'#3b82f6' },
+  { name:'Omar Hassan', email:'omar@arabunityschool.ae', role:'Marketing', dept:'Marketing', lastActive:'3 hours ago', status:'active', color:'#3b82f6' },
+  { name:'Layla Nasser', email:'layla@arabunityschool.ae', role:'Marketing', dept:'Marketing', lastActive:'5 days ago', status:'inactive', color:'#3b82f6' },
+  { name:'Rania Khalid', email:'rania@arabunityschool.ae', role:'Admissions', dept:'Admissions', lastActive:'30 min ago', status:'active', color:'#f59e0b' },
+  { name:'Faisal Mahdi', email:'faisal@arabunityschool.ae', role:'Admissions', dept:'Admissions', lastActive:'Today', status:'active', color:'#f59e0b' },
+  { name:'Tasneem Hussain', email:'tasneem@arabunityschool.ae', role:'Academic', dept:'Secondary', lastActive:'Today', status:'active', color:'#10b981' },
+  { name:'Lizy Rosaline', email:'lizy@arabunityschool.ae', role:'Academic', dept:'Primary', lastActive:'Yesterday', status:'active', color:'#10b981' },
+  { name:'Ashita (SF)', email:'ashita@arabunityschool.ae', role:'Academic', dept:'Sixth Form', lastActive:'2 days ago', status:'active', color:'#10b981' },
+  { name:'Uzma (FS2)', email:'uzma@arabunityschool.ae', role:'Academic', dept:'FS2', lastActive:'Today', status:'active', color:'#10b981' },
+  { name:'Dhanya (Inclusion)', email:'dhanya@arabunityschool.ae', role:'Read Only', dept:'Inclusion', lastActive:'1 week ago', status:'active', color:'#64748b' },
+  { name:'Pooja (Wellbeing)', email:'pooja@arabunityschool.ae', role:'Read Only', dept:'Wellbeing', lastActive:'3 days ago', status:'active', color:'#64748b' },
+  { name:'Finance Officer', email:'finance@arabunityschool.ae', role:'Read Only', dept:'Finance', lastActive:'Today', status:'active', color:'#64748b' },
+  { name:'Reception Staff', email:'reception@arabunityschool.ae', role:'Read Only', dept:'Admin', lastActive:'1 hour ago', status:'active', color:'#64748b' },
+  { name:'IT Support', email:'it@arabunityschool.ae', role:'Read Only', dept:'IT', lastActive:'Yesterday', status:'inactive', color:'#64748b' },
+];
+
+let currentFilter = '';
+function renderUsers(data) {
+  const tbody = document.getElementById('usersTbody');
+  tbody.innerHTML = data.map((u,i) => `
+    <tr>
+      <td><div class="u-name-cell">
+        <div class="u-avatar" style="background:${u.color}">${u.name.split(' ').map(n=>n[0]).join('').substring(0,2)}</div>
+        <div><div class="u-name">${u.name}</div><div class="u-email">${u.email}</div></div>
+      </div></td>
+      <td><span class="role-pill" style="background:${u.color}20;color:${u.color}">${u.role}</span></td>
+      <td>${u.dept}</td>
+      <td style="color:var(--gray-400);font-size:.78rem">${u.lastActive}</td>
+      <td><span class="status-dot ${u.status}">${u.status==='active'?'Active':'Inactive'}</span></td>
+      <td><div class="tbl-actions">
+        <button class="tbl-btn" title="Edit"><i class="fas fa-edit"></i></button>
+        <button class="tbl-btn" title="Reset Password"><i class="fas fa-key"></i></button>
+        <button class="tbl-btn danger" title="Remove"><i class="fas fa-trash"></i></button>
+      </div></td>
+    </tr>`).join('');
+  document.getElementById('tableTitle').textContent = `${currentFilter?currentFilter+' Users':' All CMS Users'} (${data.length})`;
+}
+renderUsers(USERS_DATA);
+
+function filterUsers() {
+  const q = document.getElementById('userSearch').value.toLowerCase();
+  const r = document.getElementById('roleFilter').value;
+  renderUsers(USERS_DATA.filter(u =>
+    (u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q)) &&
+    (!r || u.role === r)
+  ));
+}
+function filterRole(role) {
+  currentFilter = role;
+  document.getElementById('roleFilter').value = role;
+  showTab('users');
+  filterUsers();
+}
+
+// Permissions matrix data
+const PERMS = [
+  { section: 'Content Management' },
+  { name:'View all pages', sa:1, pr:1, mk:1, ad:1, ac:1, ro:1 },
+  { name:'Edit homepage', sa:1, pr:1, mk:1, ad:0, ac:0, ro:0 },
+  { name:'Edit admissions pages', sa:1, pr:1, mk:2, ad:1, ac:0, ro:0 },
+  { name:'Edit curriculum pages', sa:1, pr:1, mk:0, ad:0, ac:1, ro:0 },
+  { name:'Edit results pages', sa:1, pr:1, mk:0, ad:0, ac:1, ro:0 },
+  { name:'Edit leadership pages', sa:1, pr:1, mk:2, ad:0, ac:0, ro:0 },
+  { name:'Publish pages', sa:1, pr:1, mk:2, ad:2, ac:2, ro:0 },
+  { name:'Delete pages', sa:1, pr:0, mk:0, ad:0, ac:0, ro:0 },
+  { section: 'Media' },
+  { name:'Upload images/files', sa:1, pr:1, mk:1, ad:1, ac:1, ro:0 },
+  { name:'Delete media', sa:1, pr:2, mk:2, ad:0, ac:0, ro:0 },
+  { name:'Manage media folders', sa:1, pr:1, mk:1, ad:0, ac:0, ro:0 },
+  { section: 'Announcements & Events' },
+  { name:'Create announcements', sa:1, pr:1, mk:1, ad:1, ac:2, ro:0 },
+  { name:'Publish announcements', sa:1, pr:1, mk:1, ad:2, ac:0, ro:0 },
+  { name:'Schedule events', sa:1, pr:1, mk:1, ad:0, ac:2, ro:0 },
+  { name:'Emergency alerts', sa:1, pr:1, mk:0, ad:0, ac:0, ro:0 },
+  { section: 'Staff & Users' },
+  { name:'View staff profiles', sa:1, pr:1, mk:1, ad:1, ac:1, ro:1 },
+  { name:'Edit staff profiles', sa:1, pr:1, mk:1, ad:0, ac:0, ro:0 },
+  { name:'Manage CMS users', sa:1, pr:0, mk:0, ad:0, ac:0, ro:0 },
+  { name:'Change user roles', sa:1, pr:0, mk:0, ad:0, ac:0, ro:0 },
+  { section: 'System & Settings' },
+  { name:'SEO settings', sa:1, pr:2, mk:2, ad:0, ac:0, ro:0 },
+  { name:'Site settings', sa:1, pr:0, mk:0, ad:0, ac:0, ro:0 },
+  { name:'Language management', sa:1, pr:1, mk:0, ad:0, ac:0, ro:0 },
+  { name:'Backup & restore', sa:1, pr:0, mk:0, ad:0, ac:0, ro:0 },
+];
+
+const permState = JSON.parse(JSON.stringify(PERMS));
+function renderPerms() {
+  const tbody = document.getElementById('permMatrix');
+  tbody.innerHTML = permState.map((p, idx) => {
+    if (p.section) return `<tr class="section-row"><td colspan="7">${p.section}</td></tr>`;
+    const cell = (val, key) => `<td onclick="togglePerm(${idx},'${key}')" style="cursor:pointer">
+      <span class="pcheck ${val===1?'yes':val===2?'partial':'no'}">
+        ${val===1?'<i class="fas fa-check-circle"></i>':val===2?'<i class="fas fa-dot-circle"></i>':'<i class="fas fa-times-circle"></i>'}
+      </span></td>`;
+    return `<tr><td>${p.name}</td>${cell(p.sa,'sa')}${cell(p.pr,'pr')}${cell(p.mk,'mk')}${cell(p.ad,'ad')}${cell(p.ac,'ac')}${cell(p.ro,'ro')}</tr>`;
+  }).join('');
+}
+renderPerms();
+
+function togglePerm(idx, key) {
+  if (key === 'sa') return; // super admin always full
+  permState[idx][key] = (permState[idx][key] + 1) % 3;
+  renderPerms();
+}
+function savePerms() {
+  const btn = event.target;
+  btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+  btn.style.background = '#10b981';
+  setTimeout(() => { btn.innerHTML = '<i class="fas fa-save"></i> Save Changes'; btn.style.background = ''; }, 2000);
+}
+
+// Tabs
+function showTab(t) {
+  document.getElementById('tab-users').style.display = t==='users'?'block':'none';
+  document.getElementById('tab-permissions').style.display = t==='permissions'?'block':'none';
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', (i===0&&t==='users')||(i===1&&t==='permissions')));
+}
+
+// Modal
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function addUser() {
+  closeModal('addUserModal');
+  const toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#10b981;color:#fff;padding:12px 20px;border-radius:10px;font-size:.85rem;font-weight:600;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,.2)';
+  toast.innerHTML = '<i class="fas fa-check-circle"></i> User created successfully!';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+function openSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
+function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+function logout() { sessionStorage.removeItem('cms_user'); window.location.href = 'index.html'; }
+</script>
+</body>
+</html>

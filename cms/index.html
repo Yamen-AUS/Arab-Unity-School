@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUS CMS — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #002244;
+    --navy2: #003a70;
+    --green: #1a5c30;
+    --green2: #2a7d3e;
+    --gold: #c8a94a;
+    --white: #ffffff;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-300: #cbd5e1;
+    --gray-500: #64748b;
+    --gray-700: #334155;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #001830 0%, #002244 40%, #0a3d1f 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  /* Animated background particles */
+  .bg-particles { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+  .bg-particles span {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: rgba(200,169,74,0.4);
+    border-radius: 50%;
+    animation: float linear infinite;
+  }
+  @keyframes float {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 0.5; }
+    100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+  }
+  .login-wrap {
+    position: relative; z-index: 10;
+    width: 100%; max-width: 440px;
+    margin: 20px;
+  }
+  .login-card {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 24px;
+    padding: 48px 40px;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+  }
+  .login-logo {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .login-logo .shield {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, var(--gold), #e8c96a);
+    border-radius: 16px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    margin-bottom: 14px;
+    box-shadow: 0 8px 24px rgba(200,169,74,0.4);
+  }
+  .login-logo h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.6rem; font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+  }
+  .login-logo p {
+    font-size: 0.78rem; color: rgba(255,255,255,0.5);
+    margin-top: 4px; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .login-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(200,169,74,0.4), transparent);
+    margin: 24px 0;
+  }
+  .form-group { margin-bottom: 18px; }
+  .form-group label {
+    display: block;
+    font-size: 0.75rem; font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .input-wrap { position: relative; }
+  .input-wrap i {
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    color: rgba(255,255,255,0.3); font-size: 0.85rem;
+  }
+  .form-group input {
+    width: 100%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 12px 14px 12px 38px;
+    color: #fff;
+    font-size: 0.92rem;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+  }
+  .form-group input:focus {
+    border-color: rgba(200,169,74,0.6);
+    background: rgba(255,255,255,0.1);
+  }
+  .form-group input::placeholder { color: rgba(255,255,255,0.25); }
+  .remember-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .remember-row label { font-size: 0.8rem; color: rgba(255,255,255,0.55); cursor: pointer; display: flex; align-items: center; gap: 7px; }
+  .remember-row a { font-size: 0.8rem; color: var(--gold); text-decoration: none; }
+  .btn-login {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold), #e8c96a);
+    border: none; border-radius: 10px;
+    padding: 13px;
+    font-size: 0.92rem; font-weight: 700;
+    color: var(--navy);
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    letter-spacing: 0.04em;
+  }
+  .btn-login:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(200,169,74,0.4); }
+  .btn-login:active { transform: translateY(0); }
+  .login-footer {
+    text-align: center;
+    margin-top: 28px;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.3);
+  }
+  .error-msg {
+    background: rgba(220,38,38,0.15);
+    border: 1px solid rgba(220,38,38,0.3);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.82rem; color: #fca5a5;
+    margin-bottom: 16px; display: none;
+  }
+  .demo-accounts {
+    margin-top: 20px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px; padding: 14px;
+  }
+  .demo-accounts p { font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .demo-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px; padding: 5px 10px;
+    font-size: 0.75rem; color: rgba(255,255,255,0.6);
+    cursor: pointer; margin: 3px; transition: background 0.2s;
+  }
+  .demo-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .demo-btn .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-particles" id="particles"></div>
+
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="shield">🏫</div>
+      <h1>AUS CMS</h1>
+      <p>Arab Unity School — Content Management</p>
+    </div>
+    <div class="login-divider"></div>
+
+    <div class="error-msg" id="errorMsg"><i class="fas fa-exclamation-circle"></i> Invalid username or password.</div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label>Username</label>
+        <div class="input-wrap">
+          <i class="fas fa-user"></i>
+          <input type="text" id="username" placeholder="Enter your username" autocomplete="username">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrap">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password">
+        </div>
+      </div>
+      <div class="remember-row">
+        <label><input type="checkbox" id="remember"> Remember me</label>
+        <a href="#">Forgot password?</a>
+      </div>
+      <button type="submit" class="btn-login"><i class="fas fa-sign-in-alt"></i> &nbsp;Sign In to CMS</button>
+    </form>
+
+    <div class="demo-accounts">
+      <p>Quick Demo Access</p>
+      <button class="demo-btn" onclick="fillDemo('superadmin','admin123')"><span class="dot" style="background:#ef4444"></span>Super Admin</button>
+      <button class="demo-btn" onclick="fillDemo('principal','school123')"><span class="dot" style="background:#8b5cf6"></span>Principal</button>
+      <button class="demo-btn" onclick="fillDemo('marketing','mkt123')"><span class="dot" style="background:#3b82f6"></span>Marketing</button>
+      <button class="demo-btn" onclick="fillDemo('admissions','adm123')"><span class="dot" style="background:#f59e0b"></span>Admissions</button>
+    </div>
+
+    <div class="login-footer">
+      © 2025 Arab Unity School · Dubai, UAE<br>
+      CMS v1.0 — Secure Admin Portal
+    </div>
+  </div>
+</div>
+
+<script>
+// Demo credentials
+const USERS = {
+  superadmin: { pass: 'admin123',  role: 'Super Admin',    color: '#ef4444', icon: 'fa-crown' },
+  principal:  { pass: 'school123', role: 'Principal',      color: '#8b5cf6', icon: 'fa-graduation-cap' },
+  marketing:  { pass: 'mkt123',    role: 'Marketing Team', color: '#3b82f6', icon: 'fa-bullhorn' },
+  admissions: { pass: 'adm123',    role: 'Admissions',     color: '#f59e0b', icon: 'fa-user-plus' },
+  academic:   { pass: 'aca123',    role: 'Academic Team',  color: '#10b981', icon: 'fa-book' },
+  readonly:   { pass: 'read123',   role: 'Read Only',      color: '#64748b', icon: 'fa-eye' }
+};
+
+function fillDemo(u, p) {
+  document.getElementById('username').value = u;
+  document.getElementById('password').value = p;
+}
+
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const u = document.getElementById('username').value.trim().toLowerCase();
+  const p = document.getElementById('password').value;
+  const err = document.getElementById('errorMsg');
+  if (USERS[u] && USERS[u].pass === p) {
+    sessionStorage.setItem('cms_user', JSON.stringify({ username: u, ...USERS[u] }));
+    window.location.href = 'dashboard.html';
+  } else {
+    err.style.display = 'block';
+    setTimeout(() => err.style.display = 'none', 3000);
+  }
+});
+
+// Generate particles
+const pc = document.getElementById('particles');
+for (let i = 0; i < 40; i++) {
+  const s = document.createElement('span');
+  s.style.cssText = `left:${Math.random()*100}%;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;animation-duration:${Math.random()*15+8}s;animation-delay:${Math.random()*10}s`;
+  pc.appendChild(s);
+}
+</script>
+</body>
+</html>
