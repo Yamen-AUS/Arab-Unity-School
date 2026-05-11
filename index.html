@@ -861,9 +861,34 @@ function dismissIntro() {
 <!-- ================================================================
   SCRIPTS
 ================================================================ -->
+<script src="js/cms-data.js"></script>
 <script src="js/lang.js?v=12"></script>
 <script src="js/nav.js?v=23"></script>
 <script>
+
+/* ─── CMS Announcements Bar ────────────────────────────────── */
+(function injectAnnouncements() {
+  var anns = AUSData.getLiveAnnouncements();
+  if (!anns || !anns.length) return;
+  var bar = document.createElement('div');
+  bar.id = 'cms-ann-bar';
+  bar.style.cssText = 'background:linear-gradient(90deg,#002244,#003a70);color:#fff;font-size:.8rem;font-weight:500;padding:0;overflow:hidden;position:relative;z-index:999;';
+  var TYPE_ICONS = { admissions:'📋', general:'📢', academic:'📚', event:'📅', alert:'🚨' };
+  var TYPE_COLORS = { admissions:'#f59e0b', general:'#10b981', academic:'#8b5cf6', event:'#3b82f6', alert:'#ef4444' };
+  var html = '<div style="display:flex;align-items:stretch;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none">';
+  anns.forEach(function(a){
+    var col = TYPE_COLORS[a.type] || '#10b981';
+    var icon = TYPE_ICONS[a.type] || '📢';
+    html += '<div style="display:flex;align-items:center;gap:10px;padding:9px 20px;border-left:3px solid '+col+';white-space:nowrap;flex-shrink:0">'
+      + '<span style="font-size:.95rem">'+icon+'</span>'
+      + '<span style="color:rgba(255,255,255,.6);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase">'+a.type+'</span>'
+      + '<span style="color:#fff">'+a.title+'</span>'
+      + '</div>';
+  });
+  html += '</div>';
+  bar.innerHTML = html;
+  document.body.insertAdjacentElement('afterbegin', bar);
+})();
 
 /* ─── Hero Slideshow ───────────────────────────────────────── */
 var _hIdx = 0;

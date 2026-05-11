@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AUS CMS — Announcements</title>
+<script src="../js/cms-data.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamath:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
 <style>
@@ -165,6 +166,7 @@ body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-7
     <button class="hamburger" onclick="openSidebar()"><i class="fas fa-bars"></i></button>
     <span class="header-title">Announcements</span>
     <div style="display:flex;align-items:center;gap:10px">
+      <span id="syncBadge" style="font-size:.72rem;color:rgba(255,255,255,.55);background:rgba(255,255,255,.08);padding:4px 10px;border-radius:20px;font-weight:600;letter-spacing:.03em"></span>
       <button class="icon-btn"><i class="fas fa-bell"></i></button>
       <div class="header-avatar" id="headerAvatar" style="background:#ef4444">SA</div>
     </div>
@@ -337,14 +339,19 @@ else {
   document.getElementById('roleBadge').style.color = user.color||'#002244';
 }
 
-// Data
-let ANNS = [
+// Data — load from localStorage (falls back to defaults via AUSData)
+let ANNS = AUSData.getAnnouncements();
+// keep legacy array start comment for reference
+const _ANNS_DEFAULT = [
   { id:1, title:'AY 2026–27 Registration Now Open', type:'admissions', body:'Applications for the new academic year are now open. Register early to secure your place.', status:'live', date:'8 May 2025', audience:'All Visitors', page:'All Pages' },
   { id:2, title:'New Bus Routes for September 2026', type:'general', body:'Updated bus routes covering additional areas of Dubai. Contact RBT for confirmation.', status:'live', date:'7 May 2025', audience:'Parents', page:'All Pages' },
   { id:3, title:'Summer Fair — 20 June 2025', type:'event', body:'Join us for our annual Summer Fair. Games, food stalls and performances!', status:'scheduled', date:'15 May 2025', audience:'All Visitors', page:'Events' },
   { id:4, title:'End of Year Newsletter 2025', type:'academic', body:'Draft version of the end of year newsletter.', status:'draft', date:'Today', audience:'Parents', page:'Home Only' },
   { id:5, title:'KHDA Inspection Results — Very Good', type:'academic', body:'We are proud to share our latest KHDA inspection results confirming our Very Good rating.', status:'live', date:'1 May 2025', audience:'All Visitors', page:'All Pages' },
 ];
+
+// persist helper — called after every mutation
+function persistANNS() { AUSData.saveAnnouncements(ANNS); updateSyncBadge(); }
 
 const typeColors = { general:'#d1fae5:#065f46:#10b981', academic:'#ede9fe:#5b21b6:#8b5cf6', admissions:'#fef3c7:#92400e:#f59e0b', event:'#dbeafe:#1e40af:#3b82f6', alert:'#fee2e2:#991b1b:#ef4444' };
 const typeEmoji = { general:'📢', academic:'📚', admissions:'📋', event:'📅', alert:'🚨' };
@@ -404,16 +411,14 @@ function publishAnn() {
   const title = document.getElementById('annTitle').value.trim();
   if (!title) { alert('Please enter a title'); return; }
   ANNS.unshift({ id: Date.now(), title, type: document.getElementById('annType').value, body: document.getElementById('annBody').innerText, status:'live', date: 'Just now', audience: document.getElementById('annAudience').value, page: document.getElementById('annPage').value });
-  renderList();
-  resetComposer();
-  showToast('Announcement published successfully!', '#10b981');
+  persistANNS(); renderList(); resetComposer();
+  showToast('Announcement published & synced to website! ✅', '#10b981');
 }
 function saveDraft() {
   const title = document.getElementById('annTitle').value.trim();
   if (!title) { alert('Please enter a title'); return; }
   ANNS.unshift({ id: Date.now(), title, type: document.getElementById('annType').value, body: document.getElementById('annBody').innerText, status:'draft', date: 'Just now', audience: document.getElementById('annAudience').value, page: document.getElementById('annPage').value });
-  renderList();
-  resetComposer();
+  persistANNS(); renderList(); resetComposer();
   showToast('Draft saved!', '#64748b');
 }
 function scheduleAnn() {
@@ -423,12 +428,12 @@ function scheduleAnn() {
 }
 function publishItem(id) {
   const a = ANNS.find(x => x.id===id);
-  if (a) { a.status = 'live'; a.date = 'Just now'; renderList(); showToast('Published!','#10b981'); }
+  if (a) { a.status = 'live'; a.date = 'Just now'; persistANNS(); renderList(); showToast('Published & synced to website! ✅','#10b981'); }
 }
 function deleteItem(id) {
   if (confirm('Delete this announcement?')) {
     ANNS = ANNS.filter(x => x.id !== id);
-    renderList();
+    persistANNS(); renderList();
     showToast('Deleted','#ef4444');
   }
 }
@@ -465,6 +470,12 @@ function closeSidebar() { document.getElementById('sidebar').classList.remove('o
 function logout() { sessionStorage.removeItem('ausUser'); window.location.href = 'index.html'; }
 // Init preview
 updatePreview();
+
+// ── Sync badge ──────────────────────────────────────
+function updateSyncBadge() {
+  const el = document.getElementById('syncBadge');
+  if (el) el.textContent = '⚡ Synced ' + AUSData.getLastSync();
+}
 </script>
 </body>
 </html>

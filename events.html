@@ -459,6 +459,10 @@
 
     </div>
 
+    <!-- ── CMS-managed events (injected dynamically from CMS) ── -->
+    <div class="month-divider fade-in" id="cms-events-header" style="display:none">🗓️ Live from CMS</div>
+    <div class="events-list" id="cms-events-list"></div>
+
   </div>
 </section>
 
@@ -486,9 +490,66 @@
   </div>
 </section>
 
+<script src="js/cms-data.js"></script>
 <script src="js/lang.js?v=12"></script>
 <script src="js/nav.js?v=23"></script>
 <script>
+  /* ── CMS Live Events Injection ───────────────────────── */
+  (function injectCMSEvents() {
+    var events = AUSData.getEvents();
+    if (!events || !events.length) return;
+
+    var CAT_MAP = {
+      'Academic':'academic','Sports':'sports','Arts':'arts',
+      'Community':'community','Exams':'exam','Holiday':'exam'
+    };
+    var upcoming = events.filter(function(e){ return e.status==='upcoming'; })
+      .sort(function(a,b){ return new Date(a.date)-new Date(b.date); });
+    var completed = events.filter(function(e){ return e.status==='completed'; })
+      .sort(function(a,b){ return new Date(b.date)-new Date(a.date); });
+    var all = upcoming.concat(completed);
+    if (!all.length) return;
+
+    function fmtDay(d){ try{ return new Date(d+'T12:00:00').getDate(); }catch(e){return '—';} }
+    function fmtMon(d){ try{ return new Date(d+'T12:00:00').toLocaleString('en-GB',{month:'short'}); }catch(e){return '';} }
+    function buildCard(ev){
+      var cat = CAT_MAP[ev.cat] || 'academic';
+      var tag = ev.status==='upcoming'
+        ? '<span class="upcoming-tag">Upcoming</span>'
+        : '<span class="past-tag">Completed</span>';
+      return '<div class="event-card fade-in" data-cat="'+cat+'">'+
+        '<div class="event-date-box '+cat+'">'+
+          '<span class="event-day">'+fmtDay(ev.date)+'</span>'+
+          '<span class="event-month">'+fmtMon(ev.date)+'</span>'+
+        '</div>'+
+        '<div class="event-body">'+
+          '<span class="event-cat '+cat+'">'+ev.cat+'</span>'+
+          '<h3 class="event-title">'+ev.title+'</h3>'+
+          '<div class="event-meta">'+
+            (ev.time ? '<span>🕗 '+ev.time+'</span>' : '')+
+            (ev.loc  ? '<span>📍 '+ev.loc+'</span>'  : '')+
+            (ev.audience ? '<span>👨‍👩‍👧 '+ev.audience+'</span>' : '')+
+          '</div>'+
+          (ev.desc ? '<p style="font-size:.82rem;color:#6b7280;margin-top:8px;line-height:1.6">'+ev.desc+'</p>' : '')+
+        '</div>'+
+        '<div class="event-badge">'+tag+'</div>'+
+      '</div>';
+    }
+
+    // Find or create CMS events container
+    var container = document.getElementById('cms-events-list');
+    var header = document.getElementById('cms-events-header');
+    if (container && all.length) {
+      container.innerHTML = all.map(buildCard).join('');
+      if (header) header.style.display = 'block';
+      // re-observe new fade-in elements
+      container.querySelectorAll('.fade-in').forEach(function(el){
+        var r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight) { el.style.cssText='opacity:1;transform:none;'; }
+      });
+    }
+  })();
+
   /* Filter events by category */
   function filterEvents(cat, btn) {
     document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });

@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AUS CMS — Events</title>
+<script src="../js/cms-data.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
 <style>
@@ -158,6 +159,7 @@ body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-7
     <button class="hamburger" onclick="openSidebar()"><i class="fas fa-bars"></i></button>
     <span class="header-title">Events</span>
     <div style="display:flex;align-items:center;gap:10px">
+      <span id="syncBadge" style="font-size:.72rem;color:rgba(255,255,255,.55);background:rgba(255,255,255,.08);padding:4px 10px;border-radius:20px;font-weight:600;letter-spacing:.03em"></span>
       <button class="icon-btn"><i class="fas fa-bell"></i></button>
       <div class="header-avatar" id="headerAvatar" style="background:#ef4444">SA</div>
     </div>
@@ -235,7 +237,8 @@ const CATEGORY_BG={
   'Academic':'#dbeafe','Sports':'#dcfce7','Arts':'#f5f3ff',
   'Community':'#fef9c3','Exams':'#fef2f2','Holiday':'#d1fae5'
 };
-let EVENTS=[
+let EVENTS = AUSData.getEvents();
+const _EVENTS_DEFAULT=[
   {id:1,title:'Sports Day 2026',date:'2026-05-20',time:'08:00',cat:'Sports',loc:'Main Sports Field',desc:'Annual sports day with track and field events, team competitions and prize ceremony for all year groups.',audience:'All Students',status:'upcoming'},
   {id:2,title:'Parent-Teacher Meetings',date:'2026-05-22',time:'13:00',cat:'Academic',loc:'Classrooms',desc:'Term 3 parent-teacher consultation sessions. Please book your slot via the school office.',audience:'Parents',status:'upcoming'},
   {id:3,title:'Art Exhibition 2026',date:'2026-05-28',time:'16:00',cat:'Arts',loc:'Main Hall',desc:'Annual student art exhibition showcasing work from Foundation Stage to Year 13.',audience:'Everyone',status:'upcoming'},
@@ -251,6 +254,8 @@ let EVENTS=[
 ];
 let filteredEvents=[...EVENTS];
 let filterMode='all';
+
+function persistEVENTS(){ AUSData.saveEvents(EVENTS); updateSyncBadge(); }
 
 function renderEvents(data){
   if(!data.length){document.getElementById('eventsGrid').innerHTML='<div style="text-align:center;padding:60px 20px;color:var(--gray-400);grid-column:1/-1"><i class="fas fa-calendar-times" style="font-size:2rem;margin-bottom:12px;display:block"></i>No events found</div>';return;}
@@ -325,13 +330,13 @@ function saveEvent(){
   } else {
     const newEv={id:Date.now(),title,date:document.getElementById('evDate').value,time:document.getElementById('evTime').value,cat:document.getElementById('evCat').value,loc:document.getElementById('evLoc').value,desc:document.getElementById('evDesc').value,audience:document.getElementById('evAudience').value,status:'upcoming'};
     EVENTS.unshift(newEv);
-    toast('Event added successfully');
+    toast('Event added & synced ✅');
   }
-  closeModal();applyFilter();
+  persistEVENTS(); closeModal();applyFilter();
 }
 function deleteEvent(id){
   EVENTS=EVENTS.filter(e=>e.id!==id);
-  applyFilter();toast('Event deleted');
+  persistEVENTS(); applyFilter();toast('Event deleted');
 }
 
 function initAuth(){
@@ -349,7 +354,8 @@ function openSidebar(){document.getElementById('sidebar').classList.add('open');
 function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('open')}
 let toastTimer;
 function toast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3000);}
-document.addEventListener('DOMContentLoaded',()=>{initAuth();renderEvents(EVENTS);});
+function updateSyncBadge(){const el=document.getElementById('syncBadge');if(el)el.textContent='⚡ Synced '+AUSData.getLastSync();}
+document.addEventListener('DOMContentLoaded',()=>{initAuth();renderEvents(EVENTS);updateSyncBadge();});
 </script>
 </body>
 </html>

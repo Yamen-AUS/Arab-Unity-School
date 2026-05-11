@@ -782,6 +782,10 @@
 
 
     </div>
+
+    <!-- ── CMS-managed staff cards (injected from CMS Staff page) ── -->
+    <div id="cms-staff-grid" class="leadership-grid" style="margin-top:32px"></div>
+
   </div>
 </section>
 
@@ -849,9 +853,53 @@
   </div>
 </div>
 
+<script src="js/cms-data.js"></script>
 <script src="js/lang.js?v=12"></script>
 <script src="js/nav.js?v=23"></script>
 <script>
+/* ── CMS Staff Injection ──────────────────────────────── */
+(function injectCMSStaff() {
+  var staff = AUSData.getVisibleStaff();
+  var grid = document.getElementById('cms-staff-grid');
+  if (!grid || !staff || !staff.length) return;
+
+  var DEPT_COLORS = {
+    'Leadership':'linear-gradient(90deg,#b8911a,#d4a820)',
+    'English':'linear-gradient(90deg,#1a3a6a,#2a5a9a)',
+    'Mathematics':'linear-gradient(90deg,#1a5c30,#2a7d3e)',
+    'Science':'linear-gradient(90deg,#4a148c,#6a1fa0)',
+    'Humanities':'linear-gradient(90deg,#991b1b,#b91c1c)',
+    'Arts':'linear-gradient(90deg,#7e22ce,#9333ea)',
+    'ICT':'linear-gradient(90deg,#0369a1,#0284c7)',
+    'PE':'linear-gradient(90deg,#14532d,#166534)',
+    'Arabic':'linear-gradient(90deg,#c2410c,#ea580c)',
+    'Admin':'linear-gradient(90deg,#475569,#64748b)'
+  };
+  var AVATAR_COLORS = ['#ef4444','#3b82f6','#8b5cf6','#f59e0b','#10b981','#ec4899','#06b6d4','#f97316'];
+
+  grid.innerHTML = staff.map(function(s, i) {
+    var bar = DEPT_COLORS[s.dept] || 'linear-gradient(90deg,#002244,#003a70)';
+    var avatarCol = AVATAR_COLORS[s.id % AVATAR_COLORS.length] || '#002244';
+    var initials = (s.first[0] || '') + (s.last[0] || '');
+    var avatarHtml = s.photo
+      ? '<div class="ldr-avatar" style="background-image:url(\'' + s.photo + '\')"></div>'
+      : '<div class="ldr-avatar" style="background:' + avatarCol + ';display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700;color:#fff">' + initials + '</div>';
+    return '<div class="ldr-card fade-in">'
+      + '<div class="ldr-top-bar" style="background:' + bar + '"></div>'
+      + '<div class="ldr-avatar-row">' + avatarHtml
+      + '<div class="ldr-meta">'
+      + '<span class="ldr-role-tag">' + s.dept + '</span>'
+      + '<h4 class="ldr-name">' + s.title + ' ' + s.first + ' ' + s.last + '</h4>'
+      + '<div style="font-size:.78rem;color:#6b7a94;margin-top:2px">' + s.role + '</div>'
+      + '</div></div>'
+      + (s.bio ? '<div class="ldr-body"><p>' + s.bio + '</p></div>' : '')
+      + '</div>';
+  }).join('');
+
+  // Observe new cards for fade-in
+  grid.querySelectorAll('.fade-in').forEach(function(el){ obs.observe(el); });
+})();
+
 var obs = new IntersectionObserver(function(entries){
   entries.forEach(function(en){
     if(en.isIntersecting){ en.target.classList.add('visible'); }

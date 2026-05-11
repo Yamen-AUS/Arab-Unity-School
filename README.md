@@ -97,30 +97,78 @@ images/              School photos, logo, basketball team photo
 
 ## 🏗️ CMS — Arab Unity School Content Management System
 
-A full client-side CMS built with HTML/CSS/JS + Table API. Accessible at `cms/index.html`.
+A full client-side CMS built with HTML/CSS/JS. Accessible at `cms/index.html`.
+Changes made in the CMS are **automatically reflected on the public website** via `js/cms-data.js` (localStorage bridge).
 
-### CMS Pages (8 total — all complete ✅)
+### CMS Pages (15 total — all complete ✅)
 
 | File | Description |
 |------|-------------|
-| `cms/index.html` | Login page — glassmorphism design, 6 demo accounts, sessionStorage auth |
-| `cms/dashboard.html` | Main dashboard — stat counters, Chart.js bar chart, pages table, activity feed |
+| `cms/index.html` | Login page — 6 demo accounts, sessionStorage auth (`ausUser` key) |
+| `cms/dashboard.html` | Dashboard — stat counters, Chart.js bar chart, activity feed |
 | `cms/users.html` | Users & Roles — 17 users table, permissions matrix (24×6), add user modal |
-| `cms/media.html` | Media Library — drag-drop upload, grid/list view, folder chips, file detail modal |
-| `cms/announcements.html` | Announcements — rich text composer, scheduling, live preview, emergency toggle |
-| `cms/page-builder.html` | Page Builder — 9 block types, drag-drop canvas, undo/redo, device preview |
-| `cms/seo.html` | SEO Manager — score rings, SERP preview, keyword rankings, sitemap generator |
-| `cms/settings.html` | Settings — general/identity, language & translation, emergency alerts, social media, analytics, backup/restore, danger zone |
+| `cms/media.html` | Media Library — drag-drop upload, grid/list view, folder chips |
+| `cms/announcements.html` | Announcements — rich text composer, live preview · **syncs → index.html banner** |
+| `cms/page-builder.html` | Page Builder — 9 block types, drag-drop canvas, undo/redo |
+| `cms/seo.html` | SEO Manager — score rings, SERP preview, keyword rankings |
+| `cms/settings.html` | Settings — general, language, emergency alerts, social media, analytics, backup |
+| `cms/pages.html` | Pages Manager — 14 pages table, search/filter, status chips |
+| `cms/events.html` | Events Manager — 12 events, category filters, add/edit modal · **syncs → events.html** |
+| `cms/staff.html` | Staff Profiles — grid/list view, 12 staff, add/edit modal · **syncs → leadership.html** |
+| `cms/admissions-cms.html` | Admissions — pipeline kanban, applications table, fees · **syncs → admissions.html** |
+| `cms/results-cms.html` | Results — DSIB cards, IGCSE/A-Level tables, Chart.js charts · **syncs → results.html** |
+| `cms/gallery.html` | Gallery — 8 albums, lightbox, drag-drop upload, bulk select |
+| `cms/documents.html` | Documents — 15 docs, category nav, upload zone, add/edit modal |
+
+---
+
+## 🔄 CMS ↔ Website Live Sync Architecture
+
+### How It Works
+All CMS pages write to `localStorage` on every save. All website pages read from `localStorage` on load.
+The bridge is `js/cms-data.js` — a shared data layer included in both environments.
+
+```
+CMS Page → AUSData.saveXxx(data) → localStorage → AUSData.getXxx() → Website Page
+```
+
+### Sync Map
+
+| CMS Page | localStorage Key | Website Page | What Updates |
+|----------|-----------------|--------------|--------------|
+| `cms/announcements.html` | `aus_announcements` | `index.html` | Top announcement banner bar |
+| `cms/events.html` | `aus_events` | `events.html` | Live events section (CMS-managed events appended below static ones) |
+| `cms/staff.html` | `aus_staff` | `leadership.html` | CMS-managed staff cards grid |
+| `cms/admissions-cms.html` | `aus_fees` | `admissions.html` | Tuition fees table (`#cms-fees-tbody`) |
+| `cms/results-cms.html` | `aus_dsib` · `aus_igcse` · `aus_alevel` | `results.html` | DSIB inspection cards grid (`#dsib-cms-grid`) |
+
+### localStorage Keys Reference
+
+| Key | Type | Default |
+|-----|------|---------|
+| `aus_announcements` | array | 3 live announcements |
+| `aus_events` | array | 12 events |
+| `aus_staff` | array | 12 staff members |
+| `aus_fees` | array | 8 year-group rows |
+| `aus_bus_fees` | array | 4 zones |
+| `aus_dsib` | array | 6 inspection cards |
+| `aus_igcse` | array | 10 subjects |
+| `aus_alevel` | array | 8 subjects |
+| `aus_settings` | object | School name, social, alerts |
+| `aus_last_sync` | ISO string | Timestamp of last CMS save |
+
+### Sync Badge
+Every connected CMS page shows **⚡ Synced DD Mon YYYY at HH:MM** in the header bar after saving.
 
 ### CMS Demo Accounts
-| Email | Password | Role |
-|-------|----------|------|
-| superadmin@aus.ae | admin123 | Super Admin |
-| principal@aus.ae | principal1 | Principal |
-| marketing@aus.ae | mktg2024 | Marketing |
-| admissions@aus.ae | adm2024! | Admissions |
-| academic@aus.ae | acad2024 | Academic |
-| readonly@aus.ae | readonly | Read Only |
+| Username | Password | Role |
+|----------|----------|------|
+| superadmin | admin123 | Super Admin |
+| principal | school123 | Principal |
+| marketing | mkt123 | Marketing |
+| admissions | adm123 | Admissions |
+| academic | aca123 | Academic |
+| readonly | read123 | Read Only |
 
 ### Recent School Website Edits (May 2026)
 - **Branding**: All "Executive Director" → "Chairman / Owner" for Ms. Arwa across all pages & `lang.js`

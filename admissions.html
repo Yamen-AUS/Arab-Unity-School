@@ -313,7 +313,7 @@
             <th data-i18n="adm.fees.th4">Annual Fee (AED)</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="cms-fees-tbody">
           <tr><td>Early Years</td><td>FS2 (Foundation Stage 2)</td><td>4–5 years</td><td class="fee-amt">8,462</td></tr>
           <tr><td>Primary</td><td>Year 1</td><td>5–6 years</td><td class="fee-amt">9,220</td></tr>
           <tr><td>Primary</td><td>Year 2</td><td>6–7 years</td><td class="fee-amt">9,713</td></tr>
@@ -779,9 +779,22 @@
   </div>
 </div>
 
+<script src="js/cms-data.js"></script>
 <script src="js/lang.js?v=12"></script>
 <script src="js/nav.js?v=23"></script>
 <script>
+/* ── CMS Fees Injection ───────────────────────────── */
+(function injectFees() {
+  var fees = AUSData.getFees();
+  if (!fees || !fees.length) return;
+  var tbody = document.getElementById('cms-fees-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = fees.map(function(f) {
+    return '<tr><td colspan="3"><strong>' + f.yr + '</strong></td>' +
+           '<td class="fee-amt">' + f.annual + '</td></tr>';
+  }).join('');
+})();
+
 function handleEnquiry(e) {
   e.preventDefault();
 

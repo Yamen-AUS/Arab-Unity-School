@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AUS CMS — Admissions</title>
+<script src="../js/cms-data.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
 <style>
@@ -167,6 +168,7 @@ body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-7
     <button class="hamburger" onclick="openSidebar()"><i class="fas fa-bars"></i></button>
     <span class="header-title">Admissions</span>
     <div style="display:flex;align-items:center;gap:10px">
+      <span id="syncBadge" style="font-size:.72rem;color:rgba(255,255,255,.55);background:rgba(255,255,255,.08);padding:4px 10px;border-radius:20px;font-weight:600;letter-spacing:.03em"></span>
       <button class="icon-btn"><i class="fas fa-bell"></i></button>
       <div class="header-avatar" id="headerAvatar" style="background:#ef4444">SA</div>
     </div>
@@ -272,7 +274,7 @@ body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-7
           <h3>Tuition Fees — AY 2026/27</h3>
           <div style="display:flex;gap:8px">
             <span class="chip chip-blue">KHDA Approved</span>
-            <button class="btn-outline" style="font-size:.76rem;padding:6px 14px" onclick="toast('Fees saved successfully')"><i class="fas fa-save"></i> Save Changes</button>
+            <button class="btn-outline" style="font-size:.76rem;padding:6px 14px" onclick="persistFEES()"><i class="fas fa-save"></i> Save & Sync to Website ⚡</button>
           </div>
         </div>
         <div style="overflow-x:auto">
@@ -379,7 +381,8 @@ let APPS=[
 ];
 let filteredApps=[...APPS];
 
-const FEES=[
+let FEES = AUSData.getFees();
+const _FEES_DEFAULT=[
   {yr:'Foundation Stage (FS1–FS2)',annual:'18,560',t1:'7,424',t2:'5,568',t3:'5,568'},
   {yr:'Year 1 – Year 2',annual:'21,840',t1:'8,736',t2:'6,552',t3:'6,552'},
   {yr:'Year 3 – Year 4',annual:'23,190',t1:'9,276',t2:'6,957',t3:'6,957'},
@@ -389,6 +392,21 @@ const FEES=[
   {yr:'Year 11',annual:'31,300',t1:'12,520',t2:'9,390',t3:'9,390'},
   {yr:'Year 12 – Year 13',annual:'33,600',t1:'13,440',t2:'10,080',t3:'10,080'},
 ];
+
+function persistFEES(){
+  // collect current input values before saving
+  const rows = document.querySelectorAll('#feesBody tr');
+  rows.forEach((tr,i)=>{
+    if(!FEES[i]) return;
+    const inputs = tr.querySelectorAll('input');
+    if(inputs[0]) FEES[i].annual=inputs[0].value;
+    if(inputs[1]) FEES[i].t1=inputs[1].value;
+    if(inputs[2]) FEES[i].t2=inputs[2].value;
+    if(inputs[3]) FEES[i].t3=inputs[3].value;
+  });
+  AUSData.saveFees(FEES); updateSyncBadge();
+  toast('Fees saved & synced to website ✅');
+}
 
 function renderApps(data){
   document.getElementById('appsBody').innerHTML=data.map(a=>`
@@ -461,7 +479,8 @@ function openSidebar(){document.getElementById('sidebar').classList.add('open');
 function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('open')}
 let toastTimer;
 function toast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3000);}
-document.addEventListener('DOMContentLoaded',()=>{initAuth();renderApps(APPS);renderFees();});
+function updateSyncBadge(){const el=document.getElementById('syncBadge');if(el)el.textContent='⚡ Synced '+AUSData.getLastSync();}
+document.addEventListener('DOMContentLoaded',()=>{initAuth();renderApps(APPS);renderFees();updateSyncBadge();});
 </script>
 </body>
 </html>
