@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUS CMS — Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#002244;--navy2:#003a70;--navy3:#001830;
+  --green:#1a5c30;--green2:#2a7d3e;--gold:#c8a94a;
+  --red:#ef4444;--amber:#f59e0b;--blue:#3b82f6;
+  --sidebar-w:260px;--header-h:64px;
+  --gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;
+  --gray-400:#94a3b8;--gray-500:#64748b;--gray-600:#475569;--gray-700:#334155;--gray-900:#0f172a;
+  --radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.05);
+}
+body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-700);display:flex;min-height:100vh;}
+.sidebar{width:var(--sidebar-w);background:var(--navy3);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;z-index:100;overflow-y:auto;transition:transform .3s}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+.sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:12px}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#e8c96a);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.logo-text h2{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:#fff;line-height:1.1}
+.logo-text p{font-size:.68rem;color:rgba(255,255,255,.35);margin-top:1px}
+.sidebar-user{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:10px}
+.user-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff;flex-shrink:0}
+.user-info .name{font-size:.82rem;font-weight:600;color:#fff}
+.user-info .role-badge{font-size:.65rem;font-weight:700;padding:1px 7px;border-radius:20px;display:inline-block;margin-top:2px}
+.nav-section{padding:12px 0}
+.nav-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);padding:0 20px 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;color:rgba(255,255,255,.55);font-size:.83rem;font-weight:500;transition:all .15s;text-decoration:none;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.9)}
+.nav-item.active{background:rgba(255,255,255,.08);color:#fff;border-left-color:var(--gold)}
+.nav-item i{width:16px;font-size:.8rem;text-align:center}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:10px}
+.nav-badge.amber{background:var(--amber)}
+.sidebar-footer{margin-top:auto;padding:16px 20px;border-top:1px solid rgba(255,255,255,.07)}
+.btn-logout{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.4);font-size:.8rem;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;transition:color .2s;padding:0}
+.btn-logout:hover{color:var(--red)}
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column}
+.top-header{height:var(--header-h);background:#fff;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;padding:0 28px;gap:16px;position:sticky;top:0;z-index:50;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.header-title{font-size:1.05rem;font-weight:700;color:var(--navy);flex:1}
+.icon-btn{width:36px;height:36px;border-radius:8px;background:var(--gray-100);border:1px solid var(--gray-200);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray-500);font-size:.82rem}
+.header-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:#fff}
+.hamburger{display:none;background:none;border:none;font-size:1.1rem;color:var(--navy);cursor:pointer;padding:4px}
+.content{padding:28px;flex:1}
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+.page-header h1{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--navy)}
+.page-header p{font-size:.85rem;color:var(--gray-500);margin-top:4px}
+.btn-green{background:var(--green2);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;transition:background .2s}
+.btn-green:hover{background:var(--green)}
+.btn-outline{background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:8px;padding:8px 16px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;transition:all .2s}
+.btn-outline:hover{border-color:var(--navy);color:var(--navy)}
+.btn-primary{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif}
+/* Stats */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px}
+.stat-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.stat-val{font-size:1.5rem;font-weight:800;color:var(--gray-900)}
+.stat-label{font-size:.75rem;color:var(--gray-400);margin-top:2px}
+/* Toolbar */
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.search-box{position:relative}
+.search-box input{border:1px solid var(--gray-200);border-radius:8px;padding:8px 12px 8px 34px;font-size:.82rem;color:var(--gray-700);font-family:'Inter',sans-serif;outline:none;width:200px}
+.search-box input:focus{border-color:var(--navy2)}
+.search-box i{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:.78rem}
+/* Album chips */
+.album-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.album-chip{padding:6px 16px;border-radius:20px;border:1px solid var(--gray-200);background:#fff;font-size:.78rem;font-weight:600;color:var(--gray-500);cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:6px}
+.album-chip:hover{border-color:var(--navy);color:var(--navy)}
+.album-chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.album-chip .count{font-size:.65rem;background:rgba(255,255,255,.25);padding:1px 6px;border-radius:10px}
+.album-chip.active .count{background:rgba(255,255,255,.25)}
+.album-chip:not(.active) .count{background:var(--gray-100);color:var(--gray-500)}
+/* Gallery grid */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.gallery-item{border-radius:10px;overflow:hidden;position:relative;cursor:pointer;background:var(--gray-100);aspect-ratio:4/3;border:1px solid var(--gray-200)}
+.gallery-item.selected{outline:3px solid var(--navy);outline-offset:2px}
+.gallery-thumb{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.gallery-thumb-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:2rem;color:var(--gray-300);background:var(--gray-100)}
+.gallery-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .2s;display:flex;flex-direction:column;justify-content:space-between;padding:10px}
+.gallery-item:hover .gallery-overlay{background:rgba(0,0,0,.45)}
+.gallery-item:hover .gallery-thumb{transform:scale(1.04)}
+.gallery-actions{display:flex;gap:6px;opacity:0;transition:opacity .2s;justify-content:flex-end}
+.gallery-item:hover .gallery-actions{opacity:1}
+.gallery-caption{opacity:0;transition:opacity .2s;color:#fff;font-size:.75rem;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+.gallery-item:hover .gallery-caption{opacity:1}
+.gal-btn{width:28px;height:28px;border-radius:7px;background:rgba(255,255,255,.9);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.72rem;color:var(--gray-700);transition:background .15s}
+.gal-btn:hover{background:#fff}
+.gal-btn.danger:hover{background:#fef2f2;color:var(--red)}
+/* Upload zone */
+.upload-zone{border:2px dashed var(--gray-200);border-radius:var(--radius);padding:32px;text-align:center;background:#fff;cursor:pointer;transition:all .2s;margin-bottom:20px}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--navy2);background:#f0f4ff}
+.upload-zone i{font-size:2rem;color:var(--gray-300);margin-bottom:12px;display:block}
+.upload-zone p{font-size:.85rem;color:var(--gray-500);font-weight:500}
+.upload-zone span{font-size:.75rem;color:var(--gray-400);display:block;margin-top:4px}
+/* Bulk action bar */
+.bulk-bar{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy3);color:#fff;border-radius:12px;padding:12px 24px;display:flex;align-items:center;gap:16px;z-index:500;box-shadow:0 8px 28px rgba(0,0,0,.3);transition:transform .3s;white-space:nowrap}
+.bulk-bar.show{transform:translateX(-50%) translateY(0)}
+.bulk-count{font-size:.82rem;font-weight:700;color:var(--gold)}
+.bulk-action{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:8px;padding:7px 14px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s}
+.bulk-action:hover{background:rgba(255,255,255,.2)}
+.bulk-action.danger{color:#fca5a5}
+.bulk-action.danger:hover{background:rgba(239,68,68,.2)}
+/* Album modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9000;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal-header{padding:20px 24px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between}
+.modal-header h3{font-size:1rem;font-weight:700;color:var(--navy)}
+.modal-close{width:32px;height:32px;border-radius:8px;border:1px solid var(--gray-200);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-500)}
+.modal-body{padding:24px}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:.72rem;font-weight:700;color:var(--gray-500);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+.form-group input,.form-group select,.form-group textarea{width:100%;border:1px solid var(--gray-200);border-radius:8px;padding:9px 12px;font-size:.85rem;color:var(--gray-700);font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--navy2)}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--gray-100);display:flex;gap:10px;justify-content:flex-end}
+/* Lightbox */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center;flex-direction:column}
+.lightbox.open{display:flex}
+.lightbox img{max-width:90vw;max-height:80vh;border-radius:8px;object-fit:contain}
+.lightbox-close{position:absolute;top:20px;right:24px;background:rgba(255,255,255,.15);border:none;color:#fff;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center}
+.lightbox-caption{color:#fff;font-size:.88rem;margin-top:14px;text-align:center;opacity:.8}
+.lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);border:none;color:#fff;width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.lightbox-nav:hover{background:rgba(255,255,255,.3)}
+.lightbox-prev{left:20px}
+.lightbox-next{right:20px}
+/* Chip */
+.chip{font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:20px}
+.chip-green{background:#dcfce7;color:#166534}
+.chip-blue{background:#dbeafe;color:#1e40af}
+.chip-amber{background:#fef9c3;color:#854d0e}
+/* Sidebar overlay */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90}
+.sidebar-overlay.open{display:block}
+/* Toast */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--navy3);color:#fff;border-radius:10px;padding:12px 20px;font-size:.83rem;font-weight:600;display:flex;align-items:center;gap:10px;z-index:9999;transform:translateY(80px);opacity:0;transition:all .35s;box-shadow:0 8px 24px rgba(0,0,0,.25);pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast i{color:var(--gold)}
+@media(max-width:900px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.sidebar-overlay.open{display:block}.main{margin-left:0}.hamburger{display:block}}
+@media(max-width:600px){.content{padding:16px}.stats-bar{grid-template-columns:1fr 1fr}.gallery-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo"><div class="logo-icon">🏫</div><div class="logo-text"><h2>AUS CMS</h2><p>Arab Unity School</p></div></div>
+  <div class="sidebar-user">
+    <div class="user-avatar" id="userAvatar" style="background:#ef4444">SA</div>
+    <div class="user-info"><div class="name" id="userName">Super Admin</div><span class="role-badge" id="roleBadge" style="background:rgba(239,68,68,.2);color:#ef4444">Super Admin</span></div>
+  </div>
+  <nav>
+    <div class="nav-section">
+      <div class="nav-label">Main</div>
+      <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="pages.html" class="nav-item"><i class="fas fa-file-alt"></i> Pages</a>
+      <a href="media.html" class="nav-item"><i class="fas fa-images"></i> Media Library</a>
+      <a href="announcements.html" class="nav-item"><i class="fas fa-bullhorn"></i> Announcements <span class="nav-badge">3</span></a>
+      <a href="events.html" class="nav-item"><i class="fas fa-calendar-alt"></i> Events</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">School</div>
+      <a href="staff.html" class="nav-item"><i class="fas fa-users"></i> Staff Profiles</a>
+      <a href="admissions-cms.html" class="nav-item"><i class="fas fa-user-plus"></i> Admissions</a>
+      <a href="results-cms.html" class="nav-item"><i class="fas fa-chart-bar"></i> Results</a>
+      <a href="gallery.html" class="nav-item active"><i class="fas fa-photo-video"></i> Gallery</a>
+      <a href="documents.html" class="nav-item"><i class="fas fa-file-download"></i> Documents <span class="nav-badge amber">2</span></a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">System</div>
+      <a href="users.html" class="nav-item"><i class="fas fa-user-shield"></i> Users & Roles</a>
+      <a href="seo.html" class="nav-item"><i class="fas fa-search"></i> SEO Manager</a>
+      <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer"><button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button></div>
+</aside>
+
+<div class="main">
+  <header class="top-header">
+    <button class="hamburger" onclick="openSidebar()"><i class="fas fa-bars"></i></button>
+    <span class="header-title">Gallery</span>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="icon-btn"><i class="fas fa-bell"></i></button>
+      <div class="header-avatar" id="headerAvatar" style="background:#ef4444">SA</div>
+    </div>
+  </header>
+
+  <div class="content">
+    <div class="page-header">
+      <div><h1>Gallery</h1><p>Manage photo albums displayed on the school website</p></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn-outline" onclick="openAlbumModal()"><i class="fas fa-folder-plus"></i> New Album</button>
+        <button class="btn-green" onclick="document.getElementById('fileInput').click()"><i class="fas fa-upload"></i> Upload Photos</button>
+        <input type="file" id="fileInput" multiple accept="image/*" style="display:none" onchange="handleUpload(this.files)">
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-card"><div class="stat-icon" style="background:#e8f4ff;color:var(--navy)"><i class="fas fa-images"></i></div><div><div class="stat-val">247</div><div class="stat-label">Total Photos</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#dcfce7;color:var(--green2)"><i class="fas fa-folder-open"></i></div><div><div class="stat-val">12</div><div class="stat-label">Albums</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#fef9c3;color:#854d0e"><i class="fas fa-eye"></i></div><div><div class="stat-val">8</div><div class="stat-label">Public Albums</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#f5f3ff;color:#5b21b6"><i class="fas fa-hdd"></i></div><div><div class="stat-val">1.8 GB</div><div class="stat-label">Storage Used</div></div></div>
+    </div>
+
+    <!-- Upload drop zone -->
+    <div class="upload-zone" id="uploadZone"
+      ondragover="event.preventDefault();this.classList.add('drag-over')"
+      ondragleave="this.classList.remove('drag-over')"
+      ondrop="event.preventDefault();this.classList.remove('drag-over');handleUpload(event.dataTransfer.files)"
+      onclick="document.getElementById('fileInput').click()">
+      <i class="fas fa-cloud-upload-alt"></i>
+      <p>Drag & drop photos here, or click to browse</p>
+      <span>Supports JPG, PNG, WebP — max 10MB per file</span>
+    </div>
+
+    <!-- Album filter chips -->
+    <div class="album-chips" id="albumChips"></div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search photos…" oninput="searchPhotos(this.value)"></div>
+      <button class="btn-outline" style="font-size:.78rem;padding:7px 14px" onclick="selectAll()"><i class="fas fa-check-square"></i> Select All</button>
+      <button class="btn-outline" style="font-size:.78rem;padding:7px 14px" onclick="clearSelection()"><i class="fas fa-times"></i> Clear</button>
+      <span style="font-size:.78rem;color:var(--gray-400);margin-left:4px" id="selCount"></span>
+    </div>
+
+    <!-- Gallery grid -->
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+</div>
+
+<!-- Bulk action bar -->
+<div class="bulk-bar" id="bulkBar">
+  <span class="bulk-count" id="bulkCount">0 selected</span>
+  <button class="bulk-action" onclick="moveSelected()"><i class="fas fa-folder"></i> Move to Album</button>
+  <button class="bulk-action" onclick="toast('Selected photos downloaded')"><i class="fas fa-download"></i> Download</button>
+  <button class="bulk-action danger" onclick="deleteSelected()"><i class="fas fa-trash"></i> Delete</button>
+  <button class="bulk-action" onclick="clearSelection()"><i class="fas fa-times"></i> Cancel</button>
+</div>
+
+<!-- New Album Modal -->
+<div class="modal-overlay" id="albumModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="albumModalTitle">New Album</h3>
+      <button class="modal-close" onclick="closeAlbumModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Album Name</label><input type="text" id="albumName" placeholder="e.g. Sports Day 2026"></div>
+      <div class="form-group"><label>Description</label><textarea id="albumDesc" placeholder="Short description…" style="min-height:70px;resize:vertical"></textarea></div>
+      <div class="form-group"><label>Visibility</label>
+        <select id="albumVisibility">
+          <option value="public">Public — visible on website</option>
+          <option value="private">Private — hidden from website</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Category</label>
+        <select id="albumCat">
+          <option>Events</option><option>Sports</option><option>Arts & Culture</option>
+          <option>Campus Life</option><option>Trips</option><option>Ceremonies</option><option>General</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeAlbumModal()">Cancel</button>
+      <button class="btn-green" onclick="saveAlbum()"><i class="fas fa-save"></i> Save Album</button>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
+  <button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)"><i class="fas fa-chevron-left"></i></button>
+  <button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)"><i class="fas fa-chevron-right"></i></button>
+  <div style="font-size:4rem" id="lightboxEmoji"></div>
+  <div class="lightbox-caption" id="lightboxCaption"></div>
+</div>
+
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg">Done</span></div>
+
+<script>
+// ── Data ──
+const ALBUMS = [
+  {id:'all', name:'All Photos', count:247},
+  {id:'sports', name:'Sports Day 2026', count:42},
+  {id:'graduation', name:'Year 6 Graduation 2025', count:38},
+  {id:'science', name:'Science Fair', count:29},
+  {id:'national', name:'UAE National Day', count:35},
+  {id:'arts', name:'Art Exhibition', count:26},
+  {id:'trips', name:'School Trips', count:31},
+  {id:'campus', name:'Campus Life', count:46},
+];
+
+const EMOJIS = ['🏫','📚','🎓','⚽','🎨','🔬','🌍','🏆','📷','🎭','🎪','🎯'];
+const PHOTO_CAPTIONS = [
+  'Sports Day warm-up','Science lab experiment','Art class creation','Year 6 ceremony',
+  'National Day parade','School trip adventure','Campus library','Football match',
+  'Drama performance','Chemistry lesson','Geography field work','Music practice',
+  'Swimming competition','Creative writing','Robotics club','Maths challenge',
+  'UAE heritage activity','Basketball finals','Photography club','Debate competition',
+];
+
+let PHOTOS = Array.from({length:24}, (_,i) => ({
+  id: i+1,
+  album: ALBUMS[1 + (i % (ALBUMS.length-1))].id,
+  caption: PHOTO_CAPTIONS[i % PHOTO_CAPTIONS.length],
+  emoji: EMOJIS[i % EMOJIS.length],
+  color: ['#e8f4ff','#f0fdf4','#fef9f0','#f5f3ff','#fef2f2','#fff7ed'][i%6],
+  selected: false,
+}));
+
+let currentAlbum = 'all';
+let lightboxIdx = 0;
+let filteredPhotos = [];
+
+// ── Render albums ──
+function renderAlbums() {
+  document.getElementById('albumChips').innerHTML = ALBUMS.map(a =>
+    `<button class="album-chip ${a.id===currentAlbum?'active':''}" onclick="setAlbum('${a.id}',this)">
+      ${a.name} <span class="count">${a.count}</span>
+    </button>`
+  ).join('');
+}
+
+function setAlbum(id, btn) {
+  currentAlbum = id;
+  document.querySelectorAll('.album-chip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGallery();
+}
+
+// ── Render gallery ──
+function renderGallery(search='') {
+  filteredPhotos = currentAlbum === 'all'
+    ? PHOTOS
+    : PHOTOS.filter(p => p.album === currentAlbum);
+  if (search) filteredPhotos = filteredPhotos.filter(p => p.caption.toLowerCase().includes(search.toLowerCase()));
+
+  document.getElementById('galleryGrid').innerHTML = filteredPhotos.length
+    ? filteredPhotos.map((p, i) => `
+        <div class="gallery-item ${p.selected?'selected':''}" id="gi-${p.id}" onclick="toggleSelect(${p.id},event)">
+          <div class="gallery-thumb-placeholder" style="background:${p.color}">
+            <div style="font-size:2.8rem">${p.emoji}</div>
+            <div style="font-size:.65rem;color:var(--gray-400);margin-top:6px">Photo #${p.id}</div>
+          </div>
+          <div class="gallery-overlay">
+            <div class="gallery-actions">
+              <button class="gal-btn" onclick="event.stopPropagation();openLightbox(${i})" title="Preview"><i class="fas fa-expand"></i></button>
+              <button class="gal-btn" onclick="event.stopPropagation();toast('Caption: ${p.caption}')" title="Edit"><i class="fas fa-edit"></i></button>
+              <button class="gal-btn danger" onclick="event.stopPropagation();deletePhoto(${p.id})" title="Delete"><i class="fas fa-trash"></i></button>
+            </div>
+            <div class="gallery-caption">${p.caption}</div>
+          </div>
+          ${p.selected?'<div style="position:absolute;top:8px;left:8px;width:20px;height:20px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center"><i class="fas fa-check" style="color:#fff;font-size:.55rem"></i></div>':''}
+        </div>`).join('')
+    : `<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--gray-400)">
+        <i class="fas fa-images" style="font-size:2rem;display:block;margin-bottom:12px"></i>No photos in this album
+       </div>`;
+  updateBulkBar();
+}
+
+// ── Select ──
+function toggleSelect(id, e) {
+  if (e.target.closest('.gal-btn')) return;
+  const p = PHOTOS.find(x=>x.id===id);
+  if (p) { p.selected = !p.selected; renderGallery(); }
+}
+function selectAll() { filteredPhotos.forEach(p=>p.selected=true); renderGallery(); toast('All photos selected'); }
+function clearSelection() { PHOTOS.forEach(p=>p.selected=false); renderGallery(); }
+function updateBulkBar() {
+  const n = PHOTOS.filter(p=>p.selected).length;
+  document.getElementById('bulkBar').classList.toggle('show', n>0);
+  document.getElementById('bulkCount').textContent = n+' selected';
+  document.getElementById('selCount').textContent = n>0 ? n+' selected' : '';
+}
+function deleteSelected() {
+  const n = PHOTOS.filter(p=>p.selected).length;
+  PHOTOS = PHOTOS.filter(p=>!p.selected);
+  renderGallery(); toast(n+' photos deleted');
+}
+function moveSelected() { clearSelection(); toast('Photos moved to album'); }
+
+// ── Delete ──
+function deletePhoto(id) {
+  PHOTOS = PHOTOS.filter(p=>p.id!==id);
+  renderGallery(); toast('Photo deleted');
+}
+
+// ── Search ──
+function searchPhotos(v) { renderGallery(v); }
+
+// ── Lightbox ──
+function openLightbox(i) {
+  lightboxIdx = i;
+  showLightboxItem();
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+function showLightboxItem() {
+  const p = filteredPhotos[lightboxIdx];
+  if (!p) return;
+  document.getElementById('lightboxEmoji').textContent = p.emoji;
+  document.getElementById('lightboxCaption').textContent = p.caption + ' — Photo ' + p.id;
+}
+function lightboxNav(dir) {
+  lightboxIdx = (lightboxIdx + dir + filteredPhotos.length) % filteredPhotos.length;
+  showLightboxItem();
+}
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key==='Escape') closeLightbox();
+  if (e.key==='ArrowLeft') lightboxNav(-1);
+  if (e.key==='ArrowRight') lightboxNav(1);
+});
+
+// ── Upload ──
+function handleUpload(files) {
+  if (!files || !files.length) return;
+  let added = 0;
+  Array.from(files).forEach(f => {
+    PHOTOS.unshift({
+      id: Date.now() + added,
+      album: currentAlbum === 'all' ? 'campus' : currentAlbum,
+      caption: f.name.replace(/\.[^.]+$/,''),
+      emoji: EMOJIS[Math.floor(Math.random()*EMOJIS.length)],
+      color: ['#e8f4ff','#f0fdf4','#fef9f0'][added%3],
+      selected: false,
+    });
+    added++;
+  });
+  renderGallery();
+  toast(added + ' photo' + (added>1?'s':'') + ' uploaded successfully');
+}
+
+// ── Album modal ──
+function openAlbumModal() { document.getElementById('albumModal').classList.add('open'); }
+function closeAlbumModal() { document.getElementById('albumModal').classList.remove('open'); }
+function saveAlbum() {
+  const name = document.getElementById('albumName').value.trim();
+  if (!name) { toast('Please enter an album name'); return; }
+  const id = name.toLowerCase().replace(/\s+/g,'-');
+  ALBUMS.push({ id, name, count: 0 });
+  renderAlbums();
+  closeAlbumModal();
+  toast('Album "' + name + '" created');
+}
+
+// ── Auth ──
+function initAuth() {
+  const s = sessionStorage.getItem('ausUser');
+  if (!s) { location.href='index.html'; return; }
+  const u = JSON.parse(s);
+  ['userAvatar','headerAvatar'].forEach(id=>{document.getElementById(id).textContent=u.initials;document.getElementById(id).style.background=u.color;});
+  document.getElementById('userName').textContent = u.name||u.role;
+  document.getElementById('roleBadge').textContent = u.role;
+  document.getElementById('roleBadge').style.background = u.color+'33';
+  document.getElementById('roleBadge').style.color = u.color;
+}
+function logout(){sessionStorage.removeItem('ausUser');location.href='index.html';}
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('open')}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('open')}
+let toastTimer;
+function toast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3000);}
+
+document.addEventListener('DOMContentLoaded',()=>{ initAuth(); renderAlbums(); renderGallery(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUS CMS — Staff Profiles</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#002244;--navy2:#003a70;--navy3:#001830;
+  --green:#1a5c30;--green2:#2a7d3e;--gold:#c8a94a;
+  --red:#ef4444;--amber:#f59e0b;--blue:#3b82f6;
+  --sidebar-w:260px;--header-h:64px;
+  --gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;
+  --gray-400:#94a3b8;--gray-500:#64748b;--gray-600:#475569;--gray-700:#334155;--gray-900:#0f172a;
+  --radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.05);
+}
+body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-700);display:flex;min-height:100vh;}
+.sidebar{width:var(--sidebar-w);background:var(--navy3);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;z-index:100;overflow-y:auto;transition:transform .3s}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+.sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:12px}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#e8c96a);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.logo-text h2{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:#fff;line-height:1.1}
+.logo-text p{font-size:.68rem;color:rgba(255,255,255,.35);margin-top:1px}
+.sidebar-user{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:10px}
+.user-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff;flex-shrink:0}
+.user-info .name{font-size:.82rem;font-weight:600;color:#fff}
+.user-info .role-badge{font-size:.65rem;font-weight:700;padding:1px 7px;border-radius:20px;display:inline-block;margin-top:2px}
+.nav-section{padding:12px 0}
+.nav-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);padding:0 20px 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;color:rgba(255,255,255,.55);font-size:.83rem;font-weight:500;transition:all .15s;text-decoration:none;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.9)}
+.nav-item.active{background:rgba(255,255,255,.08);color:#fff;border-left-color:var(--gold)}
+.nav-item i{width:16px;font-size:.8rem;text-align:center}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:10px}
+.nav-badge.amber{background:var(--amber)}
+.sidebar-footer{margin-top:auto;padding:16px 20px;border-top:1px solid rgba(255,255,255,.07)}
+.btn-logout{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.4);font-size:.8rem;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;transition:color .2s;padding:0}
+.btn-logout:hover{color:var(--red)}
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column}
+.top-header{height:var(--header-h);background:#fff;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;padding:0 28px;gap:16px;position:sticky;top:0;z-index:50;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.header-title{font-size:1.05rem;font-weight:700;color:var(--navy);flex:1}
+.icon-btn{width:36px;height:36px;border-radius:8px;background:var(--gray-100);border:1px solid var(--gray-200);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray-500);font-size:.82rem}
+.header-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:#fff}
+.hamburger{display:none;background:none;border:none;font-size:1.1rem;color:var(--navy);cursor:pointer;padding:4px}
+.content{padding:28px;flex:1}
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+.page-header h1{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--navy)}
+.page-header p{font-size:.85rem;color:var(--gray-500);margin-top:4px}
+.btn-green{background:var(--green2);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif}
+.btn-outline{background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:8px;padding:8px 16px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;transition:all .2s}
+.btn-outline:hover{border-color:var(--navy);color:var(--navy)}
+.btn-primary{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif}
+/* Stats */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px}
+.stat-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.stat-val{font-size:1.5rem;font-weight:800;color:var(--gray-900)}
+.stat-label{font-size:.75rem;color:var(--gray-400);margin-top:2px}
+/* Toolbar */
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.search-box{position:relative}
+.search-box input{border:1px solid var(--gray-200);border-radius:8px;padding:8px 12px 8px 34px;font-size:.82rem;color:var(--gray-700);font-family:'Inter',sans-serif;outline:none;width:220px;transition:border-color .2s}
+.search-box input:focus{border-color:var(--navy2)}
+.search-box i{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:.78rem}
+.filter-select{border:1px solid var(--gray-200);border-radius:8px;padding:8px 12px;font-size:.82rem;color:var(--gray-700);font-family:'Inter',sans-serif;outline:none;background:#fff;cursor:pointer}
+.view-toggle{display:flex;border:1px solid var(--gray-200);border-radius:8px;overflow:hidden;margin-left:auto}
+.view-btn{width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#fff;color:var(--gray-400);border:none;font-size:.8rem;transition:all .15s}
+.view-btn.active{background:var(--navy);color:#fff}
+/* Grid view */
+.staff-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.staff-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .2s;text-align:center}
+.staff-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.staff-photo{width:100%;height:140px;object-fit:cover;display:block}
+.staff-photo-placeholder{width:100%;height:140px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:700;color:#fff}
+.staff-body{padding:14px}
+.staff-name{font-size:.88rem;font-weight:700;color:var(--gray-900)}
+.staff-role{font-size:.75rem;color:var(--gray-500);margin-top:3px}
+.staff-dept{font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-block;margin-top:6px}
+.staff-actions{display:flex;justify-content:center;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--gray-100)}
+.action-btn{width:30px;height:30px;border-radius:7px;border:1px solid var(--gray-200);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray-500);font-size:.75rem;transition:all .15s}
+.action-btn:hover{border-color:var(--navy);color:var(--navy)}
+.action-btn.danger:hover{border-color:var(--red);color:var(--red)}
+/* List view */
+.staff-table{width:100%;border-collapse:collapse;display:none}
+.staff-table th{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400);padding:10px 16px;text-align:left;border-bottom:1px solid var(--gray-100);background:var(--gray-50)}
+.staff-table td{padding:12px 16px;border-bottom:1px solid var(--gray-50);font-size:.83rem;vertical-align:middle}
+.staff-table tr:last-child td{border-bottom:none}
+.staff-table tr:hover td{background:#fafbff}
+.staff-avatar-sm{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff;flex-shrink:0}
+.chip{font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:20px}
+.chip-green{background:#dcfce7;color:#166534}
+.chip-blue{background:#dbeafe;color:#1e40af}
+.chip-amber{background:#fef9c3;color:#854d0e}
+.chip-purple{background:#f5f3ff;color:#5b21b6}
+.chip-gray{background:var(--gray-100);color:var(--gray-600)}
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9000;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal-header{padding:20px 24px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between}
+.modal-header h3{font-size:1rem;font-weight:700;color:var(--navy)}
+.modal-close{width:32px;height:32px;border-radius:8px;border:1px solid var(--gray-200);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-500)}
+.modal-body{padding:24px}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:.72rem;font-weight:700;color:var(--gray-500);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+.form-group input,.form-group textarea,.form-group select{width:100%;border:1px solid var(--gray-200);border-radius:8px;padding:9px 12px;font-size:.85rem;color:var(--gray-700);font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--navy2)}
+.form-group textarea{min-height:70px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--gray-100);display:flex;gap:10px;justify-content:flex-end}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90}
+.sidebar-overlay.open{display:block}
+.toast{position:fixed;bottom:28px;right:28px;background:var(--navy3);color:#fff;border-radius:10px;padding:12px 20px;font-size:.83rem;font-weight:600;display:flex;align-items:center;gap:10px;z-index:9999;transform:translateY(80px);opacity:0;transition:all .35s;box-shadow:0 8px 24px rgba(0,0,0,.25);pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast i{color:var(--gold)}
+@media(max-width:900px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.sidebar-overlay.open{display:block}.main{margin-left:0}.hamburger{display:block}}
+@media(max-width:600px){.content{padding:16px}.stats-bar{grid-template-columns:1fr 1fr}.staff-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo"><div class="logo-icon">🏫</div><div class="logo-text"><h2>AUS CMS</h2><p>Arab Unity School</p></div></div>
+  <div class="sidebar-user">
+    <div class="user-avatar" id="userAvatar" style="background:#ef4444">SA</div>
+    <div class="user-info"><div class="name" id="userName">Super Admin</div><span class="role-badge" id="roleBadge" style="background:rgba(239,68,68,.2);color:#ef4444">Super Admin</span></div>
+  </div>
+  <nav>
+    <div class="nav-section">
+      <div class="nav-label">Main</div>
+      <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="pages.html" class="nav-item"><i class="fas fa-file-alt"></i> Pages</a>
+      <a href="media.html" class="nav-item"><i class="fas fa-images"></i> Media Library</a>
+      <a href="announcements.html" class="nav-item"><i class="fas fa-bullhorn"></i> Announcements <span class="nav-badge">3</span></a>
+      <a href="events.html" class="nav-item"><i class="fas fa-calendar-alt"></i> Events</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">School</div>
+      <a href="staff.html" class="nav-item active"><i class="fas fa-users"></i> Staff Profiles</a>
+      <a href="admissions-cms.html" class="nav-item"><i class="fas fa-user-plus"></i> Admissions</a>
+      <a href="results-cms.html" class="nav-item"><i class="fas fa-chart-bar"></i> Results</a>
+      <a href="gallery.html" class="nav-item"><i class="fas fa-photo-video"></i> Gallery</a>
+      <a href="documents.html" class="nav-item"><i class="fas fa-file-download"></i> Documents <span class="nav-badge amber">2</span></a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">System</div>
+      <a href="users.html" class="nav-item"><i class="fas fa-user-shield"></i> Users & Roles</a>
+      <a href="seo.html" class="nav-item"><i class="fas fa-search"></i> SEO Manager</a>
+      <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer"><button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button></div>
+</aside>
+
+<div class="main">
+  <header class="top-header">
+    <button class="hamburger" onclick="openSidebar()"><i class="fas fa-bars"></i></button>
+    <span class="header-title">Staff Profiles</span>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="icon-btn"><i class="fas fa-bell"></i></button>
+      <div class="header-avatar" id="headerAvatar" style="background:#ef4444">SA</div>
+    </div>
+  </header>
+  <div class="content">
+    <div class="page-header">
+      <div><h1>Staff Profiles</h1><p>Manage teaching and administrative staff profiles displayed on the website</p></div>
+      <button class="btn-green" onclick="openModal()"><i class="fas fa-plus"></i> Add Staff Member</button>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-card"><div class="stat-icon" style="background:#e8f4ff;color:var(--navy)"><i class="fas fa-users"></i></div><div><div class="stat-val">48</div><div class="stat-label">Total Staff</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#dcfce7;color:var(--green2)"><i class="fas fa-chalkboard-teacher"></i></div><div><div class="stat-val">36</div><div class="stat-label">Teaching</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#fef9c3;color:#854d0e"><i class="fas fa-user-tie"></i></div><div><div class="stat-val">8</div><div class="stat-label">Leadership</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#f5f3ff;color:#5b21b6"><i class="fas fa-cogs"></i></div><div><div class="stat-val">4</div><div class="stat-label">Admin/Support</div></div></div>
+    </div>
+    <div class="toolbar">
+      <div class="search-box"><i class="fas fa-search"></i><input type="text" placeholder="Search staff…" oninput="filterStaff(this.value)"></div>
+      <select class="filter-select" onchange="filterByDept(this.value)">
+        <option value="all">All Departments</option>
+        <option>Leadership</option><option>English</option><option>Mathematics</option>
+        <option>Science</option><option>Humanities</option><option>Arts</option>
+        <option>ICT</option><option>PE</option><option>Arabic</option><option>Admin</option>
+      </select>
+      <div class="view-toggle">
+        <button class="view-btn active" id="gridBtn" onclick="setView('grid')" title="Grid view"><i class="fas fa-th"></i></button>
+        <button class="view-btn" id="listBtn" onclick="setView('list')" title="List view"><i class="fas fa-list"></i></button>
+      </div>
+    </div>
+    <div class="staff-grid" id="staffGrid"></div>
+    <table class="staff-table" id="staffList">
+      <thead><tr><th>Name</th><th>Role</th><th>Department</th><th>Email</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody id="staffListBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="staffModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Add Staff Member</h3>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>First Name</label><input type="text" id="sfFirst" placeholder="e.g. Sarah"></div>
+        <div class="form-group"><label>Last Name</label><input type="text" id="sfLast" placeholder="e.g. Johnson"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Title</label><select id="sfTitle"><option>Mr</option><option>Mrs</option><option>Ms</option><option>Miss</option><option>Dr</option><option>Prof</option></select></div>
+        <div class="form-group"><label>Department</label>
+          <select id="sfDept"><option>Leadership</option><option>English</option><option>Mathematics</option><option>Science</option><option>Humanities</option><option>Arts</option><option>ICT</option><option>PE</option><option>Arabic</option><option>Admin</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label>Job Title / Role</label><input type="text" id="sfRole" placeholder="e.g. Head of Mathematics"></div>
+      <div class="form-group"><label>Email</label><input type="email" id="sfEmail" placeholder="name@arabunityschool.ae"></div>
+      <div class="form-group"><label>Short Bio</label><textarea id="sfBio" placeholder="Brief professional biography…"></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Photo URL</label><input type="text" id="sfPhoto" placeholder="../images/staff/…"></div>
+        <div class="form-group"><label>Visible on Website</label><select id="sfVisible"><option value="1">Yes — Show on website</option><option value="0">No — Hidden</option></select></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-green" onclick="saveStaff()"><i class="fas fa-save"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg">Done</span></div>
+<script>
+const DEPT_COLORS={
+  'Leadership':{bg:'#fef9c3',col:'#854d0e'},'English':{bg:'#dbeafe',col:'#1e40af'},
+  'Mathematics':{bg:'#dcfce7',col:'#166534'},'Science':{bg:'#f5f3ff',col:'#5b21b6'},
+  'Humanities':{bg:'#fef2f2',col:'#991b1b'},'Arts':{bg:'#fdf4ff',col:'#7e22ce'},
+  'ICT':{bg:'#e0f2fe',col:'#0369a1'},'PE':{bg:'#dcfce7',col:'#14532d'},
+  'Arabic':{bg:'#fff7ed',col:'#c2410c'},'Admin':{bg:'#f1f5f9',col:'#475569'}
+};
+const INITIALS_COLORS=['#ef4444','#3b82f6','#8b5cf6','#f59e0b','#10b981','#ec4899','#06b6d4','#f97316'];
+let STAFF=[
+  {id:1,title:'Ms',first:'Arwa',last:'A. Taher',dept:'Leadership',role:'Chairman / Owner',email:'arwa@arabunityschool.ae',bio:'Founder and Chairman/Owner of Arab Unity School.',photo:'',visible:1},
+  {id:2,title:'Mr',first:'Ahmed',last:'Al Rashidi',dept:'Leadership',role:'Principal',email:'principal@arabunityschool.ae',bio:'Leading the school\'s academic vision and strategy.',photo:'',visible:1},
+  {id:3,title:'Mr',first:'Paresh',last:'Bhatt',dept:'Leadership',role:'Chief Financial Officer',email:'finance@arabunityschool.ae',bio:'Overseeing financial operations and strategic planning.',photo:'',visible:1},
+  {id:4,title:'Mrs',first:'Sarah',last:'Johnson',dept:'English',role:'Head of English',email:'s.johnson@arabunityschool.ae',bio:'Passionate about literature and language development.',photo:'',visible:1},
+  {id:5,title:'Mr',first:'David',last:'Williams',dept:'Mathematics',role:'Head of Mathematics',email:'d.williams@arabunityschool.ae',bio:'Inspiring students to excel in mathematics.',photo:'',visible:1},
+  {id:6,title:'Dr',first:'Fatima',last:'Al Mansoori',dept:'Science',role:'Head of Science',email:'f.mansoori@arabunityschool.ae',bio:'PhD in Chemistry with 15 years of teaching experience.',photo:'',visible:1},
+  {id:7,title:'Mr',first:'James',last:'Carter',dept:'Humanities',role:'Head of Humanities',email:'j.carter@arabunityschool.ae',bio:'Specialising in History and Geography.',photo:'',visible:1},
+  {id:8,title:'Ms',first:'Layla',last:'Hassan',dept:'Arabic',role:'Head of Arabic',email:'l.hassan@arabunityschool.ae',bio:'Native Arabic speaker dedicated to Arabic language excellence.',photo:'',visible:1},
+  {id:9,title:'Mr',first:'Tom',last:'Bradley',dept:'PE',role:'Head of PE',email:'t.bradley@arabunityschool.ae',bio:'Sports enthusiast and former professional athlete.',photo:'',visible:1},
+  {id:10,title:'Ms',first:'Emma',last:'Clarke',dept:'Arts',role:'Head of Arts',email:'e.clarke@arabunityschool.ae',bio:'Award-winning artist and passionate arts educator.',photo:'',visible:1},
+  {id:11,title:'Mr',first:'Ravi',last:'Kumar',dept:'ICT',role:'Head of ICT',email:'r.kumar@arabunityschool.ae',bio:'Expert in Computer Science and digital innovation.',photo:'',visible:1},
+  {id:12,title:'Mrs',first:'Nadia',last:'Mansour',dept:'Admin',role:'Admissions Officer',email:'admissions@arabunityschool.ae',bio:'Supporting families through the admissions journey.',photo:'',visible:1},
+];
+let viewMode='grid';
+let editId=null;
+
+function getColor(id){return INITIALS_COLORS[id%INITIALS_COLORS.length];}
+function getInitials(f,l){return (f[0]||'')+(l[0]||'');}
+
+function renderGrid(data){
+  document.getElementById('staffGrid').innerHTML=data.map(s=>{
+    const dc=DEPT_COLORS[s.dept]||{bg:'#f1f5f9',col:'#475569'};
+    const initials=getInitials(s.first,s.last);
+    const col=getColor(s.id);
+    return `<div class="staff-card">
+      <div class="staff-photo-placeholder" style="background:${col}">${initials}</div>
+      <div class="staff-body">
+        <div class="staff-name">${s.title} ${s.first} ${s.last}</div>
+        <div class="staff-role">${s.role}</div>
+        <span class="staff-dept" style="background:${dc.bg};color:${dc.col}">${s.dept}</span>
+        ${s.visible?'':'<span class="chip chip-gray" style="margin-left:4px">Hidden</span>'}
+        <div class="staff-actions">
+          <button class="action-btn" onclick="editStaff(${s.id})" title="Edit"><i class="fas fa-edit"></i></button>
+          <button class="action-btn" onclick="toast('Email: ${s.email}')" title="Email"><i class="fas fa-envelope"></i></button>
+          <button class="action-btn danger" onclick="deleteStaff(${s.id})" title="Delete"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+    </div>`;
+  }).join('')||'<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--gray-400)"><i class="fas fa-users" style="font-size:2rem;display:block;margin-bottom:12px"></i>No staff found</div>';
+}
+
+function renderList(data){
+  document.getElementById('staffListBody').innerHTML=data.map(s=>{
+    const dc=DEPT_COLORS[s.dept]||{bg:'#f1f5f9',col:'#475569'};
+    const col=getColor(s.id);
+    return `<tr>
+      <td><div style="display:flex;align-items:center;gap:10px">
+        <div class="staff-avatar-sm" style="background:${col}">${getInitials(s.first,s.last)}</div>
+        <div><div style="font-weight:600;font-size:.83rem">${s.title} ${s.first} ${s.last}</div></div>
+      </div></td>
+      <td style="font-size:.8rem">${s.role}</td>
+      <td><span class="chip" style="background:${dc.bg};color:${dc.col}">${s.dept}</span></td>
+      <td style="font-size:.78rem;color:var(--gray-500)">${s.email}</td>
+      <td><span class="chip ${s.visible?'chip-green':'chip-gray'}">${s.visible?'Visible':'Hidden'}</span></td>
+      <td><div style="display:flex;gap:6px">
+        <button class="action-btn" onclick="editStaff(${s.id})"><i class="fas fa-edit"></i></button>
+        <button class="action-btn danger" onclick="deleteStaff(${s.id})"><i class="fas fa-trash"></i></button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function render(data){
+  if(viewMode==='grid'){
+    document.getElementById('staffGrid').style.display='grid';
+    document.getElementById('staffList').style.display='none';
+    renderGrid(data);
+  } else {
+    document.getElementById('staffGrid').style.display='none';
+    document.getElementById('staffList').style.display='table';
+    renderList(data);
+  }
+}
+
+function setView(v){
+  viewMode=v;
+  document.getElementById('gridBtn').classList.toggle('active',v==='grid');
+  document.getElementById('listBtn').classList.toggle('active',v==='list');
+  render(STAFF);
+}
+
+function filterStaff(v){render(STAFF.filter(s=>(s.first+' '+s.last+' '+s.role).toLowerCase().includes(v.toLowerCase())));}
+function filterByDept(v){render(v==='all'?STAFF:STAFF.filter(s=>s.dept===v));}
+
+function openModal(){
+  editId=null;
+  document.getElementById('modalTitle').textContent='Add Staff Member';
+  ['sfFirst','sfLast','sfRole','sfEmail','sfBio','sfPhoto'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('staffModal').classList.add('open');
+}
+function closeModal(){document.getElementById('staffModal').classList.remove('open');}
+function editStaff(id){
+  const s=STAFF.find(x=>x.id===id);if(!s)return;
+  editId=id;
+  document.getElementById('modalTitle').textContent='Edit Staff Member';
+  document.getElementById('sfFirst').value=s.first;
+  document.getElementById('sfLast').value=s.last;
+  document.getElementById('sfRole').value=s.role;
+  document.getElementById('sfEmail').value=s.email;
+  document.getElementById('sfBio').value=s.bio;
+  document.getElementById('sfPhoto').value=s.photo||'';
+  document.getElementById('sfVisible').value=s.visible;
+  document.getElementById('staffModal').classList.add('open');
+}
+function saveStaff(){
+  const first=document.getElementById('sfFirst').value.trim();
+  const last=document.getElementById('sfLast').value.trim();
+  if(!first||!last){toast('Please enter first and last name');return;}
+  if(editId){
+    const s=STAFF.find(x=>x.id===editId);
+    if(s){s.first=first;s.last=last;s.title=document.getElementById('sfTitle').value;s.dept=document.getElementById('sfDept').value;s.role=document.getElementById('sfRole').value;s.email=document.getElementById('sfEmail').value;s.bio=document.getElementById('sfBio').value;s.photo=document.getElementById('sfPhoto').value;s.visible=parseInt(document.getElementById('sfVisible').value);}
+    toast('Staff member updated');
+  } else {
+    STAFF.push({id:Date.now(),title:document.getElementById('sfTitle').value,first,last,dept:document.getElementById('sfDept').value,role:document.getElementById('sfRole').value,email:document.getElementById('sfEmail').value,bio:document.getElementById('sfBio').value,photo:document.getElementById('sfPhoto').value,visible:1});
+    toast('Staff member added');
+  }
+  closeModal();render(STAFF);
+}
+function deleteStaff(id){STAFF=STAFF.filter(s=>s.id!==id);render(STAFF);toast('Staff member removed');}
+
+function initAuth(){
+  const s=sessionStorage.getItem('ausUser');
+  if(!s){location.href='index.html';return;}
+  const u=JSON.parse(s);
+  ['userAvatar','headerAvatar'].forEach(id=>{document.getElementById(id).textContent=u.initials;document.getElementById(id).style.background=u.color;});
+  document.getElementById('userName').textContent=u.name||u.role;
+  document.getElementById('roleBadge').textContent=u.role;
+  document.getElementById('roleBadge').style.background=u.color+'33';
+  document.getElementById('roleBadge').style.color=u.color;
+}
+function logout(){sessionStorage.removeItem('ausUser');location.href='index.html';}
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('open')}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('open')}
+let toastTimer;
+function toast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3000);}
+document.addEventListener('DOMContentLoaded',()=>{initAuth();render(STAFF);});
+</script>
+</body>
+</html>

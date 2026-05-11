@@ -64,7 +64,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #06160a;
+  background: linear-gradient(135deg, #021a3a 0%, #043d2a 50%, #062e4a 100%);
   opacity: 1;
   transition: opacity 0.9s ease, visibility 0.9s ease;
 }
@@ -79,8 +79,9 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 55% at 50% 45%, rgba(42,125,62,0.30) 0%, transparent 70%),
-    radial-gradient(ellipse 100% 80% at 50% 100%, rgba(184,145,26,0.12) 0%, transparent 60%);
+    radial-gradient(ellipse 70% 55% at 30% 40%, rgba(10,120,200,0.28) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 75% 55%, rgba(42,125,62,0.32) 0%, transparent 65%),
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(0,80,160,0.18) 0%, transparent 60%);
   animation: introPulse 3s ease-in-out infinite alternate;
 }
 @keyframes introPulse {
@@ -97,7 +98,7 @@
 .intro-particles span {
   position: absolute;
   border-radius: 50%;
-  background: rgba(184,145,26,0.18);
+  background: rgba(100,200,180,0.20);
   animation: floatUp linear infinite;
 }
 .intro-particles span:nth-child(1) { width:8px;  height:8px;  left:10%;  bottom:-20px; animation-duration:6s;  animation-delay:0s;   }
@@ -242,7 +243,7 @@
 .intro-progress-bar {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #2a7d3e, #b8911a);
+  background: linear-gradient(90deg, #0a78c8, #2a7d3e, #0de3c4);
   transition: width linear;
 }
 
@@ -381,7 +382,7 @@ function dismissIntro() {
       </div>
       <div class="tuition-text">
         <span class="tuition-label" data-i18n="hero.tuition.lbl">Annual Tuition Fees</span>
-        <span class="tuition-range">AED 6,462 – AED 10,808</span>
+        <span class="tuition-range">AED 8,462 – AED 13,122</span>
       </div>
       <a href="admissions.html#fees" class="tuition-link">
         <span data-i18n="hero.tuition.link">View Full Fee Schedule</span>
@@ -418,7 +419,7 @@ function dismissIntro() {
       <span class="hstat-lbl" data-i18n="stat.nationalities">Nationalities</span>
     </div>
     <div class="hstat">
-      <span class="hstat-num">AED 6,462</span>
+      <span class="hstat-num">AED 8,462</span>
       <span class="hstat-lbl" data-i18n="stat.fromyear">From / Year</span>
     </div>
   </div>
@@ -440,7 +441,7 @@ function dismissIntro() {
     <span class="tick-sep">·</span>
     <span class="tick-item" data-i18n="tick.2">4,000+ Enrolled Students</span>
     <span class="tick-sep">·</span>
-    <span class="tick-item" data-i18n="tick.3">AED 6,462 – 10,808 Tuition Fees</span>
+    <span class="tick-item" data-i18n="tick.3">AED 8,462 – 13,122 Tuition Fees</span>
     <span class="tick-sep">·</span>
     <span class="tick-item" data-i18n="tick.4">Cambridge IGCSE & A-Levels</span>
     <span class="tick-sep">·</span>
@@ -455,7 +456,7 @@ function dismissIntro() {
     <span class="tick-sep">·</span>
     <span class="tick-item" data-i18n="tick.2">4,000+ Enrolled Students</span>
     <span class="tick-sep">·</span>
-    <span class="tick-item" data-i18n="tick.3">AED 6,462 – 10,808 Tuition Fees</span>
+    <span class="tick-item" data-i18n="tick.3">AED 8,462 – 13,122 Tuition Fees</span>
     <span class="tick-sep">·</span>
     <span class="tick-item" data-i18n="tick.4">Cambridge IGCSE & A-Levels</span>
     <span class="tick-sep">·</span>
@@ -478,7 +479,7 @@ function dismissIntro() {
       <blockquote class="statement-quote" data-i18n="stmt.quote">
         Every child — regardless of background — deserves a world-class British education delivered with genuine care. That belief has driven Arab Unity School for 50 years.
       </blockquote>
-      <cite class="statement-cite" data-i18n="stmt.cite">Arwa A. Taher &nbsp;&mdash;&nbsp; Executive Director, Arab Unity School</cite>
+      <cite class="statement-cite" data-i18n="stmt.cite">Arwa A. Taher &nbsp;&mdash;&nbsp; Chairman / Owner, Arab Unity School</cite>
     </div>
   </div>
 </section>
@@ -489,14 +490,14 @@ function dismissIntro() {
 ================================================================ -->
 <section class="section-director-msg">
   <div class="container">
-    <h2 class="section-h2" style="text-align:center;margin-bottom:48px" data-i18n="dir.h2">A Message from Our Director</h2>
+    <h2 class="section-h2" style="text-align:center;margin-bottom:48px" data-i18n="dir.h2">A Message from Ms. Arwa A. Taher</h2>
     
     <div class="dir-msg-card">
       <div class="dir-msg-photo">
-        <img src="images/arwa-taher.jpg" alt="Ms. Arwa A. Taher - Executive Director">
+        <img src="images/arwa-taher.jpg" alt="Ms. Arwa A. Taher - Chairman / Owner">
         <div class="dir-msg-label">
-          <span data-i18n="dir.badge1">EXECUTIVE</span>
-          <span data-i18n="dir.badge2">DIRECTOR</span>
+          <span data-i18n="dir.badge1">CHAIRMAN</span>
+          <span data-i18n="dir.badge2">OWNER</span>
         </div>
       </div>
       
@@ -505,7 +506,7 @@ function dismissIntro() {
         
         <div class="dir-msg-meta">
           <strong data-i18n="dir.name">Ms. Arwa A. Taher</strong>
-          <span data-i18n="dir.title">Executive Director — Arab Unity School, Dubai · Est. 1975</span>
+          <span data-i18n="dir.title">Chairman / Owner — Arab Unity School, Dubai · Est. 1975</span>
         </div>
         
         <a href="leadership.html" class="dir-msg-btn" data-i18n="dir.btn">Meet the Full Leadership Team →</a>
@@ -533,7 +534,7 @@ function dismissIntro() {
             <span class="pi-num">01</span>
             <h3 class="pi-title" data-i18n="pillars.p1.title">Best Value for Money</h3>
           </div>
-          <p class="pi-desc" data-i18n="pillars.p1.desc">Premium British education from AED&nbsp;6,462 to AED&nbsp;10,808/year — among the most competitive fees in Dubai. Outstanding quality at the best value.</p>
+          <p class="pi-desc" data-i18n="pillars.p1.desc">Premium British education from AED&nbsp;8,462 to AED&nbsp;13,122/year — among the most competitive fees in Dubai. Outstanding quality at the best value.</p>
         </div>
         <div class="pillar-item" data-num="02">
           <div class="pi-head">
@@ -653,7 +654,7 @@ function dismissIntro() {
       <div class="ep-body">
         <span class="ep-tag" data-i18n="exp.p2.tag">Admissions</span>
         <h3 class="ep-title" data-i18n="exp.p2.title">Join the AUS<br>Family</h3>
-        <p class="ep-desc" data-i18n="exp.p2.desc">Open year-round. Fees from AED 6,462 to AED 10,808/year with step-by-step enrolment support.</p>
+        <p class="ep-desc" data-i18n="exp.p2.desc">Open year-round. Fees from AED 8,462 to AED 13,122/year with step-by-step enrolment support.</p>
         <span class="ep-arrow" data-i18n="exp.p2.arrow">Apply Now →</span>
       </div>
     </a>
@@ -860,7 +861,7 @@ function dismissIntro() {
 <!-- ================================================================
   SCRIPTS
 ================================================================ -->
-<script src="js/lang.js?v=10"></script>
+<script src="js/lang.js?v=12"></script>
 <script src="js/nav.js?v=23"></script>
 <script>
 

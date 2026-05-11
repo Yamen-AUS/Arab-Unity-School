@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUS CMS — Admissions</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#002244;--navy2:#003a70;--navy3:#001830;
+  --green:#1a5c30;--green2:#2a7d3e;--gold:#c8a94a;
+  --red:#ef4444;--amber:#f59e0b;--blue:#3b82f6;
+  --sidebar-w:260px;--header-h:64px;
+  --gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;
+  --gray-400:#94a3b8;--gray-500:#64748b;--gray-600:#475569;--gray-700:#334155;--gray-900:#0f172a;
+  --radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.05);
+}
+body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-700);display:flex;min-height:100vh;}
+.sidebar{width:var(--sidebar-w);background:var(--navy3);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;z-index:100;overflow-y:auto;transition:transform .3s}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+.sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:12px}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#e8c96a);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.logo-text h2{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:#fff;line-height:1.1}
+.logo-text p{font-size:.68rem;color:rgba(255,255,255,.35);margin-top:1px}
+.sidebar-user{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:10px}
+.user-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff;flex-shrink:0}
+.user-info .name{font-size:.82rem;font-weight:600;color:#fff}
+.user-info .role-badge{font-size:.65rem;font-weight:700;padding:1px 7px;border-radius:20px;display:inline-block;margin-top:2px}
+.nav-section{padding:12px 0}
+.nav-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);padding:0 20px 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;color:rgba(255,255,255,.55);font-size:.83rem;font-weight:500;transition:all .15s;text-decoration:none;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.9)}
+.nav-item.active{background:rgba(255,255,255,.08);color:#fff;border-left-color:var(--gold)}
+.nav-item i{width:16px;font-size:.8rem;text-align:center}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:10px}
+.nav-badge.amber{background:var(--amber)}
+.sidebar-footer{margin-top:auto;padding:16px 20px;border-top:1px solid rgba(255,255,255,.07)}
+.btn-logout{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.4);font-size:.8rem;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;transition:color .2s;padding:0}
+.btn-logout:hover{color:var(--red)}
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column}
+.top-header{height:var(--header-h);background:#fff;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;padding:0 28px;gap:16px;position:sticky;top:0;z-index:50;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.header-title{font-size:1.05rem;font-weight:700;color:var(--navy);flex:1}
+.icon-btn{width:36px;height:36px;border-radius:8px;background:var(--gray-100);border:1px solid var(--gray-200);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray-500);font-size:.82rem}
+.header-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:#fff}
+.hamburger{display:none;background:none;border:none;font-size:1.1rem;color:var(--navy);cursor:pointer;padding:4px}
+.content{padding:28px;flex:1}
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+.page-header h1{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--navy)}
+.page-header p{font-size:.85rem;color:var(--gray-500);margin-top:4px}
+.btn-primary{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background .2s;font-family:'Inter',sans-serif}
+.btn-primary:hover{background:var(--navy2)}
+.btn-green{background:var(--green2);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif}
+.btn-outline{background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:8px;padding:8px 16px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;transition:all .2s}
+.btn-outline:hover{border-color:var(--navy);color:var(--navy)}
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px}
+.stat-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.stat-val{font-size:1.5rem;font-weight:800;color:var(--gray-900)}
+.stat-label{font-size:.75rem;color:var(--gray-400);margin-top:2px}
+/* Tabs */
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--gray-200);margin-bottom:24px}
+.tab-btn{padding:10px 22px;font-size:.85rem;font-weight:600;color:var(--gray-500);cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
+.tab-btn.active{color:var(--navy);border-bottom-color:var(--navy)}
+.tab-panel{display:none}.tab-panel.active{display:block}
+.card{background:#fff;border-radius:var(--radius);border:1px solid var(--gray-200);box-shadow:var(--shadow);overflow:hidden;margin-bottom:20px}
+.card-header{padding:16px 20px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.card-header h3{font-size:.9rem;font-weight:700;color:var(--navy)}
+.card-body{padding:20px}
+.chip{font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.chip-green{background:#dcfce7;color:#166534}
+.chip-amber{background:#fef9c3;color:#854d0e}
+.chip-blue{background:#dbeafe;color:#1e40af}
+.chip-red{background:#fef2f2;color:#991b1b}
+.chip-gray{background:var(--gray-100);color:var(--gray-600)}
+.chip-purple{background:#f5f3ff;color:#5b21b6}
+/* Applications table */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400);padding:10px 14px;text-align:left;border-bottom:1px solid var(--gray-100);background:var(--gray-50)}
+.data-table td{padding:11px 14px;border-bottom:1px solid var(--gray-50);font-size:.82rem;vertical-align:middle}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:#fafbff}
+.action-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--gray-200);background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray-500);font-size:.72rem;transition:all .15s;text-decoration:none}
+.action-btn:hover{border-color:var(--navy);color:var(--navy)}
+.action-btn.success:hover{border-color:var(--green2);color:var(--green2)}
+.action-btn.danger:hover{border-color:var(--red);color:var(--red)}
+/* Fees table */
+.fees-table{width:100%;border-collapse:collapse}
+.fees-table th{font-size:.72rem;font-weight:700;color:var(--gray-500);padding:10px 14px;text-align:left;background:var(--navy);color:#fff}
+.fees-table td{padding:10px 14px;border-bottom:1px solid var(--gray-100);font-size:.83rem}
+.fees-table tr:last-child td{border-bottom:none}
+.fees-table tr:hover td{background:var(--gray-50)}
+.fees-table input{border:1px solid var(--gray-200);border-radius:6px;padding:5px 9px;font-size:.82rem;width:100px;font-family:'Inter',sans-serif;outline:none}
+.fees-table input:focus{border-color:var(--navy2)}
+/* Form */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.form-row.single{grid-template-columns:1fr}
+.form-group label{display:block;font-size:.72rem;font-weight:700;color:var(--gray-500);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+.form-group input,.form-group select,.form-group textarea{width:100%;border:1px solid var(--gray-200);border-radius:8px;padding:9px 12px;font-size:.85rem;color:var(--gray-700);font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.form-group input:focus,.form-group select:focus{border-color:var(--navy2)}
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9000;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal-header{padding:20px 24px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between}
+.modal-header h3{font-size:1rem;font-weight:700;color:var(--navy)}
+.modal-close{width:32px;height:32px;border-radius:8px;border:1px solid var(--gray-200);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-500)}
+.modal-body{padding:24px}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--gray-100);display:flex;gap:10px;justify-content:flex-end}
+/* Pipeline */
+.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+.pipeline-col{background:var(--gray-50);border-radius:10px;padding:12px}
+.pipeline-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gray-500);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.pipeline-count{background:var(--gray-200);color:var(--gray-700);font-size:.65rem;font-weight:700;padding:1px 7px;border-radius:10px}
+.pipeline-item{background:#fff;border:1px solid var(--gray-200);border-radius:8px;padding:10px;margin-bottom:6px;font-size:.78rem;cursor:pointer;transition:box-shadow .15s}
+.pipeline-item:hover{box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.pipeline-item .pi-name{font-weight:600;color:var(--gray-900)}
+.pipeline-item .pi-yr{font-size:.7rem;color:var(--gray-400);margin-top:2px}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90}
+.sidebar-overlay.open{display:block}
+.toast{position:fixed;bottom:28px;right:28px;background:var(--navy3);color:#fff;border-radius:10px;padding:12px 20px;font-size:.83rem;font-weight:600;display:flex;align-items:center;gap:10px;z-index:9999;transform:translateY(80px);opacity:0;transition:all .35s;box-shadow:0 8px 24px rgba(0,0,0,.25);pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast i{color:var(--gold)}
+@media(max-width:1100px){.pipeline{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.sidebar-overlay.open{display:block}.main{margin-left:0}.hamburger{display:block}}
+@media(max-width:600px){.content{padding:16px}.stats-bar{grid-template-columns:1fr 1fr}.form-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo"><div class="logo-icon">🏫</div><div class="logo-text"><h2>AUS CMS</h2><p>Arab Unity School</p></div></div>
+  <div class="sidebar-user">
+    <div class="user-avatar" id="userAvatar" style="background:#ef4444">SA</div>
+    <div class="user-info"><div class="name" id="userName">Super Admin</div><span class="role-badge" id="roleBadge" style="background:rgba(239,68,68,.2);color:#ef4444">Super Admin</span></div>
+  </div>
+  <nav>
+    <div class="nav-section">
+      <div class="nav-label">Main</div>
+      <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="pages.html" class="nav-item"><i class="fas fa-file-alt"></i> Pages</a>
+      <a href="media.html" class="nav-item"><i class="fas fa-images"></i> Media Library</a>
+      <a href="announcements.html" class="nav-item"><i class="fas fa-bullhorn"></i> Announcements <span class="nav-badge">3</span></a>
+      <a href="events.html" class="nav-item"><i class="fas fa-calendar-alt"></i> Events</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">School</div>
+      <a href="staff.html" class="nav-item"><i class="fas fa-users"></i> Staff Profiles</a>
+      <a href="admissions-cms.html" class="nav-item active"><i class="fas fa-user-plus"></i> Admissions</a>
+      <a href="results-cms.html" class="nav-item"><i class="fas fa-chart-bar"></i> Results</a>
+      <a href="gallery.html" class="nav-item"><i class="fas fa-photo-video"></i> Gallery</a>
+      <a href="documents.html" class="nav-item"><i class="fas fa-file-download"></i> Documents <span class="nav-badge amber">2</span></a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">System</div>
+      <a href="users.html" class="nav-item"><i class="fas fa-user-shield"></i> Users & Roles</a>
+      <a href="seo.html" class="nav-item"><i class="fas fa-search"></i> SEO Manager</a>
+      <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer"><button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button></div>
+</aside>
+
+<div class="main">
+  <header class="top-header">
+    <button class="hamburger" onclick="openSidebar()"><i class="fas fa-bars"></i></button>
+    <span class="header-title">Admissions</span>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="icon-btn"><i class="fas fa-bell"></i></button>
+      <div class="header-avatar" id="headerAvatar" style="background:#ef4444">SA</div>
+    </div>
+  </header>
+  <div class="content">
+    <div class="page-header">
+      <div><h1>Admissions</h1><p>Track enquiries, applications, fees and the admissions pipeline</p></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn-outline" onclick="toast('Exporting applications…')"><i class="fas fa-download"></i> Export</button>
+        <button class="btn-green" onclick="openAppModal()"><i class="fas fa-plus"></i> New Application</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat-card"><div class="stat-icon" style="background:#dbeafe;color:#1e40af"><i class="fas fa-file-alt"></i></div><div><div class="stat-val">47</div><div class="stat-label">Applications 2026</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#dcfce7;color:var(--green2)"><i class="fas fa-check-circle"></i></div><div><div class="stat-val">28</div><div class="stat-label">Accepted</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#fef9c3;color:#854d0e"><i class="fas fa-clock"></i></div><div><div class="stat-val">12</div><div class="stat-label">Pending Review</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#fef2f2;color:var(--red)"><i class="fas fa-times-circle"></i></div><div><div class="stat-val">7</div><div class="stat-label">Withdrawn</div></div></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('pipeline',this)">Pipeline</button>
+      <button class="tab-btn" onclick="switchTab('applications',this)">All Applications</button>
+      <button class="tab-btn" onclick="switchTab('fees',this)">Fees & Tuition</button>
+      <button class="tab-btn" onclick="switchTab('transport',this)">Bus Transport</button>
+    </div>
+
+    <!-- Pipeline -->
+    <div class="tab-panel active" id="tab-pipeline">
+      <div class="pipeline">
+        <div class="pipeline-col">
+          <div class="pipeline-label">Enquiry <span class="pipeline-count">4</span></div>
+          <div class="pipeline-item"><div class="pi-name">Liam Patel</div><div class="pi-yr">Year 7 · Requested 08 May</div></div>
+          <div class="pipeline-item"><div class="pi-name">Amira Hassan</div><div class="pi-yr">Year 1 · Requested 07 May</div></div>
+          <div class="pipeline-item"><div class="pi-name">Yousef Al Ali</div><div class="pi-yr">Year 10 · Requested 06 May</div></div>
+          <div class="pipeline-item"><div class="pi-name">Sofia Martins</div><div class="pi-yr">Year 3 · Requested 05 May</div></div>
+        </div>
+        <div class="pipeline-col">
+          <div class="pipeline-label">Assessment <span class="pipeline-count">5</span></div>
+          <div class="pipeline-item"><div class="pi-name">Omar Khalid</div><div class="pi-yr">Year 5 · Test: 15 May</div></div>
+          <div class="pipeline-item"><div class="pi-name">Priya Sharma</div><div class="pi-yr">Year 9 · Test: 14 May</div></div>
+          <div class="pipeline-item"><div class="pi-name">Jake Wilson</div><div class="pi-yr">Year 2 · Test: 13 May</div></div>
+          <div class="pipeline-item"><div class="pi-name">Hana Al Farsi</div><div class="pi-yr">Year 11 · Test: 12 May</div></div>
+          <div class="pipeline-item"><div class="pi-name">Rayan Dib</div><div class="pi-yr">Year 4 · Test: 11 May</div></div>
+        </div>
+        <div class="pipeline-col">
+          <div class="pipeline-label">Offer Made <span class="pipeline-count">6</span></div>
+          <div class="pipeline-item" style="border-left:3px solid var(--green2)"><div class="pi-name">Nour Akhtar</div><div class="pi-yr">Year 6 · Offer sent 09 May</div></div>
+          <div class="pipeline-item" style="border-left:3px solid var(--green2)"><div class="pi-name">Eitan Cohen</div><div class="pi-yr">Year 8 · Offer sent 08 May</div></div>
+          <div class="pipeline-item" style="border-left:3px solid var(--green2)"><div class="pi-name">Fatima Zahra</div><div class="pi-yr">Year 12 · Offer sent 07 May</div></div>
+          <div class="pipeline-item" style="border-left:3px solid var(--green2)"><div class="pi-name">Arlo Davies</div><div class="pi-yr">Year 1 · Offer sent 06 May</div></div>
+          <div class="pipeline-item" style="border-left:3px solid var(--green2)"><div class="pi-name">Mei Lin</div><div class="pi-yr">Year 7 · Offer sent 05 May</div></div>
+          <div class="pipeline-item" style="border-left:3px solid var(--green2)"><div class="pi-name">Ali Hassan</div><div class="pi-yr">Year 3 · Offer sent 04 May</div></div>
+        </div>
+        <div class="pipeline-col">
+          <div class="pipeline-label">Enrolled <span class="pipeline-count" style="background:#dcfce7;color:#166534">28</span></div>
+          <div class="pipeline-item" style="background:#f0fdf4;border-color:#bbf7d0"><div class="pi-name">Sarah Johnson</div><div class="pi-yr">Year 2 · Starts Sep 2026</div></div>
+          <div class="pipeline-item" style="background:#f0fdf4;border-color:#bbf7d0"><div class="pi-name">Marco Rossi</div><div class="pi-yr">Year 10 · Starts Sep 2026</div></div>
+          <div class="pipeline-item" style="background:#f0fdf4;border-color:#bbf7d0"><div class="pi-name">Aisha Malik</div><div class="pi-yr">Year 5 · Starts Sep 2026</div></div>
+          <div style="font-size:.72rem;color:var(--gray-400);text-align:center;padding:8px">+25 more enrolled</div>
+        </div>
+        <div class="pipeline-col">
+          <div class="pipeline-label">Withdrawn <span class="pipeline-count" style="background:#fef2f2;color:#991b1b">7</span></div>
+          <div class="pipeline-item" style="opacity:.6"><div class="pi-name">Tom Baker</div><div class="pi-yr">Year 8 · Relocated</div></div>
+          <div class="pipeline-item" style="opacity:.6"><div class="pi-name">Layla Nour</div><div class="pi-yr">Year 4 · Chose other school</div></div>
+          <div class="pipeline-item" style="opacity:.6"><div class="pi-name">Jack Morris</div><div class="pi-yr">Year 11 · Fees</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- All Applications -->
+    <div class="tab-panel" id="tab-applications">
+      <div class="card">
+        <div class="card-header">
+          <h3>All Applications — 2026/27</h3>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <input type="text" placeholder="Search…" oninput="searchApps(this.value)" style="border:1px solid var(--gray-200);border-radius:8px;padding:7px 12px;font-size:.82rem;font-family:'Inter',sans-serif;outline:none;width:180px">
+            <select onchange="filterApps(this.value)" style="border:1px solid var(--gray-200);border-radius:8px;padding:7px 12px;font-size:.82rem;font-family:'Inter',sans-serif;outline:none;background:#fff">
+              <option value="all">All Status</option>
+              <option value="enquiry">Enquiry</option>
+              <option value="assessment">Assessment</option>
+              <option value="offer">Offer Made</option>
+              <option value="enrolled">Enrolled</option>
+              <option value="withdrawn">Withdrawn</option>
+            </select>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table" id="appsTable">
+            <thead><tr><th>Student Name</th><th>Year Group</th><th>Nationality</th><th>Applied</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="appsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fees -->
+    <div class="tab-panel" id="tab-fees">
+      <div class="card">
+        <div class="card-header">
+          <h3>Tuition Fees — AY 2026/27</h3>
+          <div style="display:flex;gap:8px">
+            <span class="chip chip-blue">KHDA Approved</span>
+            <button class="btn-outline" style="font-size:.76rem;padding:6px 14px" onclick="toast('Fees saved successfully')"><i class="fas fa-save"></i> Save Changes</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="fees-table" id="feesTable">
+            <thead><tr><th>Year Group</th><th>Annual Fee (AED)</th><th>Term 1</th><th>Term 2</th><th>Term 3</th></tr></thead>
+            <tbody id="feesBody"></tbody>
+          </table>
+        </div>
+        <div class="card-body" style="border-top:1px solid var(--gray-100)">
+          <div style="font-size:.8rem;color:var(--gray-500)">
+            * Fees approved by KHDA. A registration fee of AED 300 applies to new students.<br>
+            * All fees are subject to annual KHDA-approved adjustments.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transport -->
+    <div class="tab-panel" id="tab-transport">
+      <div class="card">
+        <div class="card-header">
+          <h3>Bus Transport Fees — AY 2026/27</h3>
+          <button class="btn-outline" style="font-size:.76rem;padding:6px 14px" onclick="toast('Transport fees saved')"><i class="fas fa-save"></i> Save Changes</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="fees-table">
+            <thead><tr><th>Route / Area</th><th>Annual (AED)</th><th>Term 1</th><th>Term 2</th><th>Term 3</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Sharjah</strong></td><td><input type="text" value="4,700"></td><td><input type="text" value="1,880"></td><td><input type="text" value="1,410"></td><td><input type="text" value="1,410"></td></tr>
+              <tr><td><strong>Deira / Al Mamzar</strong></td><td><input type="text" value="4,700"></td><td><input type="text" value="1,880"></td><td><input type="text" value="1,410"></td><td><input type="text" value="1,410"></td></tr>
+              <tr><td><strong>Mirdif / Al Rashidiya</strong></td><td><input type="text" value="5,500"></td><td><input type="text" value="2,200"></td><td><input type="text" value="1,650"></td><td><input type="text" value="1,650"></td></tr>
+              <tr><td><strong>Al Qusais / Al Nahda</strong></td><td><input type="text" value="4,900"></td><td><input type="text" value="1,960"></td><td><input type="text" value="1,470"></td><td><input type="text" value="1,470"></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-body" style="border-top:1px solid var(--gray-100)">
+          <div style="font-size:.8rem;color:var(--gray-500);line-height:1.7">
+            <strong>Payment Provider:</strong> Regal Bus Transport LLC<br>
+            <strong>Cheques payable to:</strong> Regal Bus Transport LLC<br>
+            <strong>Contact:</strong> rbtaccounts@arabunityschool.ae · atef@regalbustransport.ae · Tel: 04-2809343<br>
+            <strong>Instalment dates:</strong> 30 Aug 2026 / 1 Jan 2027 / 1 Apr 2027
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- New Application Modal -->
+<div class="modal-overlay" id="appModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>New Application</h3>
+      <button class="modal-close" onclick="closeAppModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Student First Name</label><input type="text" id="appFirst" placeholder="First name"></div>
+        <div class="form-group"><label>Student Last Name</label><input type="text" id="appLast" placeholder="Last name"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Year Group Applying For</label>
+          <select id="appYear"><option>Foundation Stage</option><option>Year 1</option><option>Year 2</option><option>Year 3</option><option>Year 4</option><option>Year 5</option><option>Year 6</option><option>Year 7</option><option>Year 8</option><option>Year 9</option><option>Year 10</option><option>Year 11</option><option>Year 12</option><option>Year 13</option></select>
+        </div>
+        <div class="form-group"><label>Nationality</label><input type="text" id="appNat" placeholder="e.g. Emirati"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Parent/Guardian Name</label><input type="text" id="appParent" placeholder="Full name"></div>
+        <div class="form-group"><label>Contact Email</label><input type="email" id="appEmail" placeholder="email@example.com"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Phone</label><input type="text" id="appPhone" placeholder="+971 …"></div>
+        <div class="form-group"><label>Status</label>
+          <select id="appStatus"><option value="enquiry">Enquiry</option><option value="assessment">Assessment</option><option value="offer">Offer Made</option><option value="enrolled">Enrolled</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeAppModal()">Cancel</button>
+      <button class="btn-green" onclick="saveApp()"><i class="fas fa-save"></i> Save Application</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg">Done</span></div>
+<script>
+const STATUS_CHIP={
+  enquiry:'chip-blue',assessment:'chip-amber',
+  offer:'chip-purple',enrolled:'chip-green',withdrawn:'chip-gray'
+};
+const STATUS_LABEL={enquiry:'Enquiry',assessment:'Assessment',offer:'Offer Made',enrolled:'Enrolled',withdrawn:'Withdrawn'};
+
+let APPS=[
+  {id:1,first:'Liam',last:'Patel',year:'Year 7',nat:'British',date:'08 May 2026',status:'enquiry'},
+  {id:2,first:'Amira',last:'Hassan',year:'Year 1',nat:'Egyptian',date:'07 May 2026',status:'enquiry'},
+  {id:3,first:'Omar',last:'Khalid',year:'Year 5',nat:'Jordanian',date:'01 May 2026',status:'assessment'},
+  {id:4,first:'Priya',last:'Sharma',year:'Year 9',nat:'Indian',date:'28 Apr 2026',status:'assessment'},
+  {id:5,first:'Nour',last:'Akhtar',year:'Year 6',nat:'Pakistani',date:'20 Apr 2026',status:'offer'},
+  {id:6,first:'Sarah',last:'Johnson',year:'Year 2',nat:'American',date:'10 Apr 2026',status:'enrolled'},
+  {id:7,first:'Marco',last:'Rossi',year:'Year 10',nat:'Italian',date:'05 Apr 2026',status:'enrolled'},
+  {id:8,first:'Aisha',last:'Malik',year:'Year 5',nat:'Pakistani',date:'01 Apr 2026',status:'enrolled'},
+  {id:9,first:'Tom',last:'Baker',year:'Year 8',nat:'British',date:'15 Mar 2026',status:'withdrawn'},
+  {id:10,first:'Jake',last:'Wilson',year:'Year 2',nat:'Australian',date:'02 May 2026',status:'assessment'},
+];
+let filteredApps=[...APPS];
+
+const FEES=[
+  {yr:'Foundation Stage (FS1–FS2)',annual:'18,560',t1:'7,424',t2:'5,568',t3:'5,568'},
+  {yr:'Year 1 – Year 2',annual:'21,840',t1:'8,736',t2:'6,552',t3:'6,552'},
+  {yr:'Year 3 – Year 4',annual:'23,190',t1:'9,276',t2:'6,957',t3:'6,957'},
+  {yr:'Year 5 – Year 6',annual:'24,570',t1:'9,828',t2:'7,371',t3:'7,371'},
+  {yr:'Year 7 – Year 8',annual:'27,300',t1:'10,920',t2:'8,190',t3:'8,190'},
+  {yr:'Year 9 – Year 10',annual:'29,610',t1:'11,844',t2:'8,883',t3:'8,883'},
+  {yr:'Year 11',annual:'31,300',t1:'12,520',t2:'9,390',t3:'9,390'},
+  {yr:'Year 12 – Year 13',annual:'33,600',t1:'13,440',t2:'10,080',t3:'10,080'},
+];
+
+function renderApps(data){
+  document.getElementById('appsBody').innerHTML=data.map(a=>`
+    <tr>
+      <td><strong>${a.first} ${a.last}</strong></td>
+      <td>${a.year}</td>
+      <td>${a.nat}</td>
+      <td style="color:var(--gray-400)">${a.date}</td>
+      <td><span class="chip ${STATUS_CHIP[a.status]}">${STATUS_LABEL[a.status]}</span></td>
+      <td><div style="display:flex;gap:5px">
+        <button class="action-btn" onclick="toast('Opening application for ${a.first} ${a.last}')"><i class="fas fa-eye"></i></button>
+        <button class="action-btn success" onclick="promoteApp(${a.id})" title="Advance stage"><i class="fas fa-arrow-right"></i></button>
+        <button class="action-btn danger" onclick="deleteApp(${a.id})"><i class="fas fa-trash"></i></button>
+      </div></td>
+    </tr>`).join('');
+}
+
+function renderFees(){
+  document.getElementById('feesBody').innerHTML=FEES.map(f=>`
+    <tr>
+      <td><strong>${f.yr}</strong></td>
+      <td><input type="text" value="${f.annual}"></td>
+      <td><input type="text" value="${f.t1}"></td>
+      <td><input type="text" value="${f.t2}"></td>
+      <td><input type="text" value="${f.t3}"></td>
+    </tr>`).join('');
+}
+
+function searchApps(v){renderApps(APPS.filter(a=>(a.first+' '+a.last+' '+a.nat).toLowerCase().includes(v.toLowerCase())));}
+function filterApps(v){renderApps(v==='all'?APPS:APPS.filter(a=>a.status===v));}
+function deleteApp(id){APPS=APPS.filter(a=>a.id!==id);filteredApps=[...APPS];renderApps(APPS);toast('Application removed');}
+const STAGE_ORDER=['enquiry','assessment','offer','enrolled'];
+function promoteApp(id){
+  const a=APPS.find(x=>x.id===id);
+  if(!a)return;
+  const i=STAGE_ORDER.indexOf(a.status);
+  if(i<STAGE_ORDER.length-1){a.status=STAGE_ORDER[i+1];renderApps(APPS);toast('Application advanced to: '+STATUS_LABEL[a.status]);}
+  else toast('Already at final stage');
+}
+
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function openAppModal(){document.getElementById('appModal').classList.add('open');}
+function closeAppModal(){document.getElementById('appModal').classList.remove('open');}
+function saveApp(){
+  const first=document.getElementById('appFirst').value.trim();
+  const last=document.getElementById('appLast').value.trim();
+  if(!first||!last){toast('Please enter student name');return;}
+  APPS.unshift({id:Date.now(),first,last,year:document.getElementById('appYear').value,nat:document.getElementById('appNat').value||'—',date:new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),status:document.getElementById('appStatus').value});
+  renderApps(APPS);closeAppModal();toast('Application added successfully');
+}
+
+function initAuth(){
+  const s=sessionStorage.getItem('ausUser');
+  if(!s){location.href='index.html';return;}
+  const u=JSON.parse(s);
+  ['userAvatar','headerAvatar'].forEach(id=>{document.getElementById(id).textContent=u.initials;document.getElementById(id).style.background=u.color;});
+  document.getElementById('userName').textContent=u.name||u.role;
+  document.getElementById('roleBadge').textContent=u.role;
+  document.getElementById('roleBadge').style.background=u.color+'33';
+  document.getElementById('roleBadge').style.color=u.color;
+}
+function logout(){sessionStorage.removeItem('ausUser');location.href='index.html';}
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('open')}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('open')}
+let toastTimer;
+function toast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3000);}
+document.addEventListener('DOMContentLoaded',()=>{initAuth();renderApps(APPS);renderFees();});
+</script>
+</body>
+</html>

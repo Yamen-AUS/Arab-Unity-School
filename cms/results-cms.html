@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUS CMS — Results</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#002244;--navy2:#003a70;--navy3:#001830;
+  --green:#1a5c30;--green2:#2a7d3e;--gold:#c8a94a;
+  --red:#ef4444;--amber:#f59e0b;--blue:#3b82f6;
+  --sidebar-w:260px;--header-h:64px;
+  --gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;
+  --gray-400:#94a3b8;--gray-500:#64748b;--gray-600:#475569;--gray-700:#334155;--gray-900:#0f172a;
+  --radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.05);
+}
+body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-700);display:flex;min-height:100vh;}
+.sidebar{width:var(--sidebar-w);background:var(--navy3);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;z-index:100;overflow-y:auto;transition:transform .3s}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+.sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:12px}
+.logo-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#e8c96a);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.logo-text h2{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:#fff;line-height:1.1}
+.logo-text p{font-size:.68rem;color:rgba(255,255,255,.35);margin-top:1px}
+.sidebar-user{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:10px}
+.user-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff;flex-shrink:0}
+.user-info .name{font-size:.82rem;font-weight:600;color:#fff}
+.user-info .role-badge{font-size:.65rem;font-weight:700;padding:1px 7px;border-radius:20px;display:inline-block;margin-top:2px}
+.nav-section{padding:12px 0}
+.nav-label{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);padding:0 20px 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;color:rgba(255,255,255,.55);font-size:.83rem;font-weight:500;transition:all .15s;text-decoration:none;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.9)}
+.nav-item.active{background:rgba(255,255,255,.08);color:#fff;border-left-color:var(--gold)}
+.nav-item i{width:16px;font-size:.8rem;text-align:center}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:10px}
+.nav-badge.amber{background:var(--amber)}
+.sidebar-footer{margin-top:auto;padding:16px 20px;border-top:1px solid rgba(255,255,255,.07)}
+.btn-logout{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.4);font-size:.8rem;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;transition:color .2s;padding:0}
+.btn-logout:hover{color:var(--red)}
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column}
+.top-header{height:var(--header-h);background:#fff;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;padding:0 28px;gap:16px;position:sticky;top:0;z-index:50;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.header-title{font-size:1.05rem;font-weight:700;color:var(--navy);flex:1}
+.icon-btn{width:36px;height:36px;border-radius:8px;background:var(--gray-100);border:1px solid var(--gray-200);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray-500);font-size:.82rem}
+.header-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:#fff}
+.hamburger{display:none;background:none;border:none;font-size:1.1rem;color:var(--navy);cursor:pointer;padding:4px}
+.content{padding:28px;flex:1}
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+.page-header h1{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--navy)}
+.page-header p{font-size:.85rem;color:var(--gray-500);margin-top:4px}
+.btn-primary{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif}
+.btn-green{background:var(--green2);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif}
+.btn-outline{background:#fff;color:var(--gray-700);border:1px solid var(--gray-200);border-radius:8px;padding:8px 16px;font-size:.82rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;transition:all .2s}
+.btn-outline:hover{border-color:var(--navy);color:var(--navy)}
+/* Stats */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px}
+.stat-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.stat-val{font-size:1.5rem;font-weight:800;color:var(--gray-900)}
+.stat-label{font-size:.75rem;color:var(--gray-400);margin-top:2px}
+/* Tabs */
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--gray-200);margin-bottom:24px}
+.tab-btn{padding:10px 22px;font-size:.85rem;font-weight:600;color:var(--gray-500);cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
+.tab-btn.active{color:var(--navy);border-bottom-color:var(--navy)}
+.tab-panel{display:none}.tab-panel.active{display:block}
+/* Cards */
+.card{background:#fff;border-radius:var(--radius);border:1px solid var(--gray-200);box-shadow:var(--shadow);overflow:hidden;margin-bottom:20px}
+.card-header{padding:16px 20px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.card-header h3{font-size:.9rem;font-weight:700;color:var(--navy)}
+.card-body{padding:20px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.chip{font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.chip-green{background:#dcfce7;color:#166534}
+.chip-amber{background:#fef9c3;color:#854d0e}
+.chip-blue{background:#dbeafe;color:#1e40af}
+.chip-gray{background:var(--gray-100);color:var(--gray-600)}
+.chip-gold{background:#fef9c3;color:#92400e}
+/* DSIB cards */
+.dsib-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.dsib-card{border:2px solid var(--gray-200);border-radius:12px;padding:16px;position:relative;transition:box-shadow .2s}
+.dsib-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.dsib-card.outstanding{border-color:#b45309}
+.dsib-card.very-good{border-color:var(--green)}
+.dsib-cat{font-size:.75rem;font-weight:700;color:var(--gray-500);margin-bottom:8px}
+.dsib-rating{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;margin-bottom:4px}
+.dsib-rating.outstanding{color:#b45309}
+.dsib-rating.very-good{color:var(--green)}
+.dsib-desc{font-size:.76rem;color:var(--gray-400);line-height:1.5}
+.dsib-edit{position:absolute;top:10px;right:10px;width:26px;height:26px;border-radius:6px;border:1px solid var(--gray-200);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray-400);font-size:.7rem;transition:all .15s}
+.dsib-edit:hover{border-color:var(--navy);color:var(--navy)}
+/* Results table */
+.res-table{width:100%;border-collapse:collapse}
+.res-table th{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-400);padding:10px 14px;text-align:left;border-bottom:1px solid var(--gray-100);background:var(--gray-50)}
+.res-table td{padding:10px 14px;border-bottom:1px solid var(--gray-50);font-size:.82rem;vertical-align:middle}
+.res-table tr:last-child td{border-bottom:none}
+.res-table tr:hover td{background:#fafbff}
+.res-table input{border:1px solid var(--gray-200);border-radius:6px;padding:5px 9px;font-size:.82rem;width:80px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.res-table input:focus{border-color:var(--navy2)}
+/* Chart */
+.chart-wrap{height:280px;position:relative}
+/* Grade badge */
+.grade{font-size:.72rem;font-weight:800;padding:3px 9px;border-radius:20px;display:inline-block}
+.grade-a{background:#dcfce7;color:#166534}
+.grade-b{background:#dbeafe;color:#1e40af}
+.grade-c{background:#fef9c3;color:#854d0e}
+/* Sidebar overlay */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90}
+.sidebar-overlay.open{display:block}
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9000;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal-header{padding:20px 24px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between}
+.modal-header h3{font-size:1rem;font-weight:700;color:var(--navy)}
+.modal-close{width:32px;height:32px;border-radius:8px;border:1px solid var(--gray-200);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--gray-500)}
+.modal-body{padding:24px}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:.72rem;font-weight:700;color:var(--gray-500);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+.form-group input,.form-group select,.form-group textarea{width:100%;border:1px solid var(--gray-200);border-radius:8px;padding:9px 12px;font-size:.85rem;color:var(--gray-700);font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+.form-group textarea{min-height:70px;resize:vertical}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--navy2)}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--gray-100);display:flex;gap:10px;justify-content:flex-end}
+.toast{position:fixed;bottom:28px;right:28px;background:var(--navy3);color:#fff;border-radius:10px;padding:12px 20px;font-size:.83rem;font-weight:600;display:flex;align-items:center;gap:10px;z-index:9999;transform:translateY(80px);opacity:0;transition:all .35s;box-shadow:0 8px 24px rgba(0,0,0,.25);pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast i{color:var(--gold)}
+@media(max-width:1100px){.dsib-grid{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
+@media(max-width:900px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.sidebar-overlay.open{display:block}.main{margin-left:0}.hamburger{display:block}}
+@media(max-width:600px){.content{padding:16px}.stats-bar{grid-template-columns:1fr 1fr}.dsib-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo"><div class="logo-icon">🏫</div><div class="logo-text"><h2>AUS CMS</h2><p>Arab Unity School</p></div></div>
+  <div class="sidebar-user">
+    <div class="user-avatar" id="userAvatar" style="background:#ef4444">SA</div>
+    <div class="user-info"><div class="name" id="userName">Super Admin</div><span class="role-badge" id="roleBadge" style="background:rgba(239,68,68,.2);color:#ef4444">Super Admin</span></div>
+  </div>
+  <nav>
+    <div class="nav-section">
+      <div class="nav-label">Main</div>
+      <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="pages.html" class="nav-item"><i class="fas fa-file-alt"></i> Pages</a>
+      <a href="media.html" class="nav-item"><i class="fas fa-images"></i> Media Library</a>
+      <a href="announcements.html" class="nav-item"><i class="fas fa-bullhorn"></i> Announcements <span class="nav-badge">3</span></a>
+      <a href="events.html" class="nav-item"><i class="fas fa-calendar-alt"></i> Events</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">School</div>
+      <a href="staff.html" class="nav-item"><i class="fas fa-users"></i> Staff Profiles</a>
+      <a href="admissions-cms.html" class="nav-item"><i class="fas fa-user-plus"></i> Admissions</a>
+      <a href="results-cms.html" class="nav-item active"><i class="fas fa-chart-bar"></i> Results</a>
+      <a href="gallery.html" class="nav-item"><i class="fas fa-photo-video"></i> Gallery</a>
+      <a href="documents.html" class="nav-item"><i class="fas fa-file-download"></i> Documents <span class="nav-badge amber">2</span></a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">System</div>
+      <a href="users.html" class="nav-item"><i class="fas fa-user-shield"></i> Users & Roles</a>
+      <a href="seo.html" class="nav-item"><i class="fas fa-search"></i> SEO Manager</a>
+      <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+    </div>
+  </nav>
+  <div class="sidebar-footer"><button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button></div>
+</aside>
+
+<div class="main">
+  <header class="top-header">
+    <button class="hamburger" onclick="openSidebar()"><i class="fas fa-bars"></i></button>
+    <span class="header-title">Results</span>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="icon-btn"><i class="fas fa-bell"></i></button>
+      <div class="header-avatar" id="headerAvatar" style="background:#ef4444">SA</div>
+    </div>
+  </header>
+
+  <div class="content">
+    <div class="page-header">
+      <div><h1>Results</h1><p>Manage DSIB inspection ratings, Cambridge IGCSE & A-Level results data</p></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn-outline" onclick="toast('Exporting results data…')"><i class="fas fa-download"></i> Export</button>
+        <button class="btn-green" onclick="openAddModal()"><i class="fas fa-plus"></i> Add Result</button>
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-card"><div class="stat-icon" style="background:#fef9c3;color:#92400e"><i class="fas fa-star"></i></div><div><div class="stat-val">Outstanding</div><div class="stat-label">Overall DSIB Rating</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#dcfce7;color:var(--green2)"><i class="fas fa-percentage"></i></div><div><div class="stat-val">94%</div><div class="stat-label">IGCSE A*–C Pass Rate</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#dbeafe;color:var(--blue)"><i class="fas fa-graduation-cap"></i></div><div><div class="stat-val">87%</div><div class="stat-label">A-Level A*–B Rate</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#f5f3ff;color:#5b21b6"><i class="fas fa-university"></i></div><div><div class="stat-val">98%</div><div class="stat-label">University Placement</div></div></div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('dsib',this)">DSIB Inspection</button>
+      <button class="tab-btn" onclick="switchTab('igcse',this)">Cambridge IGCSE</button>
+      <button class="tab-btn" onclick="switchTab('alevel',this)">A-Level</button>
+      <button class="tab-btn" onclick="switchTab('charts',this)">Charts & Trends</button>
+    </div>
+
+    <!-- DSIB Tab -->
+    <div class="tab-panel active" id="tab-dsib">
+      <div class="card">
+        <div class="card-header">
+          <h3>DSIB Inspection Results — Overall: Outstanding</h3>
+          <div style="display:flex;gap:8px">
+            <span class="chip chip-gold">2024 Inspection</span>
+            <button class="btn-outline" style="font-size:.76rem;padding:6px 14px" onclick="toast('DSIB data saved')"><i class="fas fa-save"></i> Save</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="dsib-grid" id="dsibGrid"></div>
+          <div style="font-size:.78rem;color:var(--gray-400);border-top:1px solid var(--gray-100);padding-top:12px">
+            Source: Dubai Schools Inspection Bureau (DSIB) · Click the edit icon on any card to update the rating or description.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IGCSE Tab -->
+    <div class="tab-panel" id="tab-igcse">
+      <div class="card">
+        <div class="card-header">
+          <h3>Cambridge IGCSE Results</h3>
+          <div style="display:flex;gap:8px;align-items:center">
+            <select style="border:1px solid var(--gray-200);border-radius:8px;padding:7px 12px;font-size:.82rem;font-family:'Inter',sans-serif;outline:none;background:#fff" onchange="toast('Viewing year '+this.value)">
+              <option>2024/25</option><option>2023/24</option><option>2022/23</option>
+            </select>
+            <button class="btn-outline" style="font-size:.76rem;padding:6px 14px" onclick="toast('IGCSE data saved')"><i class="fas fa-save"></i> Save</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="res-table" id="igcseTable">
+            <thead><tr><th>Subject</th><th>Candidates</th><th>A* (%)</th><th>A (%)</th><th>B (%)</th><th>C (%)</th><th>A*–C (%)</th><th>School Avg</th><th>Cambridge Avg</th></tr></thead>
+            <tbody id="igcseBody"></tbody>
+          </table>
+        </div>
+        <div class="card-body" style="border-top:1px solid var(--gray-100);display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn-outline" onclick="addIGCSERow()"><i class="fas fa-plus"></i> Add Subject</button>
+          <button class="btn-outline" onclick="toast('Data saved')"><i class="fas fa-save"></i> Save All</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- A-Level Tab -->
+    <div class="tab-panel" id="tab-alevel">
+      <div class="card">
+        <div class="card-header">
+          <h3>Cambridge A-Level Results</h3>
+          <div style="display:flex;gap:8px;align-items:center">
+            <select style="border:1px solid var(--gray-200);border-radius:8px;padding:7px 12px;font-size:.82rem;font-family:'Inter',sans-serif;outline:none;background:#fff">
+              <option>2024/25</option><option>2023/24</option><option>2022/23</option>
+            </select>
+            <button class="btn-outline" style="font-size:.76rem;padding:6px 14px" onclick="toast('A-Level data saved')"><i class="fas fa-save"></i> Save</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="res-table" id="aLevelTable">
+            <thead><tr><th>Subject</th><th>Candidates</th><th>A* (%)</th><th>A (%)</th><th>B (%)</th><th>A*–B (%)</th><th>School Avg</th><th>Cambridge Avg</th></tr></thead>
+            <tbody id="aLevelBody"></tbody>
+          </table>
+        </div>
+        <div class="card-body" style="border-top:1px solid var(--gray-100);display:flex;gap:10px">
+          <button class="btn-outline" onclick="addALevelRow()"><i class="fas fa-plus"></i> Add Subject</button>
+          <button class="btn-outline" onclick="toast('Data saved')"><i class="fas fa-save"></i> Save All</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Tab -->
+    <div class="tab-panel" id="tab-charts">
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header"><h3>IGCSE A*–C Pass Rate — 5 Year Trend</h3></div>
+          <div class="card-body"><div class="chart-wrap"><canvas id="igcseChart"></canvas></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>A-Level A*–B Rate — 5 Year Trend</h3></div>
+          <div class="card-body"><div class="chart-wrap"><canvas id="aLevelChart"></canvas></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>Top Subject Performance — IGCSE 2024/25</h3></div>
+        <div class="card-body"><div style="height:260px;position:relative"><canvas id="subjectChart"></canvas></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit DSIB Modal -->
+<div class="modal-overlay" id="dsibModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Edit DSIB Card</h3>
+      <button class="modal-close" onclick="closeDsibModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Category</label><input type="text" id="dsibCat"></div>
+      <div class="form-group"><label>Rating</label>
+        <select id="dsibRating">
+          <option value="Outstanding">Outstanding</option>
+          <option value="Very Good">Very Good</option>
+          <option value="Good">Good</option>
+          <option value="Acceptable">Acceptable</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Description</label><textarea id="dsibDesc"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeDsibModal()">Cancel</button>
+      <button class="btn-green" onclick="saveDsib()"><i class="fas fa-save"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Result Modal -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Add Result Entry</h3>
+      <button class="modal-close" onclick="closeAddModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Type</label>
+        <select id="addType"><option value="igcse">IGCSE</option><option value="alevel">A-Level</option></select>
+      </div>
+      <div class="form-group"><label>Subject</label><input type="text" id="addSubject" placeholder="e.g. Mathematics"></div>
+      <div class="form-group"><label>Candidates</label><input type="number" id="addCandidates" placeholder="e.g. 45"></div>
+      <div class="form-group"><label>A* (%)</label><input type="number" id="addAStar" placeholder="e.g. 24"></div>
+      <div class="form-group"><label>A (%)</label><input type="number" id="addA" placeholder="e.g. 38"></div>
+      <div class="form-group"><label>B (%)</label><input type="number" id="addB" placeholder="e.g. 22"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="closeAddModal()">Cancel</button>
+      <button class="btn-green" onclick="saveNewResult()"><i class="fas fa-save"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg">Done</span></div>
+
+<script>
+// DSIB data
+let DSIB = [
+  {cat:'Quality of Education',rating:'Outstanding',cls:'outstanding',desc:'Students demonstrate exceptional knowledge, understanding and skills across all phases. Teaching quality is outstanding throughout.'},
+  {cat:'Student Personal Development & Wellbeing',rating:'Outstanding',cls:'outstanding',desc:'Students show exemplary behaviour, attitudes and personal responsibility. Wellbeing programmes are highly effective.'},
+  {cat:'Teaching & Assessment',rating:'Outstanding',cls:'outstanding',desc:'Teachers have excellent subject knowledge. Assessment information is used very effectively to plan learning.'},
+  {cat:'Curriculum',rating:'Very Good',cls:'very-good',desc:'The curriculum is broad, balanced and meets the needs of all students. Enrichment activities are extensive.'},
+  {cat:'Leadership & Management',rating:'Very Good',cls:'very-good',desc:'Leaders have a clear vision and strategy. Self-evaluation is accurate and improvement planning is effective.'},
+  {cat:'Health & Safety Across Phases',rating:'Very Good',cls:'very-good',desc:'Health and safety standards are maintained to a very high level across all phases and facilities.'},
+];
+let editDsibIdx = null;
+
+function renderDSIB() {
+  document.getElementById('dsibGrid').innerHTML = DSIB.map((d, i) => `
+    <div class="dsib-card ${d.cls}">
+      <button class="dsib-edit" onclick="editDsib(${i})"><i class="fas fa-edit"></i></button>
+      <div class="dsib-cat">${d.cat}</div>
+      <div class="dsib-rating ${d.cls}">${d.rating}</div>
+      <div class="dsib-desc">${d.desc}</div>
+    </div>`).join('');
+}
+
+function editDsib(i) {
+  editDsibIdx = i;
+  document.getElementById('dsibCat').value = DSIB[i].cat;
+  document.getElementById('dsibRating').value = DSIB[i].rating;
+  document.getElementById('dsibDesc').value = DSIB[i].desc;
+  document.getElementById('dsibModal').classList.add('open');
+}
+function closeDsibModal() { document.getElementById('dsibModal').classList.remove('open'); }
+function saveDsib() {
+  const rating = document.getElementById('dsibRating').value;
+  DSIB[editDsibIdx] = {
+    cat: document.getElementById('dsibCat').value,
+    rating,
+    cls: rating === 'Outstanding' ? 'outstanding' : rating === 'Very Good' ? 'very-good' : 'good',
+    desc: document.getElementById('dsibDesc').value
+  };
+  renderDSIB(); closeDsibModal(); toast('DSIB card updated');
+}
+
+// IGCSE data
+let IGCSE = [
+  {sub:'English Language',n:87,aStar:18,a:34,b:28,c:14},
+  {sub:'Mathematics',n:92,aStar:22,a:31,b:27,c:14},
+  {sub:'Physics',n:64,aStar:20,a:36,b:26,c:12},
+  {sub:'Chemistry',n:61,aStar:19,a:33,b:28,c:14},
+  {sub:'Biology',n:68,aStar:17,a:35,b:29,c:13},
+  {sub:'Business Studies',n:54,aStar:14,a:32,b:30,c:16},
+  {sub:'Geography',n:48,aStar:16,a:34,b:28,c:14},
+  {sub:'History',n:42,aStar:15,a:33,b:29,c:15},
+  {sub:'Arabic (First Language)',n:76,aStar:24,a:38,b:22,c:10},
+  {sub:'Computer Science',n:39,aStar:21,a:35,b:27,c:11},
+];
+
+function renderIGCSE() {
+  document.getElementById('igcseBody').innerHTML = IGCSE.map((r, i) => {
+    const passRate = r.aStar + r.a + r.b + r.c;
+    const schoolAvg = (r.aStar * 4 + r.a * 3 + r.b * 2 + r.c) / 4 / 25 * 100;
+    return `<tr>
+      <td><strong>${r.sub}</strong></td>
+      <td><input type="number" value="${r.n}" style="width:65px" onchange="IGCSE[${i}].n=+this.value"></td>
+      <td><input type="number" value="${r.aStar}" style="width:60px" onchange="IGCSE[${i}].aStar=+this.value"></td>
+      <td><input type="number" value="${r.a}" style="width:60px" onchange="IGCSE[${i}].a=+this.value"></td>
+      <td><input type="number" value="${r.b}" style="width:60px" onchange="IGCSE[${i}].b=+this.value"></td>
+      <td><input type="number" value="${r.c}" style="width:60px" onchange="IGCSE[${i}].c=+this.value"></td>
+      <td><span class="grade ${passRate>=90?'grade-a':passRate>=75?'grade-b':'grade-c'}">${passRate}%</span></td>
+      <td>${schoolAvg.toFixed(1)}</td>
+      <td style="color:var(--gray-400)">82.4</td>
+    </tr>`;
+  }).join('');
+}
+
+function addIGCSERow() {
+  IGCSE.push({sub:'New Subject',n:0,aStar:0,a:0,b:0,c:0});
+  renderIGCSE(); toast('Row added');
+}
+
+// A-Level data
+let ALEVEL = [
+  {sub:'Mathematics',n:38,aStar:24,a:36,b:22},
+  {sub:'Further Mathematics',n:18,aStar:28,a:33,b:22},
+  {sub:'Physics',n:32,aStar:21,a:34,b:24},
+  {sub:'Chemistry',n:29,aStar:19,a:35,b:25},
+  {sub:'Biology',n:31,aStar:18,a:33,b:26},
+  {sub:'English Language',n:44,aStar:16,a:32,b:28},
+  {sub:'Business Studies',n:35,aStar:14,a:33,b:27},
+  {sub:'Economics',n:27,aStar:17,a:34,b:26},
+];
+
+function renderALevel() {
+  document.getElementById('aLevelBody').innerHTML = ALEVEL.map((r, i) => {
+    const abRate = r.aStar + r.a + r.b;
+    return `<tr>
+      <td><strong>${r.sub}</strong></td>
+      <td><input type="number" value="${r.n}" style="width:65px" onchange="ALEVEL[${i}].n=+this.value"></td>
+      <td><input type="number" value="${r.aStar}" style="width:60px" onchange="ALEVEL[${i}].aStar=+this.value"></td>
+      <td><input type="number" value="${r.a}" style="width:60px" onchange="ALEVEL[${i}].a=+this.value"></td>
+      <td><input type="number" value="${r.b}" style="width:60px" onchange="ALEVEL[${i}].b=+this.value"></td>
+      <td><span class="grade ${abRate>=80?'grade-a':abRate>=65?'grade-b':'grade-c'}">${abRate}%</span></td>
+      <td>${((r.aStar+r.a+r.b)/3).toFixed(1)}</td>
+      <td style="color:var(--gray-400)">74.2</td>
+    </tr>`;
+  }).join('');
+}
+
+function addALevelRow() {
+  ALEVEL.push({sub:'New Subject',n:0,aStar:0,a:0,b:0});
+  renderALevel(); toast('Row added');
+}
+
+// Add result modal
+function openAddModal() { document.getElementById('addModal').classList.add('open'); }
+function closeAddModal() { document.getElementById('addModal').classList.remove('open'); }
+function saveNewResult() {
+  const type = document.getElementById('addType').value;
+  const sub = document.getElementById('addSubject').value.trim();
+  if (!sub) { toast('Please enter a subject name'); return; }
+  if (type === 'igcse') {
+    IGCSE.push({sub, n: +document.getElementById('addCandidates').value||0, aStar: +document.getElementById('addAStar').value||0, a: +document.getElementById('addA').value||0, b: +document.getElementById('addB').value||0, c: 0});
+    renderIGCSE();
+  } else {
+    ALEVEL.push({sub, n: +document.getElementById('addCandidates').value||0, aStar: +document.getElementById('addAStar').value||0, a: +document.getElementById('addA').value||0, b: +document.getElementById('addB').value||0});
+    renderALevel();
+  }
+  closeAddModal(); toast('Result added — switch to the relevant tab to view');
+}
+
+// Charts
+function initCharts() {
+  const years = ['2020/21','2021/22','2022/23','2023/24','2024/25'];
+  new Chart(document.getElementById('igcseChart'), {
+    type:'line',
+    data:{labels:years,datasets:[{label:'A*–C Pass Rate (%)',data:[88,90,91,93,94],borderColor:'#2a7d3e',backgroundColor:'rgba(42,125,62,.1)',fill:true,tension:.4,pointBackgroundColor:'#2a7d3e',pointRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:80,max:100,ticks:{callback:v=>v+'%'}}}}
+  });
+  new Chart(document.getElementById('aLevelChart'), {
+    type:'line',
+    data:{labels:years,datasets:[{label:'A*–B Rate (%)',data:[80,82,84,86,87],borderColor:'#002244',backgroundColor:'rgba(0,34,68,.1)',fill:true,tension:.4,pointBackgroundColor:'#002244',pointRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:70,max:100,ticks:{callback:v=>v+'%'}}}}
+  });
+  const topSubs = IGCSE.slice(0,7);
+  new Chart(document.getElementById('subjectChart'), {
+    type:'bar',
+    data:{
+      labels:topSubs.map(s=>s.sub),
+      datasets:[
+        {label:'A*',data:topSubs.map(s=>s.aStar),backgroundColor:'#c8a94a'},
+        {label:'A',data:topSubs.map(s=>s.a),backgroundColor:'#2a7d3e'},
+        {label:'B',data:topSubs.map(s=>s.b),backgroundColor:'#3b82f6'},
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},scales:{x:{stacked:true},y:{stacked:true,ticks:{callback:v=>v+'%'}}}}
+  });
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'charts') setTimeout(initCharts, 50);
+}
+
+function initAuth() {
+  const s = sessionStorage.getItem('ausUser');
+  if (!s) { location.href='index.html'; return; }
+  const u = JSON.parse(s);
+  ['userAvatar','headerAvatar'].forEach(id=>{document.getElementById(id).textContent=u.initials;document.getElementById(id).style.background=u.color;});
+  document.getElementById('userName').textContent = u.name||u.role;
+  document.getElementById('roleBadge').textContent = u.role;
+  document.getElementById('roleBadge').style.background = u.color+'33';
+  document.getElementById('roleBadge').style.color = u.color;
+}
+function logout(){sessionStorage.removeItem('ausUser');location.href='index.html';}
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('open')}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('open')}
+let toastTimer;
+function toast(msg){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3000);}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initAuth();
+  renderDSIB();
+  renderIGCSE();
+  renderALevel();
+});
+</script>
+</body>
+</html>

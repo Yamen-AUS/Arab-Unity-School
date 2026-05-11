@@ -95,8 +95,49 @@ images/              School photos, logo, basketball team photo
 
 ---
 
+## 🏗️ CMS — Arab Unity School Content Management System
+
+A full client-side CMS built with HTML/CSS/JS + Table API. Accessible at `cms/index.html`.
+
+### CMS Pages (8 total — all complete ✅)
+
+| File | Description |
+|------|-------------|
+| `cms/index.html` | Login page — glassmorphism design, 6 demo accounts, sessionStorage auth |
+| `cms/dashboard.html` | Main dashboard — stat counters, Chart.js bar chart, pages table, activity feed |
+| `cms/users.html` | Users & Roles — 17 users table, permissions matrix (24×6), add user modal |
+| `cms/media.html` | Media Library — drag-drop upload, grid/list view, folder chips, file detail modal |
+| `cms/announcements.html` | Announcements — rich text composer, scheduling, live preview, emergency toggle |
+| `cms/page-builder.html` | Page Builder — 9 block types, drag-drop canvas, undo/redo, device preview |
+| `cms/seo.html` | SEO Manager — score rings, SERP preview, keyword rankings, sitemap generator |
+| `cms/settings.html` | Settings — general/identity, language & translation, emergency alerts, social media, analytics, backup/restore, danger zone |
+
+### CMS Demo Accounts
+| Email | Password | Role |
+|-------|----------|------|
+| superadmin@aus.ae | admin123 | Super Admin |
+| principal@aus.ae | principal1 | Principal |
+| marketing@aus.ae | mktg2024 | Marketing |
+| admissions@aus.ae | adm2024! | Admissions |
+| academic@aus.ae | acad2024 | Academic |
+| readonly@aus.ae | readonly | Read Only |
+
+### Recent School Website Edits (May 2026)
+- **Branding**: All "Executive Director" → "Chairman / Owner" for Ms. Arwa across all pages & `lang.js`
+- **Admissions**: Bus fee table updated (Deira/Al Mamzar: 1,800→1,880 / 1,350→1,410), detailed bus transport notes block added
+- **Curriculum**: PIRLS removed from Secondary assessment list; "English Literature" → "English Language" (IGCSE + A-Level)
+- **Results**: Inclusion & Wellbeing card → Health & Safety Across Phases (Very Good)
+- **Leadership**: Paresh Bhatt promoted to CFO with 3-paragraph bio; Yamen Mohamed and Paresh Bhatt cards removed from public page
+- **Home page**: Intro splash background changed to blue-green gradient
+- **Cache**: All 13 HTML files bumped to `lang.js?v=12` for mobile cache-busting
+
+---
+
 ## ⏳ Potential Next Steps
 - Add `data-i18n` attributes to deeper content sections on inner pages (about strengths cards, admissions steps, results tables, etc.)
 - Provide Arabic translations for events/calendar page entries
 - Add a language switcher visible on mobile (currently in nav bar only)
 - Consider a RTL-specific font size adjustment for headings (Arabic script is shorter)
+- CMS: Connect page builder blocks to live website pages via Table API
+- CMS: Implement real file upload for media library
+- CMS: Add email notification system for announcements
