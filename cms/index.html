@@ -224,19 +224,24 @@
 </div>
 
 <script>
-// Demo credentials
+// Demo credentials — key 'ausUser', fields: initials, role, color, name
 const USERS = {
-  superadmin: { pass: 'admin123',  role: 'Super Admin',    color: '#ef4444', icon: 'fa-crown' },
-  principal:  { pass: 'school123', role: 'Principal',      color: '#8b5cf6', icon: 'fa-graduation-cap' },
-  marketing:  { pass: 'mkt123',    role: 'Marketing Team', color: '#3b82f6', icon: 'fa-bullhorn' },
-  admissions: { pass: 'adm123',    role: 'Admissions',     color: '#f59e0b', icon: 'fa-user-plus' },
-  academic:   { pass: 'aca123',    role: 'Academic Team',  color: '#10b981', icon: 'fa-book' },
-  readonly:   { pass: 'read123',   role: 'Read Only',      color: '#64748b', icon: 'fa-eye' }
+  superadmin: { pass: 'admin123',  role: 'Super Admin',    color: '#ef4444', initials: 'SA', name: 'Super Admin' },
+  principal:  { pass: 'school123', role: 'Principal',      color: '#8b5cf6', initials: 'PR', name: 'Principal' },
+  marketing:  { pass: 'mkt123',    role: 'Marketing',      color: '#3b82f6', initials: 'MK', name: 'Marketing' },
+  admissions: { pass: 'adm123',    role: 'Admissions',     color: '#f59e0b', initials: 'AD', name: 'Admissions' },
+  academic:   { pass: 'aca123',    role: 'Academic',       color: '#10b981', initials: 'AC', name: 'Academic' },
+  readonly:   { pass: 'read123',   role: 'Read Only',      color: '#64748b', initials: 'RO', name: 'Read Only' }
 };
 
 function fillDemo(u, p) {
   document.getElementById('username').value = u;
   document.getElementById('password').value = p;
+}
+
+// Auto-login if already logged in
+if (sessionStorage.getItem('ausUser')) {
+  window.location.href = 'dashboard.html';
 }
 
 document.getElementById('loginForm').addEventListener('submit', function(e) {
@@ -245,7 +250,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
   const p = document.getElementById('password').value;
   const err = document.getElementById('errorMsg');
   if (USERS[u] && USERS[u].pass === p) {
-    sessionStorage.setItem('cms_user', JSON.stringify({ username: u, ...USERS[u] }));
+    sessionStorage.setItem('ausUser', JSON.stringify({ username: u, ...USERS[u] }));
     window.location.href = 'dashboard.html';
   } else {
     err.style.display = 'block';

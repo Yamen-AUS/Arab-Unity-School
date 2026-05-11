@@ -323,15 +323,15 @@ body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-7
 
 <script>
 // Auth
-const user = JSON.parse(sessionStorage.getItem('cms_user') || 'null');
+const user = JSON.parse(sessionStorage.getItem('ausUser') || 'null');
 if (!user) { window.location.href = 'index.html'; }
 else {
-  const ini = user.username.substring(0,2).toUpperCase();
+  const ini = user.initials || user.role.substring(0,2).toUpperCase();
   ['userAvatar','headerAvatar'].forEach(id => {
     document.getElementById(id).textContent = ini;
     document.getElementById(id).style.background = user.color||'#002244';
   });
-  document.getElementById('userName').textContent = user.role;
+  document.getElementById('userName').textContent = user.name || user.role;
   document.getElementById('roleBadge').textContent = user.role;
   document.getElementById('roleBadge').style.background = (user.color||'#002244')+'25';
   document.getElementById('roleBadge').style.color = user.color||'#002244';
@@ -462,7 +462,7 @@ function showToast(msg, color='#10b981') {
 }
 function openSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
 function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
-function logout() { sessionStorage.removeItem('cms_user'); window.location.href = 'index.html'; }
+function logout() { sessionStorage.removeItem('ausUser'); window.location.href = 'index.html'; }
 // Init preview
 updatePreview();
 </script>

@@ -749,13 +749,13 @@ body { font-family: 'Inter', sans-serif; background: var(--gray-50); color: var(
 
 <script>
 // ── Auth guard
-const user = JSON.parse(sessionStorage.getItem('cms_user') || 'null');
+const user = JSON.parse(sessionStorage.getItem('ausUser') || 'null');
 if (!user) { window.location.href = 'index.html'; }
 else {
-  const initials = user.username.substring(0,2).toUpperCase();
+  const initials = user.initials || user.role.substring(0,2).toUpperCase();
   document.getElementById('userAvatar').textContent = initials;
   document.getElementById('userAvatar').style.background = user.color || '#002244';
-  document.getElementById('userName').textContent = user.role;
+  document.getElementById('userName').textContent = user.name || user.role;
   document.getElementById('roleBadge').textContent = user.role;
   document.getElementById('roleBadge').style.background = (user.color||'#002244') + '25';
   document.getElementById('roleBadge').style.color = user.color || '#002244';
@@ -763,7 +763,7 @@ else {
   document.getElementById('headerAvatar').style.background = user.color || '#002244';
   const hr = new Date().getHours();
   const greet = hr < 12 ? 'morning' : hr < 17 ? 'afternoon' : 'evening';
-  document.getElementById('welcomeMsg').textContent = `Good ${greet}, ${user.role} 👋`;
+  document.getElementById('welcomeMsg').textContent = `Good ${greet}, ${user.name || user.role} 👋`;
 }
 
 // ── Animated counters
@@ -819,7 +819,7 @@ function toggleSub(e, id) {
   item.classList.toggle('open');
 }
 function logout() {
-  sessionStorage.removeItem('cms_user');
+  sessionStorage.removeItem('ausUser');
   window.location.href = 'index.html';
 }
 </script>

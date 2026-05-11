@@ -308,7 +308,7 @@ body{font-family:'Inter',sans-serif;background:var(--gray-100);color:var(--gray-
 
 <script>
 // Auth
-const user = JSON.parse(sessionStorage.getItem('cms_user') || 'null');
+const user = JSON.parse(sessionStorage.getItem('ausUser') || 'null');
 if (!user) { window.location.href = 'index.html'; }
 
 let blocks = [];
@@ -580,6 +580,8 @@ addBlock('hero');
 addBlock('stats');
 addBlock('cards');
 saveHistory();
+
+function logout() { sessionStorage.removeItem('ausUser'); window.location.href = 'index.html'; }
 </script>
 </body>
 </html>
