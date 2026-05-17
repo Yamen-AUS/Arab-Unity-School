@@ -36,6 +36,7 @@ input::placeholder{color:rgba(255,255,255,.22)}
 </head>
 <body>
 <div class="card">
+  <form id="setupForm" onsubmit="saveCredentials(event)">
   <div style="font-size:2rem;margin-bottom:12px">🔐</div>
   <h1>CMS Credentials Setup</h1>
   <p class="sub">Set the login credentials for the Arab Unity School CMS. This is a one-time setup — credentials are stored securely in your browser. Complete this before sharing the CMS with your team.</p>
@@ -75,7 +76,7 @@ input::placeholder{color:rgba(255,255,255,.22)}
     </div>
   </div>
 
-  <button class="btn" onclick="saveCredentials()">
+  <button class="btn" type="submit">
     <i class="fas fa-shield-alt"></i> Save Credentials & Go to Login
   </button>
 
@@ -89,6 +90,7 @@ input::placeholder{color:rgba(255,255,255,.22)}
     <i class="fas fa-info-circle"></i>
     <span>Credentials are stored locally in your browser's secure storage. For production deployment, provide these details only to authorised personnel. This setup page should be deleted or restricted after initial configuration.</span>
   </div>
+  </form>
 </div>
 
 <script>
@@ -104,7 +106,8 @@ function checkStrength(input, barId) {
   else bar.classList.add('weak');
 }
 
-function saveCredentials() {
+function saveCredentials(e) {
+  if (e) e.preventDefault();
   const saUser = document.getElementById('saUser').value.trim().toLowerCase();
   const saPass = document.getElementById('saPass').value;
   const mkUser = document.getElementById('mkUser').value.trim().toLowerCase();

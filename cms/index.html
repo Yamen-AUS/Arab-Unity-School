@@ -184,55 +184,15 @@
 <script>
 /*
  * AUS CMS Authentication
- * Credentials are stored as hashed values.
- * To update credentials, replace the hash values below.
- * Hash format: SHA-256 of "username:password"
- *
- * Current accounts: superadmin, marketing
- * Credentials are provided separately to the school administrator.
+ * Credentials are configured once via cms/setup.html
+ * Stored in localStorage keys: aus_cms_setup (username→password) and aus_cms_roles (username→role info)
+ * NO credentials are hardcoded in this file.
  */
-
-// Credential store — hashed (username:password → SHA-256 hex)
-// These are NOT plaintext passwords — they cannot be reversed
-const AUTH = {
-  superadmin: {
-    hash: '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', // placeholder — set via initCredentials()
-    role: 'Super Admin', color: '#c8a94a', initials: 'SA', name: 'Super Admin',
-    access: 'full'
-  },
-  marketing: {
-    hash: 'ef92b778bafe771207b7a7f42b9e08bd9f1c47b9e7e09e0d0d6e8d3b7e3b4e5f', // placeholder — set via initCredentials()
-    role: 'Marketing', color: '#3b82f6', initials: 'MK', name: 'Marketing',
-    access: 'content'
-  }
-};
-
-// Simple hash function for client-side verification
-async function hashStr(str) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-// Credential initialiser — sets hashes from localStorage if admin has configured them
-// Falls back to default verification for first-time setup
-function loadCustomCreds() {
-  try {
-    const stored = localStorage.getItem('aus_cms_creds');
-    if (stored) {
-      const creds = JSON.parse(stored);
-      Object.keys(creds).forEach(u => {
-        if (AUTH[u]) AUTH[u].hash = creds[u];
-      });
-    }
-  } catch(e) {}
-}
 
 // Auto-redirect if already authenticated
 if (sessionStorage.getItem('ausUser')) {
   window.location.href = 'dashboard.html';
 }
-
-loadCustomCreds();
 
 // Update year
 document.getElementById('yr').textContent = new Date().getFullYear();
@@ -240,57 +200,74 @@ document.getElementById('yr').textContent = new Date().getFullYear();
 // Login form handler
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
   e.preventDefault();
-  const btn = document.getElementById('loginBtn');
-  const err = document.getElementById('errorMsg');
-  const u = document.getElementById('username').value.trim().toLowerCase();
-  const p = document.getElementById('password').value;
+  const btn    = document.getElementById('loginBtn');
+  const err    = document.getElementById('errorMsg');
+  const errTxt = err.querySelector('span');
+  const u      = document.getElementById('username').value.trim().toLowerCase();
+  const p      = document.getElementById('password').value;
 
   btn.classList.add('loading');
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying…';
   err.classList.add('hidden');
 
-  // Small delay for UX (prevents brute-force timing attacks)
+  // Small UX delay
   await new Promise(r => setTimeout(r, 600));
 
-  const inputHash = await hashStr(u + ':' + p);
-  const user = AUTH[u];
+  // Load credentials from setup
+  let setupData = null;
+  let rolesData = null;
+  try {
+    const raw = localStorage.getItem('aus_cms_setup');
+    const rawR = localStorage.getItem('aus_cms_roles');
+    if (raw)  setupData = JSON.parse(raw);
+    if (rawR) rolesData = JSON.parse(rawR);
+  } catch(e) {}
 
-  // First-run: if hash hasn't been set yet, use direct comparison (initial setup only)
-  // Once credentials are set via settings, this fallback is disabled
-  const storedCreds = localStorage.getItem('aus_cms_creds');
-  let authenticated = false;
-
-  if (storedCreds) {
-    // Production mode: hash comparison
-    authenticated = user && user.hash === inputHash;
-  } else {
-    // Initial setup mode: credentials must match configured values
-    // School admin sets credentials in cms/settings.html after first login
-    authenticated = user && verifyInitialCreds(u, p);
+  // No setup yet — show helpful message
+  if (!setupData) {
+    errTxt.textContent = 'CMS not configured yet. Please visit cms/setup.html first.';
+    err.classList.remove('hidden');
+    btn.classList.remove('loading');
+    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In to CMS';
+    return;
   }
 
+  // Verify: username exists and password matches
+  const authenticated = setupData.hasOwnProperty(u) && setupData[u] === p;
+
   if (authenticated) {
+    // Build session from roles data, fallback to defaults
+    const roleInfo = (rolesData && rolesData[u]) ? rolesData[u] : {
+      role: 'Staff',
+      color: '#64748b',
+      initials: u.substring(0,2).toUpperCase(),
+      name: u,
+      access: 'content'
+    };
+
     const sessionData = {
-      username: u,
-      role: user.role,
-      color: user.color,
-      initials: user.initials,
-      name: user.name,
-      access: user.access,
+      username:  u,
+      role:      roleInfo.role,
+      color:     roleInfo.color,
+      initials:  roleInfo.initials,
+      name:      roleInfo.name,
+      access:    roleInfo.access,
       loginTime: new Date().toISOString()
     };
     sessionStorage.setItem('ausUser', JSON.stringify(sessionData));
 
-    // Optional: remember me via localStorage
+    // Remember me
     if (document.getElementById('remember').checked) {
       localStorage.setItem('aus_remember', JSON.stringify({ u, ts: Date.now() }));
     }
 
-    btn.innerHTML = '<i class="fas fa-check"></i> Welcome, ' + user.name + '…';
+    btn.innerHTML = '<i class="fas fa-check"></i> Welcome, ' + roleInfo.name + '…';
     btn.style.background = 'linear-gradient(135deg,#1a5c30,#2a7d3e)';
     btn.style.color = '#fff';
     setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+
   } else {
+    errTxt.textContent = 'Invalid username or password. Please try again.';
     err.classList.remove('hidden');
     btn.classList.remove('loading');
     btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In to CMS';
@@ -299,31 +276,13 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
   }
 });
 
-// Initial credential verification (school configures real passwords after first login)
-function verifyInitialCreds(u, p) {
-  // Credentials are set separately by the school administrator
-  // This function checks against the value stored in aus_cms_setup key
-  try {
-    const setup = localStorage.getItem('aus_cms_setup');
-    if (setup) {
-      const s = JSON.parse(setup);
-      return s[u] === p;
-    }
-    // If no setup exists, block login and show setup notice
-    document.getElementById('errorMsg').querySelector('span').textContent =
-      'CMS credentials have not been configured yet. Please contact your system administrator.';
-    return false;
-  } catch(e) { return false; }
-}
-
-// Check for remembered session (soft re-auth)
+// Pre-fill username if "remember me" was checked
 (function checkRemember() {
   const r = localStorage.getItem('aus_remember');
   if (!r) return;
   try {
     const { u, ts } = JSON.parse(r);
-    // Remember for 7 days
-    if (Date.now() - ts < 7 * 24 * 60 * 60 * 1000 && AUTH[u]) {
+    if (Date.now() - ts < 7 * 24 * 60 * 60 * 1000) {
       document.getElementById('username').value = u;
     }
   } catch(e) {}
