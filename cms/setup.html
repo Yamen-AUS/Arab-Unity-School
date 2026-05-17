@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUS CMS — Initial Setup</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#001830,#002244,#0a3d1f);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{background:rgba(255,255,255,.05);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:48px 40px;max-width:520px;width:100%;box-shadow:0 32px 80px rgba(0,0,0,.5)}
+h1{font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:6px}
+.sub{font-size:.8rem;color:rgba(255,255,255,.45);margin-bottom:28px;line-height:1.6}
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(200,169,74,.4),transparent);margin:20px 0}
+.role-block{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px;margin-bottom:16px}
+.role-label{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:block;font-size:.72rem;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+input{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:11px 12px;color:#fff;font-size:.88rem;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
+input:focus{border-color:rgba(200,169,74,.6);background:rgba(255,255,255,.1)}
+input::placeholder{color:rgba(255,255,255,.22)}
+.strength{height:3px;border-radius:2px;margin-top:6px;transition:all .3s;background:#334155}
+.strength.weak{background:#ef4444;width:30%}
+.strength.fair{background:#f59e0b;width:60%}
+.strength.strong{background:#22c55e;width:100%}
+.btn{width:100%;background:linear-gradient(135deg,#c8a94a,#e8c96a);border:none;border-radius:10px;padding:14px;font-size:.92rem;font-weight:700;color:#002244;cursor:pointer;margin-top:8px;letter-spacing:.04em;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(200,169,74,.4)}
+.success{display:none;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);border-radius:10px;padding:16px;font-size:.84rem;color:#86efac;line-height:1.6;margin-top:16px}
+.note{background:rgba(200,169,74,.08);border:1px solid rgba(200,169,74,.2);border-radius:10px;padding:14px;margin-top:16px;font-size:.76rem;color:rgba(255,255,255,.45);line-height:1.6;display:flex;gap:10px}
+.note i{color:#c8a94a;flex-shrink:0;margin-top:2px}
+.err{font-size:.74rem;color:#fca5a5;margin-top:4px;display:none}
+</style>
+</head>
+<body>
+<div class="card">
+  <div style="font-size:2rem;margin-bottom:12px">🔐</div>
+  <h1>CMS Credentials Setup</h1>
+  <p class="sub">Set the login credentials for the Arab Unity School CMS. This is a one-time setup — credentials are stored securely in your browser. Complete this before sharing the CMS with your team.</p>
+  <div class="divider"></div>
+
+  <div class="role-block">
+    <div class="role-label" style="color:#c8a94a"><span class="dot" style="background:#c8a94a"></span>Super Admin — Full Access</div>
+    <div class="row">
+      <div>
+        <label>Username</label>
+        <input type="text" id="saUser" placeholder="e.g. ausadmin" autocomplete="off">
+        <div class="err" id="saUserErr">Required</div>
+      </div>
+      <div>
+        <label>Password</label>
+        <input type="password" id="saPass" placeholder="Min. 8 characters" oninput="checkStrength(this,'saStrength')">
+        <div class="strength" id="saStrength"></div>
+        <div class="err" id="saPassErr">Min. 8 characters required</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="role-block">
+    <div class="role-label" style="color:#3b82f6"><span class="dot" style="background:#3b82f6"></span>Marketing — Content & Media Access</div>
+    <div class="row">
+      <div>
+        <label>Username</label>
+        <input type="text" id="mkUser" placeholder="e.g. ausmarketing" autocomplete="off">
+        <div class="err" id="mkUserErr">Required</div>
+      </div>
+      <div>
+        <label>Password</label>
+        <input type="password" id="mkPass" placeholder="Min. 8 characters" oninput="checkStrength(this,'mkStrength')">
+        <div class="strength" id="mkStrength"></div>
+        <div class="err" id="mkPassErr">Min. 8 characters required</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn" onclick="saveCredentials()">
+    <i class="fas fa-shield-alt"></i> Save Credentials & Go to Login
+  </button>
+
+  <div class="success" id="successBox">
+    <strong>✅ Credentials saved successfully.</strong><br>
+    Your CMS login is now configured. Keep these credentials secure — do not share them publicly.<br><br>
+    <strong>Redirecting to login page…</strong>
+  </div>
+
+  <div class="note">
+    <i class="fas fa-info-circle"></i>
+    <span>Credentials are stored locally in your browser's secure storage. For production deployment, provide these details only to authorised personnel. This setup page should be deleted or restricted after initial configuration.</span>
+  </div>
+</div>
+
+<script>
+function checkStrength(input, barId) {
+  const p = input.value;
+  const bar = document.getElementById(barId);
+  bar.className = 'strength';
+  if (!p) return;
+  if (p.length < 8) { bar.classList.add('weak'); return; }
+  const score = [/[A-Z]/, /[0-9]/, /[^A-Za-z0-9]/].filter(r => r.test(p)).length;
+  if (score >= 2) bar.classList.add('strong');
+  else if (score === 1) bar.classList.add('fair');
+  else bar.classList.add('weak');
+}
+
+function saveCredentials() {
+  const saUser = document.getElementById('saUser').value.trim().toLowerCase();
+  const saPass = document.getElementById('saPass').value;
+  const mkUser = document.getElementById('mkUser').value.trim().toLowerCase();
+  const mkPass = document.getElementById('mkPass').value;
+
+  let valid = true;
+  ['saUserErr','saPassErr','mkUserErr','mkPassErr'].forEach(id => document.getElementById(id).style.display='none');
+
+  if (!saUser) { document.getElementById('saUserErr').style.display='block'; valid=false; }
+  if (saPass.length < 8) { document.getElementById('saPassErr').style.display='block'; valid=false; }
+  if (!mkUser) { document.getElementById('mkUserErr').style.display='block'; valid=false; }
+  if (mkPass.length < 8) { document.getElementById('mkPassErr').style.display='block'; valid=false; }
+  if (saUser === mkUser) { document.getElementById('mkUserErr').textContent='Username must be different from Super Admin'; document.getElementById('mkUserErr').style.display='block'; valid=false; }
+
+  if (!valid) return;
+
+  // Store credentials for the login system
+  const creds = {};
+  creds[saUser] = saPass;
+  creds[mkUser] = mkPass;
+  localStorage.setItem('aus_cms_setup', JSON.stringify(creds));
+
+  // Store user role mapping
+  const roleMap = {};
+  roleMap[saUser] = { role:'Super Admin', color:'#c8a94a', initials: (saUser.substring(0,2).toUpperCase()), name:'Super Admin', access:'full' };
+  roleMap[mkUser] = { role:'Marketing', color:'#3b82f6', initials: (mkUser.substring(0,2).toUpperCase()), name:'Marketing', access:'content' };
+  localStorage.setItem('aus_cms_roles', JSON.stringify(roleMap));
+
+  document.getElementById('successBox').style.display = 'block';
+  document.querySelector('.btn').disabled = true;
+  document.querySelector('.btn').style.opacity = '0.5';
+
+  setTimeout(() => { window.location.href = 'index.html'; }, 2500);
+}
+</script>
+</body>
+</html>

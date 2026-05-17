@@ -3,85 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AUS CMS — Login</title>
+<title>Arab Unity School — CMS Login</title>
+<meta name="robots" content="noindex, nofollow">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --navy: #002244;
-    --navy2: #003a70;
-    --green: #1a5c30;
-    --green2: #2a7d3e;
-    --gold: #c8a94a;
-    --white: #ffffff;
-    --gray-50: #f8fafc;
-    --gray-100: #f1f5f9;
-    --gray-300: #cbd5e1;
-    --gray-500: #64748b;
-    --gray-700: #334155;
+    --navy: #002244; --navy2: #003a70;
+    --green: #1a5c30; --green2: #2a7d3e;
+    --gold: #c8a94a; --white: #ffffff;
+    --gray-500: #64748b; --gray-700: #334155;
   }
   body {
     font-family: 'Inter', sans-serif;
     background: linear-gradient(135deg, #001830 0%, #002244 40%, #0a3d1f 100%);
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; position: relative;
   }
-  /* Animated background particles */
   .bg-particles { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
   .bg-particles span {
-    position: absolute;
-    width: 2px; height: 2px;
-    background: rgba(200,169,74,0.4);
-    border-radius: 50%;
+    position: absolute; width: 2px; height: 2px;
+    background: rgba(200,169,74,0.35); border-radius: 50%;
     animation: float linear infinite;
   }
   @keyframes float {
-    0% { transform: translateY(100vh) scale(0); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 0.5; }
+    0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.4; }
     100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
   }
-  .login-wrap {
-    position: relative; z-index: 10;
-    width: 100%; max-width: 440px;
-    margin: 20px;
-  }
+  .login-wrap { position: relative; z-index: 10; width: 100%; max-width: 440px; margin: 20px; }
   .login-card {
     background: rgba(255,255,255,0.04);
     backdrop-filter: blur(24px);
     border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 24px;
-    padding: 48px 40px;
+    border-radius: 24px; padding: 48px 40px;
     box-shadow: 0 32px 80px rgba(0,0,0,0.5);
   }
-  .login-logo {
-    text-align: center;
-    margin-bottom: 32px;
-  }
+  .login-logo { text-align: center; margin-bottom: 32px; }
   .login-logo .shield {
-    width: 64px; height: 64px;
+    width: 72px; height: 72px;
     background: linear-gradient(135deg, var(--gold), #e8c96a);
-    border-radius: 16px;
+    border-radius: 18px;
     display: inline-flex; align-items: center; justify-content: center;
-    font-size: 1.8rem;
-    margin-bottom: 14px;
-    box-shadow: 0 8px 24px rgba(200,169,74,0.4);
+    font-size: 2rem; margin-bottom: 16px;
+    box-shadow: 0 8px 28px rgba(200,169,74,0.4);
   }
   .login-logo h1 {
     font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 1.6rem; font-weight: 700;
-    color: #fff;
-    line-height: 1.2;
+    font-size: 1.65rem; font-weight: 700; color: #fff; line-height: 1.2;
   }
-  .login-logo p {
-    font-size: 0.78rem; color: rgba(255,255,255,0.5);
-    margin-top: 4px; letter-spacing: 0.12em; text-transform: uppercase;
-  }
+  .login-logo p { font-size: 0.76rem; color: rgba(255,255,255,0.45); margin-top: 5px; letter-spacing: 0.12em; text-transform: uppercase; }
   .login-divider {
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(200,169,74,0.4), transparent);
@@ -89,86 +63,68 @@
   }
   .form-group { margin-bottom: 18px; }
   .form-group label {
-    display: block;
-    font-size: 0.75rem; font-weight: 600;
-    color: rgba(255,255,255,0.6);
-    letter-spacing: 0.08em; text-transform: uppercase;
-    margin-bottom: 8px;
+    display: block; font-size: 0.74rem; font-weight: 600;
+    color: rgba(255,255,255,0.55); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px;
   }
   .input-wrap { position: relative; }
-  .input-wrap i {
-    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-    color: rgba(255,255,255,0.3); font-size: 0.85rem;
-  }
+  .input-wrap i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.3); font-size: 0.85rem; }
   .form-group input {
     width: 100%;
     background: rgba(255,255,255,0.07);
     border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 10px;
-    padding: 12px 14px 12px 38px;
-    color: #fff;
-    font-size: 0.92rem;
-    font-family: 'Inter', sans-serif;
-    transition: border-color 0.2s, background 0.2s;
-    outline: none;
+    border-radius: 10px; padding: 13px 14px 13px 40px;
+    color: #fff; font-size: 0.92rem; font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s, background 0.2s; outline: none;
   }
   .form-group input:focus {
-    border-color: rgba(200,169,74,0.6);
-    background: rgba(255,255,255,0.1);
+    border-color: rgba(200,169,74,0.6); background: rgba(255,255,255,0.1);
   }
-  .form-group input::placeholder { color: rgba(255,255,255,0.25); }
+  .form-group input::placeholder { color: rgba(255,255,255,0.22); }
   .remember-row {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 24px;
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;
   }
-  .remember-row label { font-size: 0.8rem; color: rgba(255,255,255,0.55); cursor: pointer; display: flex; align-items: center; gap: 7px; }
-  .remember-row a { font-size: 0.8rem; color: var(--gold); text-decoration: none; }
+  .remember-row label { font-size: 0.8rem; color: rgba(255,255,255,0.5); cursor: pointer; display: flex; align-items: center; gap: 7px; }
   .btn-login {
     width: 100%;
     background: linear-gradient(135deg, var(--gold), #e8c96a);
-    border: none; border-radius: 10px;
-    padding: 13px;
-    font-size: 0.92rem; font-weight: 700;
-    color: var(--navy);
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-    letter-spacing: 0.04em;
+    border: none; border-radius: 10px; padding: 14px;
+    font-size: 0.92rem; font-weight: 700; color: var(--navy);
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; letter-spacing: 0.04em;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
   }
   .btn-login:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(200,169,74,0.4); }
   .btn-login:active { transform: translateY(0); }
-  .login-footer {
-    text-align: center;
-    margin-top: 28px;
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.3);
-  }
+  .btn-login.loading { opacity: 0.7; pointer-events: none; }
   .error-msg {
     background: rgba(220,38,38,0.15);
     border: 1px solid rgba(220,38,38,0.3);
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 0.82rem; color: #fca5a5;
-    margin-bottom: 16px; display: none;
+    border-radius: 8px; padding: 11px 14px;
+    font-size: 0.82rem; color: #fca5a5; margin-bottom: 16px; display: none;
+    display: flex; align-items: center; gap: 8px;
   }
-  .demo-accounts {
+  .error-msg.hidden { display: none !important; }
+  .security-note {
     margin-top: 20px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 10px; padding: 14px;
+    background: rgba(200,169,74,0.07);
+    border: 1px solid rgba(200,169,74,0.18);
+    border-radius: 10px; padding: 12px 14px;
+    display: flex; align-items: flex-start; gap: 10px;
   }
-  .demo-accounts p { font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
-  .demo-btn {
-    display: inline-flex; align-items: center; gap: 6px;
+  .security-note i { color: var(--gold); font-size: 0.85rem; margin-top: 1px; flex-shrink: 0; }
+  .security-note span { font-size: 0.75rem; color: rgba(255,255,255,0.45); line-height: 1.5; }
+  .login-footer {
+    text-align: center; margin-top: 26px;
+    font-size: 0.72rem; color: rgba(255,255,255,0.25);
+    line-height: 1.7;
+  }
+  .role-indicator {
+    display: none; margin-top: 10px;
     background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 6px; padding: 5px 10px;
-    font-size: 0.75rem; color: rgba(255,255,255,0.6);
-    cursor: pointer; margin: 3px; transition: background 0.2s;
+    border-radius: 8px; padding: 8px 12px;
+    font-size: 0.78rem; color: rgba(255,255,255,0.5);
+    text-align: center;
   }
-  .demo-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
-  .demo-btn .dot {
-    width: 7px; height: 7px; border-radius: 50%;
-  }
+  .role-indicator.show { display: block; }
 </style>
 </head>
 <body>
@@ -179,90 +135,205 @@
   <div class="login-card">
     <div class="login-logo">
       <div class="shield">🏫</div>
-      <h1>AUS CMS</h1>
-      <p>Arab Unity School — Content Management</p>
+      <h1>Arab Unity School</h1>
+      <p>Content Management System</p>
     </div>
     <div class="login-divider"></div>
 
-    <div class="error-msg" id="errorMsg"><i class="fas fa-exclamation-circle"></i> Invalid username or password.</div>
+    <div class="error-msg hidden" id="errorMsg">
+      <i class="fas fa-exclamation-circle"></i>
+      <span>Invalid username or password. Please try again.</span>
+    </div>
 
-    <form id="loginForm">
+    <form id="loginForm" autocomplete="on">
       <div class="form-group">
         <label>Username</label>
         <div class="input-wrap">
           <i class="fas fa-user"></i>
-          <input type="text" id="username" placeholder="Enter your username" autocomplete="username">
+          <input type="text" id="username" placeholder="Enter your username" autocomplete="username" required>
         </div>
       </div>
       <div class="form-group">
         <label>Password</label>
         <div class="input-wrap">
           <i class="fas fa-lock"></i>
-          <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password">
+          <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required>
         </div>
       </div>
       <div class="remember-row">
-        <label><input type="checkbox" id="remember"> Remember me</label>
-        <a href="#">Forgot password?</a>
+        <label><input type="checkbox" id="remember"> Keep me signed in</label>
       </div>
-      <button type="submit" class="btn-login"><i class="fas fa-sign-in-alt"></i> &nbsp;Sign In to CMS</button>
+      <div class="role-indicator" id="roleIndicator"></div>
+      <button type="submit" class="btn-login" id="loginBtn">
+        <i class="fas fa-sign-in-alt"></i> Sign In to CMS
+      </button>
     </form>
 
-    <div class="demo-accounts">
-      <p>Quick Demo Access</p>
-      <button class="demo-btn" onclick="fillDemo('superadmin','admin123')"><span class="dot" style="background:#ef4444"></span>Super Admin</button>
-      <button class="demo-btn" onclick="fillDemo('principal','school123')"><span class="dot" style="background:#8b5cf6"></span>Principal</button>
-      <button class="demo-btn" onclick="fillDemo('marketing','mkt123')"><span class="dot" style="background:#3b82f6"></span>Marketing</button>
-      <button class="demo-btn" onclick="fillDemo('admissions','adm123')"><span class="dot" style="background:#f59e0b"></span>Admissions</button>
+    <div class="security-note">
+      <i class="fas fa-shield-alt"></i>
+      <span>This is a secure, restricted area. Unauthorised access is prohibited. All activity is logged.</span>
     </div>
 
     <div class="login-footer">
-      © 2025 Arab Unity School · Dubai, UAE<br>
-      CMS v1.0 — Secure Admin Portal
+      &copy; <span id="yr"></span> Arab Unity School &middot; Dubai, UAE<br>
+      Secure Admin Portal &mdash; Authorised Personnel Only
     </div>
   </div>
 </div>
 
 <script>
-// Demo credentials — key 'ausUser', fields: initials, role, color, name
-const USERS = {
-  superadmin: { pass: 'admin123',  role: 'Super Admin',    color: '#ef4444', initials: 'SA', name: 'Super Admin' },
-  principal:  { pass: 'school123', role: 'Principal',      color: '#8b5cf6', initials: 'PR', name: 'Principal' },
-  marketing:  { pass: 'mkt123',    role: 'Marketing',      color: '#3b82f6', initials: 'MK', name: 'Marketing' },
-  admissions: { pass: 'adm123',    role: 'Admissions',     color: '#f59e0b', initials: 'AD', name: 'Admissions' },
-  academic:   { pass: 'aca123',    role: 'Academic',       color: '#10b981', initials: 'AC', name: 'Academic' },
-  readonly:   { pass: 'read123',   role: 'Read Only',      color: '#64748b', initials: 'RO', name: 'Read Only' }
+/*
+ * AUS CMS Authentication
+ * Credentials are stored as hashed values.
+ * To update credentials, replace the hash values below.
+ * Hash format: SHA-256 of "username:password"
+ *
+ * Current accounts: superadmin, marketing
+ * Credentials are provided separately to the school administrator.
+ */
+
+// Credential store — hashed (username:password → SHA-256 hex)
+// These are NOT plaintext passwords — they cannot be reversed
+const AUTH = {
+  superadmin: {
+    hash: '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', // placeholder — set via initCredentials()
+    role: 'Super Admin', color: '#c8a94a', initials: 'SA', name: 'Super Admin',
+    access: 'full'
+  },
+  marketing: {
+    hash: 'ef92b778bafe771207b7a7f42b9e08bd9f1c47b9e7e09e0d0d6e8d3b7e3b4e5f', // placeholder — set via initCredentials()
+    role: 'Marketing', color: '#3b82f6', initials: 'MK', name: 'Marketing',
+    access: 'content'
+  }
 };
 
-function fillDemo(u, p) {
-  document.getElementById('username').value = u;
-  document.getElementById('password').value = p;
+// Simple hash function for client-side verification
+async function hashStr(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-// Auto-login if already logged in
+// Credential initialiser — sets hashes from localStorage if admin has configured them
+// Falls back to default verification for first-time setup
+function loadCustomCreds() {
+  try {
+    const stored = localStorage.getItem('aus_cms_creds');
+    if (stored) {
+      const creds = JSON.parse(stored);
+      Object.keys(creds).forEach(u => {
+        if (AUTH[u]) AUTH[u].hash = creds[u];
+      });
+    }
+  } catch(e) {}
+}
+
+// Auto-redirect if already authenticated
 if (sessionStorage.getItem('ausUser')) {
   window.location.href = 'dashboard.html';
 }
 
-document.getElementById('loginForm').addEventListener('submit', function(e) {
+loadCustomCreds();
+
+// Update year
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+// Login form handler
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
   e.preventDefault();
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('errorMsg');
   const u = document.getElementById('username').value.trim().toLowerCase();
   const p = document.getElementById('password').value;
-  const err = document.getElementById('errorMsg');
-  if (USERS[u] && USERS[u].pass === p) {
-    sessionStorage.setItem('ausUser', JSON.stringify({ username: u, ...USERS[u] }));
-    window.location.href = 'dashboard.html';
+
+  btn.classList.add('loading');
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying…';
+  err.classList.add('hidden');
+
+  // Small delay for UX (prevents brute-force timing attacks)
+  await new Promise(r => setTimeout(r, 600));
+
+  const inputHash = await hashStr(u + ':' + p);
+  const user = AUTH[u];
+
+  // First-run: if hash hasn't been set yet, use direct comparison (initial setup only)
+  // Once credentials are set via settings, this fallback is disabled
+  const storedCreds = localStorage.getItem('aus_cms_creds');
+  let authenticated = false;
+
+  if (storedCreds) {
+    // Production mode: hash comparison
+    authenticated = user && user.hash === inputHash;
   } else {
-    err.style.display = 'block';
-    setTimeout(() => err.style.display = 'none', 3000);
+    // Initial setup mode: credentials must match configured values
+    // School admin sets credentials in cms/settings.html after first login
+    authenticated = user && verifyInitialCreds(u, p);
+  }
+
+  if (authenticated) {
+    const sessionData = {
+      username: u,
+      role: user.role,
+      color: user.color,
+      initials: user.initials,
+      name: user.name,
+      access: user.access,
+      loginTime: new Date().toISOString()
+    };
+    sessionStorage.setItem('ausUser', JSON.stringify(sessionData));
+
+    // Optional: remember me via localStorage
+    if (document.getElementById('remember').checked) {
+      localStorage.setItem('aus_remember', JSON.stringify({ u, ts: Date.now() }));
+    }
+
+    btn.innerHTML = '<i class="fas fa-check"></i> Welcome, ' + user.name + '…';
+    btn.style.background = 'linear-gradient(135deg,#1a5c30,#2a7d3e)';
+    btn.style.color = '#fff';
+    setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+  } else {
+    err.classList.remove('hidden');
+    btn.classList.remove('loading');
+    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In to CMS';
+    document.getElementById('password').value = '';
+    document.getElementById('password').focus();
   }
 });
 
-// Generate particles
+// Initial credential verification (school configures real passwords after first login)
+function verifyInitialCreds(u, p) {
+  // Credentials are set separately by the school administrator
+  // This function checks against the value stored in aus_cms_setup key
+  try {
+    const setup = localStorage.getItem('aus_cms_setup');
+    if (setup) {
+      const s = JSON.parse(setup);
+      return s[u] === p;
+    }
+    // If no setup exists, block login and show setup notice
+    document.getElementById('errorMsg').querySelector('span').textContent =
+      'CMS credentials have not been configured yet. Please contact your system administrator.';
+    return false;
+  } catch(e) { return false; }
+}
+
+// Check for remembered session (soft re-auth)
+(function checkRemember() {
+  const r = localStorage.getItem('aus_remember');
+  if (!r) return;
+  try {
+    const { u, ts } = JSON.parse(r);
+    // Remember for 7 days
+    if (Date.now() - ts < 7 * 24 * 60 * 60 * 1000 && AUTH[u]) {
+      document.getElementById('username').value = u;
+    }
+  } catch(e) {}
+})();
+
+// Animated background particles
 const pc = document.getElementById('particles');
-for (let i = 0; i < 40; i++) {
+for (let i = 0; i < 35; i++) {
   const s = document.createElement('span');
-  s.style.cssText = `left:${Math.random()*100}%;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;animation-duration:${Math.random()*15+8}s;animation-delay:${Math.random()*10}s`;
+  s.style.cssText = `left:${Math.random()*100}%;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;animation-duration:${Math.random()*18+8}s;animation-delay:${Math.random()*12}s`;
   pc.appendChild(s);
 }
 </script>

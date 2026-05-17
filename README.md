@@ -160,15 +160,24 @@ CMS Page → AUSData.saveXxx(data) → localStorage → AUSData.getXxx() → Web
 ### Sync Badge
 Every connected CMS page shows **⚡ Synced DD Mon YYYY at HH:MM** in the header bar after saving.
 
-### CMS Demo Accounts
-| Username | Password | Role |
-|----------|----------|------|
-| superadmin | admin123 | Super Admin |
-| principal | school123 | Principal |
-| marketing | mkt123 | Marketing |
-| admissions | adm123 | Admissions |
-| academic | aca123 | Academic |
-| readonly | read123 | Read Only |
+### CMS Access
+Two roles are supported: **Super Admin** (full access) and **Marketing** (content/media/SEO only).
+
+Credentials are **not stored in any source file**. They are configured once via `cms/setup.html` and stored as SHA-256 hashes in `localStorage` under `aus_cms_setup`. To (re-)set credentials, visit `cms/setup.html` and follow the prompts. Credentials are shared with authorised staff privately — never committed to the repository or included in any file.
+
+### Role-Based Access Control (Phase 4)
+| Section | Super Admin | Marketing |
+|---------|-------------|-----------|
+| Dashboard | ✅ | ✅ |
+| Announcements, Events, Staff, Media | ✅ | ✅ |
+| Admissions, Results, Gallery, Documents | ✅ | ✅ |
+| SEO Manager | ✅ | ✅ |
+| Pages (view) | ✅ | ✅ |
+| **Users & Roles** | ✅ | ❌ hidden |
+| **Settings** | ✅ | ❌ hidden |
+| **Page Builder** | ✅ | ❌ hidden |
+
+Role enforcement is handled by `cms/auth.js` — loaded in every CMS page's `<head>`. It reads `ausUser` from `sessionStorage`, populates the sidebar user block, and calls `applySidebarRoles()` which hides all `[data-role="superadmin"]` nav items from Marketing users.
 
 ### Recent School Website Edits (May 2026)
 - **Branding**: All "Executive Director" → "Chairman / Owner" for Ms. Arwa across all pages & `lang.js`

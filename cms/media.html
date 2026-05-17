@@ -6,6 +6,7 @@
 <title>AUS CMS — Media Library</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamath:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<script src="auth.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -186,9 +187,9 @@ body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-7
     </div>
     <div class="nav-section">
       <div class="nav-label">System</div>
-      <a href="users.html" class="nav-item"><i class="fas fa-user-shield"></i> Users & Roles</a>
+      <a href="users.html" class="nav-item" data-role="superadmin"><i class="fas fa-user-shield"></i> Users & Roles</a>
       <a href="seo.html" class="nav-item"><i class="fas fa-search"></i> SEO Manager</a>
-      <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+      <a href="settings.html" class="nav-item" data-role="superadmin"><i class="fas fa-cog"></i> Settings</a>
     </div>
   </nav>
   <div class="sidebar-footer">
@@ -349,6 +350,7 @@ else {
   document.getElementById('roleBadge').textContent = user.role;
   document.getElementById('roleBadge').style.background = (user.color||'#002244')+'25';
   document.getElementById('roleBadge').style.color = user.color||'#002244';
+applySidebarRoles(user.access || 'content');
 }
 
 // Media data

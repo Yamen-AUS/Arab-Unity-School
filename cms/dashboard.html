@@ -6,6 +6,7 @@
 <title>AUS CMS — Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<script src="auth.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -445,7 +446,7 @@ body { font-family: 'Inter', sans-serif; background: var(--gray-50); color: var(
       </a>
       <div class="sub-nav" id="sub-pages">
         <a href="pages.html" class="nav-item">All Pages</a>
-        <a href="page-builder.html" class="nav-item">Page Builder</a>
+        <a href="page-builder.html" class="nav-item" data-role="superadmin">Page Builder</a>
       </div>
       <a href="media.html" class="nav-item"><i class="fas fa-images"></i> Media Library</a>
       <a href="announcements.html" class="nav-item">
@@ -469,9 +470,9 @@ body { font-family: 'Inter', sans-serif; background: var(--gray-50); color: var(
 
     <div class="nav-section">
       <div class="nav-label">System</div>
-      <a href="users.html" class="nav-item"><i class="fas fa-user-shield"></i> Users & Roles</a>
+      <a href="users.html" class="nav-item" data-role="superadmin"><i class="fas fa-user-shield"></i> Users & Roles</a>
       <a href="seo.html" class="nav-item"><i class="fas fa-search"></i> SEO Manager</a>
-      <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+      <a href="settings.html" class="nav-item" data-role="superadmin"><i class="fas fa-cog"></i> Settings</a>
       <a href="#" class="nav-item" style="color:rgba(255,255,255,0.35)">
         <i class="fas fa-external-link-alt"></i> View Website
       </a>
@@ -764,6 +765,7 @@ else {
   const hr = new Date().getHours();
   const greet = hr < 12 ? 'morning' : hr < 17 ? 'afternoon' : 'evening';
   document.getElementById('welcomeMsg').textContent = `Good ${greet}, ${user.name || user.role} 👋`;
+applySidebarRoles(user.access || 'content');
 }
 
 // ── Animated counters

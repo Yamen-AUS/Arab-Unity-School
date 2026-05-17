@@ -6,6 +6,7 @@
 <title>AUS CMS — Settings</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<script src="auth.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -256,9 +257,9 @@ body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-7
     </div>
     <div class="nav-section">
       <div class="nav-label">System</div>
-      <a href="users.html" class="nav-item"><i class="fas fa-user-shield"></i> Users & Roles</a>
+      <a href="users.html" class="nav-item" data-role="superadmin"><i class="fas fa-user-shield"></i> Users & Roles</a>
       <a href="seo.html" class="nav-item"><i class="fas fa-search"></i> SEO Manager</a>
-      <a href="settings.html" class="nav-item active"><i class="fas fa-cog"></i> Settings</a>
+      <a href="settings.html" class="nav-item active" data-role="superadmin"><i class="fas fa-cog"></i> Settings</a>
     </div>
   </nav>
   <div class="sidebar-footer">
@@ -1031,18 +1032,16 @@ body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-7
 
 <script>
 // ─── Auth ───
-const USERS={
-  'superadmin@aus.ae':{pass:'admin123',role:'Super Admin',color:'#ef4444',initials:'SA'},
-  'principal@aus.ae':{pass:'principal1',role:'Principal',color:'#8b5cf6',initials:'PR'},
-  'marketing@aus.ae':{pass:'mktg2024',role:'Marketing',color:'#3b82f6',initials:'MK'},
-  'admissions@aus.ae':{pass:'adm2024!',role:'Admissions',color:'#f59e0b',initials:'AD'},
-  'academic@aus.ae':{pass:'acad2024',role:'Academic',color:'#10b981',initials:'AC'},
-  'readonly@aus.ae':{pass:'readonly',role:'Read Only',color:'#64748b',initials:'RO'}
-};
 function initAuth(){
   const s=sessionStorage.getItem('ausUser');
   if(!s){location.href='index.html';return;}
   const u=JSON.parse(s);
+  // Settings page: Super Admin only
+  if(u.access!=='full'){
+    alert('Access denied. Settings are restricted to Super Admin only.');
+    location.href='dashboard.html';
+    return;
+  }
   document.getElementById('userAvatar').textContent=u.initials;
   document.getElementById('userAvatar').style.background=u.color;
   document.getElementById('headerAvatar').textContent=u.initials;
@@ -1051,6 +1050,7 @@ function initAuth(){
   document.getElementById('roleBadge').textContent=u.role;
   document.getElementById('roleBadge').style.background=u.color+'33';
   document.getElementById('roleBadge').style.color=u.color;
+  applySidebarRoles(u.access || 'content');
 }
 function logout(){sessionStorage.removeItem('ausUser');location.href='index.html';}
 

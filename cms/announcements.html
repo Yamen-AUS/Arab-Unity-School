@@ -7,6 +7,7 @@
 <script src="../js/cms-data.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamath:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<script src="auth.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -153,9 +154,9 @@ body{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-7
     </div>
     <div class="nav-section">
       <div class="nav-label">System</div>
-      <a href="users.html" class="nav-item"><i class="fas fa-user-shield"></i> Users & Roles</a>
+      <a href="users.html" class="nav-item" data-role="superadmin"><i class="fas fa-user-shield"></i> Users & Roles</a>
       <a href="seo.html" class="nav-item"><i class="fas fa-search"></i> SEO Manager</a>
-      <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+      <a href="settings.html" class="nav-item" data-role="superadmin"><i class="fas fa-cog"></i> Settings</a>
     </div>
   </nav>
   <div class="sidebar-footer"><button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button></div>
@@ -467,7 +468,8 @@ function showToast(msg, color='#10b981') {
 }
 function openSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
 function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
-function logout() { sessionStorage.removeItem('ausUser'); window.location.href = 'index.html'; }
+// initAuth and logout provided by auth.js
+document.addEventListener('DOMContentLoaded', function(){ initAuth(); });
 // Init preview
 updatePreview();
 
